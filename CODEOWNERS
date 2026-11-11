@@ -368,6 +368,7 @@ server/src/routes/r1.ts                      @Warzonesiddiki
 _bmad-output/                                @lorekeeper
 
 # Repo-wide dotfiles / lockfiles / meta not covered above.
+CODEOWNERS                                @Warzonesiddiki
 .gitignore                                @Warzonesiddiki
 .gitattributes                            @Warzonesiddiki
 .editorconfig                             @Warzonesiddiki
