@@ -121,7 +121,7 @@ function createSqliteDb() {
   const conn = new Database(getEnv().NEXUS_SQLITE_PATH);
   const originalPrepare = conn.prepare.bind(conn);
   conn.prepare = ((source: string) =>
-    originalPrepare(source.replace(/::(?:int|integer|float|real|text)\b/g, ''))) as typeof conn.prepare;
+    originalPrepare(source.replace(/::(?:int|integer|float|real|text|jsonb)\b/g, ''))) as typeof conn.prepare;
   conn.pragma('journal_mode = WAL');
   conn.pragma('foreign_keys = ON');
   conn.pragma('busy_timeout = 5000');

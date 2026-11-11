@@ -119,8 +119,20 @@ jobs:
           if-no-files-found: warn
           retention-days: 90
 
-      - name: Server validate (lint + fresh typecheck + unit + integration gate + build)
+      - name: Server validate (lint + fresh typecheck + unit + build)
         run: cd server && npm run validate
+        # Unit fixtures must use their hermetic SQLite backend. PostgreSQL contract
+        # coverage runs separately against the disposable service below.
+        env:
+          DATABASE_URL: ''
+
+      - name: R1 application contract (PostgreSQL 16)
+        run: npx vitest run tests/r1-application-postgres-contract.test.ts
+        working-directory: server
+
+      - name: PostgreSQL integration suite
+        run: npm run test:integration
+        working-directory: server
 
   e2e:
     name: E2E (Playwright — dashboard, console, memories)

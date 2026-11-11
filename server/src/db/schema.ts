@@ -536,7 +536,7 @@ export const agents = pgTable(
     parentId: text('parent_id'), // master agent that spawned this one
     ring: integer('ring').notNull().default(1), // 0-4 execution ring
     scopes: text('scopes').array().notNull().default([]),
-    status: text('status').notNull().default('idle'), // idle | thinking | executing_tool | errored | quarantined | completed
+    status: text('status').notNull().default('idle'), // idle | thinking | executing_tool | errored | quarantined | completed | paused | terminated
     currentTool: text('current_tool'),
     llmModel: text('llm_model'),
     tokenBudget: integer('token_budget').notNull().default(100000),
@@ -556,7 +556,7 @@ export const agents = pgTable(
     kindCheck: check('agent_kind_check', sql`${t.kind} IN ('master', 'sub-agent', 'daemon')`),
     statusCheck: check(
       'agent_status_check',
-      sql`${t.status} IN ('idle', 'thinking', 'executing_tool', 'errored', 'quarantined', 'completed')`
+      sql`${t.status} IN ('idle', 'thinking', 'executing_tool', 'errored', 'quarantined', 'completed', 'paused', 'terminated')`
     ),
     schedulingModeCheck: check(
       'agent_scheduling_mode_check',

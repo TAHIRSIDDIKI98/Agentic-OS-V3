@@ -320,7 +320,7 @@ class SqlCapabilities implements CapabilityRepository {
 class SqlReceipts implements ReceiptRepository {
   constructor(private readonly sql: SqlExecutor) {}
   async append(receipt: ActionReceipt): Promise<ActionReceipt> {
-    const result = await this.sql.query<ActionReceipt>(`INSERT INTO r1_action_receipts (id, project_id, correlation_id, kind, actor, decision, payload, created_at) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING id, project_id AS "projectId", correlation_id AS "correlationId", kind, actor, decision, payload, created_at AS "createdAt"`, [receipt.id, receipt.projectId, receipt.correlationId, receipt.kind, receipt.actor, receipt.decision, JSON.stringify(receipt.payload), receipt.createdAt]);
+    const result = await this.sql.query<ActionReceipt>(`INSERT INTO r1_action_receipts (id, project_id, correlation_id, kind, actor, decision, payload, created_at) VALUES ($1,$2,$3,$4,$5,$6,$7::jsonb,$8) RETURNING id, project_id AS "projectId", correlation_id AS "correlationId", kind, actor, decision, payload, created_at AS "createdAt"`, [receipt.id, receipt.projectId, receipt.correlationId, receipt.kind, receipt.actor, receipt.decision, JSON.stringify(receipt.payload), receipt.createdAt]);
     const saved = one(result);
     if (!saved) throw new SqlRepositoryError('ALREADY_EXISTS', 'Receipt could not be appended.');
     return receiptFromRow(saved);
