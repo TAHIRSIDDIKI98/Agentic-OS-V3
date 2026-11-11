@@ -1,13 +1,13 @@
 import { defineConfig } from "vitest/config";
 
-// Integration config: runs ONLY the DB-gated suite, and REQUIRES a reachable
-// Postgres. It must never report green by silently running zero assertions —
-// if DATABASE_URL is missing or unreachable, the suite fails loudly.
+// Only tests that intentionally exercise the disposable PostgreSQL service
+// belong here. SQLite-backed seams, mocks and pure logic suites live under the
+// default test config (or a dedicated SQLite config), never against PG by accident.
 export default defineConfig({
   test: {
     environment: "node",
-    include: ["tests/integration/**/*.test.ts"],
-    testTimeout: 30000,
-    hookTimeout: 30000,
+    include: ["tests/integration/api.test.ts", "tests/integration/improvement.test.ts"],
+    testTimeout: 30_000,
+    hookTimeout: 30_000,
   },
 });
