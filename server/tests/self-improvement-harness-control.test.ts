@@ -17,6 +17,9 @@ vi.mock('../src/db/client.js', async (importOriginal) => {
   const actual = await importOriginal<typeof import('../src/db/client.js')>();
   return {
     ...actual,
+    // These are isolated unit fixtures; the row payload below is deliberately
+    // serialized as SQLite-style JSON regardless of the CI database service.
+    isSqlite: true,
     db: {
       ...actual.db,
       query: {

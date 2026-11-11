@@ -32,7 +32,9 @@ function capabilityFromRow(row: CapabilityRow): GovernedCapability {
     ...row,
     inputSchema: parseJson(row.inputSchema),
     scope: parseJson(row.scope),
-    enabled: row.enabled === true || row.enabled === 1,
+    // Drivers may expose PostgreSQL BOOLEAN as a bool or its textual wire form;
+    // SQLite stores the same field as 0/1. Normalize only known true encodings.
+    enabled: row.enabled === true || row.enabled === 1 || row.enabled === 'true' || row.enabled === 't' || row.enabled === '1',
   });
 }
 
@@ -65,7 +67,7 @@ export class SqlCapabilityGovernanceStore implements CapabilityGovernanceStore {
       RETURNING ${capabilityColumns}`,
       [capability.id, capability.name, capability.source, capability.version, capability.owner,
         JSON.stringify(capability.inputSchema), capability.risk, JSON.stringify(capability.scope),
-        capability.health, capability.enabled ? 1 : 0]))[0];
+        capability.health, capability.enabled]))[0];
     if (!row) throw new Error('Capability persistence did not return a row.');
     return capabilityFromRow(row);
   }

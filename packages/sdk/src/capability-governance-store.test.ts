@@ -18,7 +18,7 @@ describe('capability governance stores', () => {
     await expect(store.getActivePolicy()).resolves.toEqual(policy);
   });
 
-  it('uses parameterized SQL and normalizes SQLite JSON/boolean rows', async () => {
+  it('uses parameterized SQL and normalizes JSON and SQLite/PostgreSQL boolean rows', async () => {
     const calls: Array<{ statement: string; parameters: readonly unknown[] }> = [];
     const sql: SqlExecutor = { query: async <T extends object>(statement: string, parameters: readonly unknown[] = []) => {
       calls.push({ statement, parameters });
@@ -31,5 +31,17 @@ describe('capability governance stores', () => {
     await expect(store.saveCapability(capability)).resolves.toEqual(capability);
     expect(calls[0]?.statement).toContain('VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)');
     expect(calls[0]?.parameters).toContain(JSON.stringify(capability.scope));
+    expect(calls[0]?.parameters).toContain(true);
+
+    for (const enabled of [true, 1, 'true', 't', '1']) {
+      const readSql: SqlExecutor = { query: async <T extends object>() => [{
+        ...capability,
+        inputSchema: capability.inputSchema,
+        scope: capability.scope,
+        enabled,
+      } as T] };
+      await expect(new SqlCapabilityGovernanceStore(readSql).getCapability(capability.id))
+        .resolves.toMatchObject({ enabled: true });
+    }
   });
 });
