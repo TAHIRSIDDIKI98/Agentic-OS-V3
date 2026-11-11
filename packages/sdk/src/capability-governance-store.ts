@@ -63,8 +63,8 @@ export class SqlCapabilityGovernanceStore implements CapabilityGovernanceStore {
       (id,name,source,version,owner,input_schema,risk,scope,health,enabled)
       VALUES ($1,$2,$3,$4,$5,$6::text::jsonb,$7,$8::text::jsonb,$9,CASE WHEN $10::int = 1 THEN TRUE ELSE FALSE END)
       ON CONFLICT (id) DO UPDATE SET name=$2, source=$3, version=$4, owner=$5,
-        input_schema=$6::text::jsonb, risk=$7, scope=$8::text::jsonb, health=$9,
-        enabled=CASE WHEN $10::int = 1 THEN TRUE ELSE FALSE END
+        input_schema=EXCLUDED.input_schema, risk=$7, scope=EXCLUDED.scope, health=$9,
+        enabled=EXCLUDED.enabled
       RETURNING ${capabilityColumns}`,
       [capability.id, capability.name, capability.source, capability.version, capability.owner,
         JSON.stringify(capability.inputSchema), capability.risk, JSON.stringify(capability.scope),

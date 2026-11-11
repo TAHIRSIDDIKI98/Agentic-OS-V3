@@ -242,6 +242,13 @@ describe('R1 PostgreSQL application contract', () => {
       payload: { taskId: task.id, secret: 'opaque-data' }, createdAt: timestamp,
     };
     await expect(repositories.receipts.append(receipt)).resolves.toEqual(receipt);
+    const storedReceiptPayload = await harness.executor.query<{
+      payload: unknown;
+      payloadType: string;
+      indexedTaskId: string | null;
+    }>(`SELECT payload, jsonb_typeof(payload) AS "payloadType", payload->>'taskId' AS "indexedTaskId"
+        FROM r1_action_receipts WHERE id = $1`, [receipt.id]);
+    expect(storedReceiptPayload[0]).toMatchObject({ payloadType: 'object', indexedTaskId: task.id });
     await expect(repositories.receipts.listForTask(project.id, task.id)).resolves.toEqual([receipt]);
     await expect(harness.executor.query(
       'UPDATE r1_action_receipts SET actor = $1 WHERE id = $2', ['mutated', receipt.id],
