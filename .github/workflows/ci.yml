@@ -31,6 +31,9 @@ jobs:
   validate:
     name: Lint / Typecheck / Test / Build (TS workspace)
     runs-on: ubuntu-latest
+    env:
+      # These are hermetic unit tests; keep tests' fallback URLs in SQLite mode.
+      DATABASE_URL: ''
     steps:
       - uses: actions/checkout@v4
 
@@ -94,6 +97,14 @@ jobs:
 
       - name: Rebuild native modules for runner Node (better-sqlite3 ABI)
         run: pnpm rebuild better-sqlite3
+
+      - name: Prepare disposable PostgreSQL test database
+        run: node scripts/prepare-ci-postgres.mjs
+        working-directory: server
+
+      - name: Initialize PostgreSQL schema for server tests
+        run: npx drizzle-kit push --config=drizzle.config.ts --force
+        working-directory: server
 
       - name: R1 migration forward / rollback / restore drill (PostgreSQL 16)
         run: node scripts/drill-postgres-migrations.mjs
