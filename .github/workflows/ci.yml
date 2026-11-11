@@ -153,6 +153,13 @@ jobs:
       - name: Rebuild native modules for runner Node (better-sqlite3 ABI)
         run: pnpm rebuild better-sqlite3
 
+      # The API imports these workspace packages through their dist/ exports.
+      # The E2E job has a fresh checkout, so build them before booting the API.
+      - name: Build server workspace packages
+        run: |
+          pnpm --filter @agentic-os/a2a-server build
+          pnpm --filter @agentic-os/sdk build
+
       - name: Install Playwright browser
         run: npx playwright install --with-deps chromium
 
