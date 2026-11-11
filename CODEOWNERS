@@ -304,6 +304,7 @@ server/package.json                       @bastion
 package.json                              @bastion
 server/src/routes/v3-upgrade.ts           @bastion
 server/src/scripts/                       @bastion
+server/scripts/                            @bastion
 server/src/scripts/verify-system-readiness.ts @bastion
 server/src/scripts/profile-system-performance.ts @bastion
 docs/DEPLOYMENT.md                        @bastion

@@ -1,0 +1,23 @@
+R1 PGlite 0049-0054 forward / rollback / restore drill
+timestamp_utc=2026-11-11T05:05:57.589Z
+node=v22.22.3
+pglite=0.5.4 (package lock)
+BACKUP OK sha256=d4ce8ea8cab0cbb2f18bba415120646ab5be1e2b7593b9c43de52e1ebbb8c391 bytes=4563107
+BASELINE SCHEMA columns=11 indexes=2
+FORWARD OK 0049_r1_contracts exit=0
+FORWARD OK 0050_r1_durable_task_metadata exit=0
+FORWARD OK 0051_r1_capability_governance exit=0
+FORWARD OK 0052_r1_extended exit=0
+FORWARD OK 0053_r1_sync exit=0
+FORWARD OK 0054_r1_effect_claims exit=0
+FIXTURES OK task,task-event,approval,memory,evidence,receipt,checkpoint,compensation,effect-claim
+PRE-ROLLBACK foreign_key_constraints=validated
+ROLLBACK OK 0054_r1_effect_claims exit=0
+ROLLBACK OK 0053_r1_sync exit=0
+ROLLBACK OK 0052_r1_extended exit=0
+ROLLBACK OK 0051_r1_capability_governance exit=0
+ROLLBACK OK 0050_r1_durable_task_metadata exit=0
+ROLLBACK OK 0049_r1_contracts exit=0
+ROLLBACK BASELINE SCHEMA MATCH columns=11 indexes=2
+RESTORE OK sha256=c60bdaf764b35a488929d42a13acb6f5bbb2906d6407a83aed6d3b6c834e387f schema=baseline project=present
+RESULT=PASS (PGlite leg only; SQLite and live PostgreSQL are separate checks)

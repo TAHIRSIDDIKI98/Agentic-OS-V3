@@ -99,6 +99,19 @@ jobs:
       - name: Rebuild native modules for runner Node (better-sqlite3 ABI)
         run: pnpm rebuild better-sqlite3
 
+      - name: R1 migration forward / rollback / restore drill (PostgreSQL 16)
+        run: node scripts/drill-postgres-migrations.mjs
+        working-directory: server
+
+      - name: Retain PostgreSQL migration drill transcript
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r1-postgres-migration-drill
+          path: docs/bmad/releases/evidence/2026-11-10-r1-postgres-migration-drill.log
+          if-no-files-found: warn
+          retention-days: 90
+
       - name: Server validate (lint + fresh typecheck + unit + integration gate + build)
         run: cd server && npm run validate
 

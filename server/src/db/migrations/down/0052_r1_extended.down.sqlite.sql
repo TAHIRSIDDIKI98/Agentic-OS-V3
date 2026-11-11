@@ -12,9 +12,12 @@ DROP INDEX IF EXISTS r1_durable_approvals_project_state_idx;
 DROP INDEX IF EXISTS r1_telemetry_spans_trace_idx;
 DROP INDEX IF EXISTS r1_telemetry_spans_task_idx;
 
-ALTER TABLE r1_tasks DROP COLUMN IF EXISTS lease_owner;
-ALTER TABLE r1_tasks DROP COLUMN IF EXISTS lease_expires_at;
-ALTER TABLE r1_tasks DROP COLUMN IF EXISTS retry_attempts;
+-- SQLite does not accept DROP COLUMN IF EXISTS in supported runtime versions.
+-- This DOWN migration is an exact reverse of 0052 and must only run once,
+-- after dependent R1 objects are removed.
+ALTER TABLE r1_tasks DROP COLUMN lease_owner;
+ALTER TABLE r1_tasks DROP COLUMN lease_expires_at;
+ALTER TABLE r1_tasks DROP COLUMN retry_attempts;
 
 DROP TABLE IF EXISTS r1_telemetry_spans;
 DROP TABLE IF EXISTS r1_durable_approvals;

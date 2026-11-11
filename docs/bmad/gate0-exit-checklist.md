@@ -20,7 +20,7 @@ Updated: 2026-08-24 (WS execution day 1)
 |---|---|---|
 | B1 full suite | 🔶 12 files left locally (243/255 pass) | Wave-2 → full rerun → push → CI ubuntu/Node22 authority run (also delivers WS0 POSIX twin + WS8 enforcement) |
 | B2 dependency advisories | ✅ CLOSED | `ab38fb7` + clean re-audit `1178750` ("No known vulnerabilities found") |
-| B3 migration rollback/restore | 🔶 Authored, drill pending | Full down-chain 0054→0049 authored (`d8db0e8`, `c17fde7`, `4ca11a8`) + procedure; execute per drill once CI available |
+| B3 migration rollback/restore | 🔶 Partial: SQLite SQL, native better-sqlite3, and PGlite legs passed; live PostgreSQL pending | SQLite 3.40.1: `2026-11-10-r1-sqlite-migration-drill.log`; better-sqlite3 3.49.2: `2026-11-10-r1-better-sqlite3-migration-drill.log`; PGlite 0.5.4: `2026-11-10-r1-pglite-migration-drill.log`. A schema-isolated PostgreSQL drill is now wired into `server-validate`; its transcript will be retained as CI artifact `r1-postgres-migration-drill`. Await the live PostgreSQL result; PGlite fixture remains a modeled baseline. |
 | B4 clean-machine golden path | 🔶 Runbook ready | `9203cfe`; executes after B1 green on supported env |
 | B5 security triage + independent review | 🔶 Matrix delivered | `668c925`+`695bb20`+`8b3132b`: 12 findings dispositioned (6 remediated w/ evidence); SEC-04 converts at next rerun; reviewer assigned (D2) |
 

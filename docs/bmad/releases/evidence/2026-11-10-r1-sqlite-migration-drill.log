@@ -1,0 +1,26 @@
+R1 SQLite 0049-0054 forward / rollback / restore drill
+timestamp_utc=2026-11-11T05:05:57.592461+00:00
+repository=/home/user/Agentic-OS-V3
+python=3.11.2
+sqlite=3.40.1
+BACKUP OK sha256=c847115ffef63e2921bf1b1797d55d43d0a0d22c6be89107d77cc299fdb9ec63 bytes=1191936
+BASELINE SCHEMA objects=209
+FORWARD OK 0049_r1_contracts exit=0
+FORWARD OK 0050_r1_durable_task_metadata exit=0
+FORWARD OK 0051_r1_capability_governance exit=0
+FORWARD OK 0052_r1_extended exit=0
+FORWARD OK 0053_r1_sync exit=0
+FORWARD OK 0054_r1_effect_claims exit=0
+FIXTURES OK task,task-event,approval,memory,evidence,receipt,checkpoint,compensation,effect-claim
+PRE-ROLLBACK foreign_key_check=ok integrity_check=ok
+ROLLBACK OK 0054_r1_effect_claims exit=0
+ROLLBACK OK 0053_r1_sync exit=0
+ROLLBACK OK 0052_r1_extended exit=0
+ROLLBACK OK 0051_r1_capability_governance exit=0
+ROLLBACK OK 0050_r1_durable_task_metadata exit=0
+ROLLBACK OK 0049_r1_contracts exit=0
+ROLLBACK BASELINE SCHEMA MATCH objects=209
+ROLLBACK CHECKS foreign_key_check=ok integrity_check=ok baseline_project_columns=preserved
+RESTORE OK sha256=c847115ffef63e2921bf1b1797d55d43d0a0d22c6be89107d77cc299fdb9ec63 bytes=1191936
+RESULT=PASS (SQLite leg only; PGlite and PostgreSQL remain unverified)
+EVIDENCE=/home/user/Agentic-OS-V3/docs/bmad/releases/evidence/2026-11-10-r1-sqlite-migration-drill.log

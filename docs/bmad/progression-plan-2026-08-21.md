@@ -73,7 +73,7 @@ Current authority (`docs/bmad/baseline-2026-07-24-gate0.md`,
 |---|---|---|
 | B1 | Full repository test suite green | 63 open blocker files across 13 owners (+35 verified-fixed awaiting a fully green suite) |
 | B2 | Production dependency advisories resolved | Unresolved high/moderate findings |
-| B3 | Migration set 0049–0054 forward/rollback/restore/integrity validated | Not executed; rollback down-script does not exist yet |
+| B3 | Migration set 0049–0054 forward/rollback/restore/integrity validated | Partial: SQLite 3.40.1 SQL, better-sqlite3 runtime 3.49.2, and PGlite 0.5.4 legs passed; PGlite used a minimal pre-R1 projects schema. Live PostgreSQL remains. Evidence: `2026-11-10-r1-sqlite-migration-drill.log`, `2026-11-10-r1-better-sqlite3-migration-drill.log`, `2026-11-10-r1-pglite-migration-drill.log` |
 | B4 | Clean-machine golden-path drill (incl. kill-worker recovery) | Not executed |
 | B5 | Security-triage matrix + independent E10-S30 review | Reviewer unassigned; triage pending |
 
@@ -221,9 +221,16 @@ signed-off rationale in the ledger.
 
 Execute E10-S16/S17: forward-migrate 0049→0054, roll back 0054→0049, restore-from-backup, integrity
 verification on SQLite, PGlite, and live PostgreSQL (CI already provisions pgvector for
-integration). Create the missing down-script for 0052→0051. Retain per-step logs.
+integration). The rollback chain exists. Disposable SQLite 3.40.1 SQL, better-sqlite3 runtime
+(SQLite 3.49.2), and PGlite 0.5.4 legs now pass; transcripts are retained as
+`2026-11-10-r1-sqlite-migration-drill.log`, `2026-11-10-r1-better-sqlite3-migration-drill.log`,
+and `2026-11-10-r1-pglite-migration-drill.log`. The SQLite drill fixed `DROP COLUMN`
+compatibility and preserved baseline project metadata. PGlite used a minimal pre-R1 projects
+schema, so it is not production-schema evidence. A schema-isolated live PostgreSQL drill is now
+wired into `server-validate` with a retained CI artifact, but it remains unverified until that
+workflow runs on this patch (no local PostgreSQL service is available here).
 
-Exit criteria: matrix green ×3 engines in ledger; rollback script merged.
+Exit criteria: SQLite, PGlite, and live PostgreSQL matrix green against supported baselines; rollback chain verified.
 
 ### WS4 — Clean-machine golden-path drill (B4) · Owners: Artisan + Prism · Size M (after WS0)
 
