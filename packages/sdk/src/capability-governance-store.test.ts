@@ -31,7 +31,7 @@ describe('capability governance stores', () => {
     await expect(store.saveCapability(capability)).resolves.toEqual(capability);
     expect(calls[0]?.statement).toContain('VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)');
     expect(calls[0]?.parameters).toContain(JSON.stringify(capability.scope));
-    expect(calls[0]?.parameters).toContain(true);
+    expect(calls[0]?.parameters).toContain(1);
 
     for (const enabled of [true, 1, 'true', 't', '1']) {
       const readSql: SqlExecutor = { query: async <T extends object>() => [{

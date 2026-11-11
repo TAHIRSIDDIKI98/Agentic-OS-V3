@@ -252,6 +252,20 @@ describe('runR1ConstrainedCommand', () => {
       correlationId: randomUUID(),
     });
 
+    const pnpmAvailable = await Promise.any(
+      ['/usr/local/sbin/pnpm', '/usr/local/bin/pnpm', '/usr/sbin/pnpm', '/usr/bin/pnpm', '/sbin/pnpm', '/bin/pnpm']
+        .map((path) => access(path).then(() => true)),
+    ).catch(() => false);
+    if (!pnpmAvailable) {
+      // The constrained runner deliberately uses a minimal fixed PATH. Treat a
+      // missing optional package-manager binary as a fail-closed environment, not
+      // as a policy bypass or a successful execution.
+      expect(result.ok).toBe(false);
+      if (!result.ok) expect(result.error).toMatch(/pnpm|ENOENT/i);
+      expect(policyChecks).toBe(1);
+      return;
+    }
+
     expect(result.ok).toBe(true);
     if (result.ok) expect(result.output).toContain('controlled-package-manager-fixture');
     expect(policyChecks).toBe(1);
