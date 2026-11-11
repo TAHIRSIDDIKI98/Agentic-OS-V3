@@ -29,7 +29,7 @@ describe('capability governance stores', () => {
     } };
     const store = new SqlCapabilityGovernanceStore(sql);
     await expect(store.saveCapability(capability)).resolves.toEqual(capability);
-    expect(calls[0]?.statement).toContain('VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)');
+    expect(calls[0]?.statement).toContain('CASE WHEN $10::int = 1 THEN TRUE ELSE FALSE END');
     expect(calls[0]?.parameters).toContain(JSON.stringify(capability.scope));
     expect(calls[0]?.parameters).toContain(1);
 

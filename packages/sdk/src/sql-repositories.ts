@@ -310,7 +310,7 @@ class SqlCapabilities implements CapabilityRepository {
     return (await this.sql.query<Capability>('SELECT id, name, source, version, owner, scope, risk, enabled FROM r1_capabilities ORDER BY id')).map(capabilityFromRow);
   }
   async save(capability: Capability): Promise<Capability> {
-    const result = await this.sql.query<Capability>(`INSERT INTO r1_capabilities (id, name, source, version, owner, scope, risk, enabled) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) ON CONFLICT (id) DO UPDATE SET name=$2, version=$4, owner=$5, scope=$6, risk=$7, enabled=$8 RETURNING id, name, source, version, owner, scope, risk, enabled`, [capability.id, capability.name, capability.source, capability.version, capability.owner, JSON.stringify(capability.scope), capability.risk, capability.enabled]);
+    const result = await this.sql.query<Capability>(`INSERT INTO r1_capabilities (id, name, source, version, owner, scope, risk, enabled) VALUES ($1,$2,$3,$4,$5,$6,$7,CASE WHEN $8::int = 1 THEN TRUE ELSE FALSE END) ON CONFLICT (id) DO UPDATE SET name=$2, version=$4, owner=$5, scope=$6, risk=$7, enabled=CASE WHEN $8::int = 1 THEN TRUE ELSE FALSE END RETURNING id, name, source, version, owner, scope, risk, enabled`, [capability.id, capability.name, capability.source, capability.version, capability.owner, JSON.stringify(capability.scope), capability.risk, capability.enabled ? 1 : 0]);
     const saved = one(result);
     if (!saved) throw new SqlRepositoryError('ALREADY_EXISTS', 'Capability could not be saved.');
     return capabilityFromRow(saved);
@@ -320,7 +320,7 @@ class SqlCapabilities implements CapabilityRepository {
 class SqlReceipts implements ReceiptRepository {
   constructor(private readonly sql: SqlExecutor) {}
   async append(receipt: ActionReceipt): Promise<ActionReceipt> {
-    const result = await this.sql.query<ActionReceipt>(`INSERT INTO r1_action_receipts (id, project_id, correlation_id, kind, actor, decision, payload, created_at) VALUES ($1,$2,$3,$4,$5,$6,$7::jsonb,$8) RETURNING id, project_id AS "projectId", correlation_id AS "correlationId", kind, actor, decision, payload, created_at AS "createdAt"`, [receipt.id, receipt.projectId, receipt.correlationId, receipt.kind, receipt.actor, receipt.decision, JSON.stringify(receipt.payload), receipt.createdAt]);
+    const result = await this.sql.query<ActionReceipt>(`INSERT INTO r1_action_receipts (id, project_id, correlation_id, kind, actor, decision, payload, created_at) VALUES ($1,$2,$3,$4,$5,$6,$7::text::jsonb,$8) RETURNING id, project_id AS "projectId", correlation_id AS "correlationId", kind, actor, decision, payload, created_at AS "createdAt"`, [receipt.id, receipt.projectId, receipt.correlationId, receipt.kind, receipt.actor, receipt.decision, JSON.stringify(receipt.payload), receipt.createdAt]);
     const saved = one(result);
     if (!saved) throw new SqlRepositoryError('ALREADY_EXISTS', 'Receipt could not be appended.');
     return receiptFromRow(saved);
