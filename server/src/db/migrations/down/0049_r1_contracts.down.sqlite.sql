@@ -18,7 +18,6 @@ DROP TABLE IF EXISTS r1_task_steps;
 DROP INDEX IF EXISTS r1_tasks_project_state_idx;
 DROP TABLE IF EXISTS r1_tasks;
 
+-- mode, scope, and idempotency_key are part of the pre-R1 baseline schema;
+-- 0049 only adds the partial R1 index on PostgreSQL. Preserve those columns.
 DROP INDEX IF EXISTS projects_r1_idempotency_key_idx;
-ALTER TABLE projects DROP COLUMN IF EXISTS idempotency_key;
-ALTER TABLE projects DROP COLUMN IF EXISTS scope;
-ALTER TABLE projects DROP COLUMN IF EXISTS mode;

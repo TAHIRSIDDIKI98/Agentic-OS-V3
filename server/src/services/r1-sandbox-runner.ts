@@ -1,6 +1,6 @@
 import { spawn } from 'node:child_process';
 import { realpath } from 'node:fs/promises';
-import { isAbsolute, relative, resolve } from 'node:path';
+import { dirname, isAbsolute, relative, resolve, delimiter } from 'node:path';
 
 export interface R1SandboxRunInput {
   readonly command: string;
@@ -44,10 +44,13 @@ export class R1PlatformUnsupportedError extends Error {
 
 function minimalEnvironment(projectRoot: string): NodeJS.ProcessEnv {
   // Do not inherit the server PATH: npm scripts and hostile repositories can prepend
-  // project-controlled bin directories. This is an executable-location control, not
-  // executable provenance; an attacker controlling a trusted system directory remains
-  // outside the bounded runner's security boundary.
-  return { PATH: POSIX_EXECUTION_PATH, HOME: projectRoot, NO_COLOR: '1' };
+  // project-controlled bin directories. The running Node executable's directory is
+  // trusted and must remain available for allowlisted npm/pnpm shims and their child
+  // processes; process.execPath is fixed by the host, not by the project or ambient PATH.
+  // This is an executable-location control, not executable provenance; an attacker
+  // controlling a trusted system directory remains outside the bounded runner's boundary.
+  const path = [dirname(process.execPath), POSIX_EXECUTION_PATH].join(delimiter);
+  return { PATH: path, HOME: projectRoot, NO_COLOR: '1' };
 }
 
 async function validateProjectScopedFileArguments(

@@ -1,0 +1,25 @@
+R1 better-sqlite3 0049-0054 forward / rollback / restore drill
+timestamp_utc=2026-11-11T05:07:16.146Z
+node=v22.22.3
+better-sqlite3=11.10.0
+sqlite=3.49.2
+BACKUP OK sha256=a4f5559af817a7ea8d90f0a5b061dfed394c6ad1e79c574a6725235ceb464ffe bytes=1191936
+BASELINE SCHEMA objects=209
+FORWARD OK 0049_r1_contracts exit=0
+FORWARD OK 0050_r1_durable_task_metadata exit=0
+FORWARD OK 0051_r1_capability_governance exit=0
+FORWARD OK 0052_r1_extended exit=0
+FORWARD OK 0053_r1_sync exit=0
+FORWARD OK 0054_r1_effect_claims exit=0
+FIXTURES OK task,task-event,approval,memory,evidence,receipt,checkpoint,compensation,effect-claim
+PRE-ROLLBACK foreign_key_check=ok integrity_check=ok
+ROLLBACK OK 0054_r1_effect_claims exit=0
+ROLLBACK OK 0053_r1_sync exit=0
+ROLLBACK OK 0052_r1_extended exit=0
+ROLLBACK OK 0051_r1_capability_governance exit=0
+ROLLBACK OK 0050_r1_durable_task_metadata exit=0
+ROLLBACK OK 0049_r1_contracts exit=0
+ROLLBACK BASELINE SCHEMA MATCH objects=209
+ROLLBACK CHECKS foreign_key_check=ok integrity_check=ok baseline_project_columns=preserved
+RESTORE OK sha256=a4f5559af817a7ea8d90f0a5b061dfed394c6ad1e79c574a6725235ceb464ffe bytes=1191936
+RESULT=PASS (native better-sqlite3 leg only; PGlite and live PostgreSQL are separate checks)

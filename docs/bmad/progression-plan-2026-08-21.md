@@ -27,15 +27,16 @@ blockers, and an evidence-ledger protocol that already defines what "done" means
 action is simply to **restart sprint-8 in the order this plan lays out**, beginning with the
 bootstrap fix (WS0) — without which no contributor machine can even run the suite reproducibly.
 
-Headline verified state:
+Historical baseline snapshot (measured at HEAD `a3c30f6`, 2026-08-21; superseded where the current B1–B5 matrix below has newer evidence):
 
 | Surface | State at HEAD `a3c30f6` | Verdict |
 |---|---|---|
 | Server typecheck (`tsc --noEmit --incremental false`) | **0 errors** (re-measured fresh 2026-08-21) | ✅ green |
 | Full unit suite (authoritative Gate-0 Linux run) | 98 failing files / 159 failing tests → **63 open blockers**, 35 repaired-but-unconfirmed | 🔴 release blocker |
 | SDK suite / server lint / targeted suites | Pass (retained ledger evidence) | ✅ positive-only |
-| Production dependency audit | High/moderate findings unresolved | 🔴 release blocker |
-| Migration matrix 0049–0054 (forward/rollback/restore) | Not executed; down-script 0052→0051 missing | 🔴 release blocker |
+| Production dependency audit | Historical baseline had high/moderate findings; current GitHub notice reports 73 default-branch alerts | 🔴 release blocker; re-audit required |
+| Migration matrix 0049–0054 (forward/rollback/restore) | Verified on SQLite, better-sqlite3, PGlite and live PostgreSQL 16 in isolated drills | ✅ drill matrix passed; retained evidence |
+
 | Clean-machine golden path (14 steps) | Never executed end-to-end | 🔴 release blocker |
 | Security triage + independent review | Unassigned reviewer; triage matrix pending | 🔴 release blocker |
 | Reproducible bootstrap on a new machine | **Broken on Node ≥23** (better-sqlite3@11 cannot build); no pnpm/cargo auto-provisioned | 🟠 new finding |
@@ -71,9 +72,9 @@ Current authority (`docs/bmad/baseline-2026-07-24-gate0.md`,
 
 | # | Release blocker | Current disposition |
 |---|---|---|
-| B1 | Full repository test suite green | 63 open blocker files across 13 owners (+35 verified-fixed awaiting a fully green suite) |
-| B2 | Production dependency advisories resolved | Unresolved high/moderate findings |
-| B3 | Migration set 0049–0054 forward/rollback/restore/integrity validated | Not executed; rollback down-script does not exist yet |
+| B1 | Full repository test suite green | Still blocked: PR CI run `42964819231` has failing workspace tests, E2E, Rust, and server tests. Server failures include R1 policy/control, sandbox timeout, and PostgreSQL contract assertions; resolve and rerun. |
+| B2 | Production dependency advisories resolved | Re-opened: GitHub push notice reports 73 default-branch alerts (3 critical, 22 high, 42 moderate, 6 low), conflicting with older clean-audit evidence. Reconcile production scope and re-audit. |
+| B3 | Migration set 0049–0054 forward/rollback/restore/integrity validated | ✅ Passed: SQLite 3.40.1 SQL, better-sqlite3 11.10.0 / SQLite 3.49.2, PGlite 0.5.4, and live PostgreSQL 16 all passed their isolated drills. PostgreSQL CI step succeeded in run `42964819231`, artifact `r1-postgres-migration-drill`; see the retained SQLite/PGlite transcripts in `docs/bmad/releases/evidence/`. |
 | B4 | Clean-machine golden-path drill (incl. kill-worker recovery) | Not executed |
 | B5 | Security-triage matrix + independent E10-S30 review | Reviewer unassigned; triage pending |
 
@@ -110,10 +111,10 @@ backlog; nothing observed today contradicts it.
 - Tauri: real Tauri v2 app (valid conf, sidecar-spawning `lib.rs` with port-file handshake,
   14 UI `.tsx` incl. 3 placeholder views).
 - CI: 3 workflows. `ci.yml` runs lint/typecheck/test/build, Postgres-backed integration,
-  cargo check/clippy/test, CODEOWNERS coverage gate. `validate.yml` substantially overlaps it.
-  `deploy.yml` publishes Dockerfile.standalone on tags. **No Playwright/E2E job anywhere** despite
-  3 committed specs (`e2e/*.spec.ts`, expects server on :1422). Root vitest config covers only
-  `src/**` (excludes `src/lib/os/**`).
+  cargo check/clippy/test, CODEOWNERS coverage gate, Playwright E2E, and the isolated PostgreSQL
+  migration drill. `validate.yml` substantially overlaps it but has an independent TypeScript/Rust
+  gate. `deploy.yml` publishes Dockerfile.standalone on tags. Root Vitest coverage remains limited
+  to server tests; the Playwright specs exercise the dashboard/API on :1422.
 
 ### 2.4 Reproducibility findings (new, actionable)
 
@@ -221,9 +222,17 @@ signed-off rationale in the ledger.
 
 Execute E10-S16/S17: forward-migrate 0049→0054, roll back 0054→0049, restore-from-backup, integrity
 verification on SQLite, PGlite, and live PostgreSQL (CI already provisions pgvector for
-integration). Create the missing down-script for 0052→0051. Retain per-step logs.
+integration). The rollback chain exists. Disposable SQLite 3.40.1 SQL, better-sqlite3 runtime
+(SQLite 3.49.2), and PGlite 0.5.4 legs passed; their transcripts are retained as
+`2026-11-10-r1-sqlite-migration-drill.log`, `2026-11-10-r1-better-sqlite3-migration-drill.log`,
+and `2026-11-10-r1-pglite-migration-drill.log`. The SQLite drill fixed `DROP COLUMN`
+compatibility and preserved baseline project metadata. PGlite and live PostgreSQL use a
+minimal pre-R1 projects-schema fixture isolated from `public`. The live PostgreSQL 16
+forward/rollback/restore step also passed in CI run `42964819231`
+(artifact `r1-postgres-migration-drill`); the enclosing server job later failed on unrelated
+unit/integration assertions, which remain tracked under B1.
 
-Exit criteria: matrix green ×3 engines in ledger; rollback script merged.
+Exit criteria: SQLite, PGlite, and live PostgreSQL matrix green against supported baselines; rollback chain verified.
 
 ### WS4 — Clean-machine golden-path drill (B4) · Owners: Artisan + Prism · Size M (after WS0)
 

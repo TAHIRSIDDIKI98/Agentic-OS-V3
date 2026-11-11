@@ -1,0 +1,25 @@
+R1 pglite 0049-0054 forward / rollback / restore drill
+timestamp_utc=2026-11-11T05:05:35.193Z
+node=v22.22.3
+isolated_schema=r1_migration_drill_2d721b9a63a04054885dc2530aaa565b
+engine=pglite
+server=PostgreSQL 18.3 (PGlite 0.5.4) on wasm32-unknown-linux-gnu, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit
+BACKUP OK sha256=3d3e147e1481e59c92c781794f0649ac90d31ec05c235a945feb00ad08ee1e2c schema_columns=11 project_rows=1
+FORWARD OK 0049_r1_contracts exit=0
+FORWARD OK 0050_r1_durable_task_metadata exit=0
+FORWARD OK 0051_r1_capability_governance exit=0
+FORWARD OK 0052_r1_extended exit=0
+FORWARD OK 0053_r1_sync exit=0
+FORWARD OK 0054_r1_effect_claims exit=0
+FIXTURES OK task,task-event,approval,memory,evidence,receipt,checkpoint,compensation,effect-claim
+CONTRACTS OK task-created trigger, append-only evidence/receipt guards, foreign keys
+PRE-ROLLBACK foreign_key_constraints=validated
+ROLLBACK OK 0054_r1_effect_claims exit=0
+ROLLBACK OK 0053_r1_sync exit=0
+ROLLBACK OK 0052_r1_extended exit=0
+ROLLBACK OK 0051_r1_capability_governance exit=0
+ROLLBACK OK 0050_r1_durable_task_metadata exit=0
+ROLLBACK OK 0049_r1_contracts exit=0
+ROLLBACK BASELINE SCHEMA MATCH columns=11
+RESTORE OK sha256=3d3e147e1481e59c92c781794f0649ac90d31ec05c235a945feb00ad08ee1e2c schema_columns=11 project_rows=1
+RESULT=PASS (pglite leg; isolated schemas only)

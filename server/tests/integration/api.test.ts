@@ -131,15 +131,19 @@ describe('API integration', () => {
   });
 
   it('oversized payload is rejected', async () => {
-    const big = 'x'.repeat(6 * 1024 * 1024);
+    // Cross the configured 5 MiB limit by one byte and report the exact wire
+    // length so the perimeter can reject from Content-Length without buffering
+    // a needlessly large body in the integration runner.
+    const big = 'x'.repeat(5 * 1024 * 1024 + 1);
+    const payload = JSON.stringify({ title: 'x', content: big });
     const res = await app.request('/api/v1/memories', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
         authorization: `Bearer ${operatorKey}`,
-        'content-length': String(big.length + 20),
+        'content-length': String(Buffer.byteLength(payload)),
       },
-      body: JSON.stringify({ title: 'x', content: big }),
+      body: payload,
     });
     expect([413, 400]).toContain(res.status);
   });

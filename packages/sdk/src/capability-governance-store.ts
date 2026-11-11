@@ -32,7 +32,9 @@ function capabilityFromRow(row: CapabilityRow): GovernedCapability {
     ...row,
     inputSchema: parseJson(row.inputSchema),
     scope: parseJson(row.scope),
-    enabled: row.enabled === true || row.enabled === 1,
+    // Drivers may expose PostgreSQL BOOLEAN as a bool or its textual wire form;
+    // SQLite stores the same field as 0/1. Normalize only known true encodings.
+    enabled: row.enabled === true || row.enabled === 1 || row.enabled === 'true' || row.enabled === 't' || row.enabled === '1',
   });
 }
 
@@ -59,9 +61,10 @@ export class SqlCapabilityGovernanceStore implements CapabilityGovernanceStore {
     const capability = GovernedCapabilitySchema.parse(candidate);
     const row = (await this.sql.query<CapabilityRow>(`INSERT INTO r1_governed_capabilities
       (id,name,source,version,owner,input_schema,risk,scope,health,enabled)
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+      VALUES ($1,$2,$3,$4,$5,$6::text::jsonb,$7,$8::text::jsonb,$9,CASE WHEN $10::int = 1 THEN TRUE ELSE FALSE END)
       ON CONFLICT (id) DO UPDATE SET name=$2, source=$3, version=$4, owner=$5,
-        input_schema=$6, risk=$7, scope=$8, health=$9, enabled=$10
+        input_schema=EXCLUDED.input_schema, risk=$7, scope=EXCLUDED.scope, health=$9,
+        enabled=EXCLUDED.enabled
       RETURNING ${capabilityColumns}`,
       [capability.id, capability.name, capability.source, capability.version, capability.owner,
         JSON.stringify(capability.inputSchema), capability.risk, JSON.stringify(capability.scope),

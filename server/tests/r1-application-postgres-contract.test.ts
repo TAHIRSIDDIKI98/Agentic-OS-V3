@@ -192,11 +192,19 @@ describe('R1 PostgreSQL application contract', () => {
     // lifecycle record. Ordered by operation for determinism.
     await service.archiveMemory(project.id, provenanceMemory.id, 'principal-archive-actor');
     await expect(repositories.memories.get(project.id, provenanceMemory.id)).resolves.toBeNull();
-    await expect(harness.executor.query<Record<string, unknown>>(
+    const lifecycleReceipts = await harness.executor.query<Record<string, unknown>>(
       `SELECT kind, actor, decision, payload FROM r1_action_receipts
-       WHERE project_id = $1 AND correlation_id = $2 ORDER BY payload->>'operation'`,
+       WHERE project_id = $1 AND correlation_id = $2`,
       [project.id, provenanceMemory.id],
-    )).resolves.toEqual([
+    );
+    const normalizedLifecycleReceipts = lifecycleReceipts
+      .map((receipt) => ({
+        ...receipt,
+        payload: typeof receipt.payload === 'string' ? JSON.parse(receipt.payload) as Record<string, unknown> : receipt.payload,
+      }))
+      .sort((left, right) => String((left.payload as Record<string, unknown>).operation)
+        .localeCompare(String((right.payload as Record<string, unknown>).operation)));
+    expect(normalizedLifecycleReceipts).toEqual([
       {
         kind: 'db_write', actor: 'principal-archive-actor', decision: 'allow',
         payload: { operation: 'memory.archive', memoryId: provenanceMemory.id, lifecycle: 'active' },
@@ -234,6 +242,13 @@ describe('R1 PostgreSQL application contract', () => {
       payload: { taskId: task.id, secret: 'opaque-data' }, createdAt: timestamp,
     };
     await expect(repositories.receipts.append(receipt)).resolves.toEqual(receipt);
+    const storedReceiptPayload = await harness.executor.query<{
+      payload: unknown;
+      payloadType: string;
+      indexedTaskId: string | null;
+    }>(`SELECT payload, jsonb_typeof(payload) AS "payloadType", payload->>'taskId' AS "indexedTaskId"
+        FROM r1_action_receipts WHERE id = $1`, [receipt.id]);
+    expect(storedReceiptPayload[0]).toMatchObject({ payloadType: 'object', indexedTaskId: task.id });
     await expect(repositories.receipts.listForTask(project.id, task.id)).resolves.toEqual([receipt]);
     await expect(harness.executor.query(
       'UPDATE r1_action_receipts SET actor = $1 WHERE id = $2', ['mutated', receipt.id],

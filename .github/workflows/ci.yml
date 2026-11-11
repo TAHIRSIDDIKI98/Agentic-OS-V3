@@ -31,12 +31,13 @@ jobs:
   validate:
     name: Lint / Typecheck / Test / Build (TS workspace)
     runs-on: ubuntu-latest
+    env:
+      # These are hermetic unit tests; keep tests' fallback URLs in SQLite mode.
+      DATABASE_URL: ''
     steps:
       - uses: actions/checkout@v4
 
       - uses: pnpm/action-setup@v4
-        with:
-          version: 9
 
       - uses: actions/setup-node@v4
         with:
@@ -85,8 +86,6 @@ jobs:
       - uses: actions/checkout@v4
 
       - uses: pnpm/action-setup@v4
-        with:
-          version: 9
 
       - uses: actions/setup-node@v4
         with:
@@ -99,8 +98,41 @@ jobs:
       - name: Rebuild native modules for runner Node (better-sqlite3 ABI)
         run: pnpm rebuild better-sqlite3
 
-      - name: Server validate (lint + fresh typecheck + unit + integration gate + build)
+      - name: Prepare disposable PostgreSQL test database
+        run: node scripts/prepare-ci-postgres.mjs
+        working-directory: server
+
+      - name: Initialize PostgreSQL schema for server tests
+        run: npx drizzle-kit push --config=drizzle.config.ts --force
+        working-directory: server
+
+      - name: R1 migration forward / rollback / restore drill (PostgreSQL 16)
+        run: node scripts/drill-postgres-migrations.mjs
+        working-directory: server
+
+      - name: Retain PostgreSQL migration drill transcript
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r1-postgres-migration-drill
+          path: docs/bmad/releases/evidence/2026-11-10-r1-postgres-migration-drill.log
+          if-no-files-found: warn
+          retention-days: 90
+
+      - name: Server validate (lint + fresh typecheck + unit + build)
         run: cd server && npm run validate
+        # Unit fixtures must use their hermetic SQLite backend. PostgreSQL contract
+        # coverage runs separately against the disposable service below.
+        env:
+          DATABASE_URL: ''
+
+      - name: R1 application contract (PostgreSQL 16)
+        run: npx vitest run tests/r1-application-postgres-contract.test.ts
+        working-directory: server
+
+      - name: PostgreSQL integration suite
+        run: npm run test:integration
+        working-directory: server
 
   e2e:
     name: E2E (Playwright — dashboard, console, memories)
@@ -109,8 +141,6 @@ jobs:
       - uses: actions/checkout@v4
 
       - uses: pnpm/action-setup@v4
-        with:
-          version: 9
 
       - uses: actions/setup-node@v4
         with:
@@ -122,6 +152,13 @@ jobs:
 
       - name: Rebuild native modules for runner Node (better-sqlite3 ABI)
         run: pnpm rebuild better-sqlite3
+
+      # The API imports these workspace packages through their dist/ exports.
+      # The E2E job has a fresh checkout, so build them before booting the API.
+      - name: Build server workspace packages
+        run: |
+          pnpm --filter @agentic-os/a2a-server build
+          pnpm --filter @agentic-os/sdk build
 
       - name: Install Playwright browser
         run: npx playwright install --with-deps chromium
@@ -195,7 +232,7 @@ jobs:
               var r = p.replace(/[.+^${}()|[\]\\]/g, "\\$&");
               r = r.replace(/\*\*/g, "§§").replace(/\*/g, "[^/]*").replace(/§§/g, ".*").replace(/\?/g, ".");
               if (!r.includes("/")) r = "(^|/)" + r;
-              return new RegExp("^" + r + (isDir ? "(/.*)?") + "$");
+              return new RegExp("^" + r + (isDir ? "(/.*)?" : "") + "$");
             }
             var rules = owners.map(toRegex);
             var files = (process.env.CHANGED || "").split("\n").filter(Boolean);

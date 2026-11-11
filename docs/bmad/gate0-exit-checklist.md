@@ -4,7 +4,7 @@
 mapped to their current evidence. Updated as waves land. The E10-S30 independent reviewer
 (decision D2) signs against this document at Gate-0 exit.
 
-Updated: 2026-08-24 (WS execution day 1)
+Updated: 2026-11-10 (R1 migration CI evidence and requalification findings)
 
 | # | Gate-0 exit criterion | Status | Evidence |
 |---|---|---|---|
@@ -18,9 +18,9 @@ Updated: 2026-08-24 (WS execution day 1)
 
 | Blocker | Status | Path to green |
 |---|---|---|
-| B1 full suite | 🔶 12 files left locally (243/255 pass) | Wave-2 → full rerun → push → CI ubuntu/Node22 authority run (also delivers WS0 POSIX twin + WS8 enforcement) |
-| B2 dependency advisories | ✅ CLOSED | `ab38fb7` + clean re-audit `1178750` ("No known vulnerabilities found") |
-| B3 migration rollback/restore | 🔶 Authored, drill pending | Full down-chain 0054→0049 authored (`d8db0e8`, `c17fde7`, `4ca11a8`) + procedure; execute per drill once CI available |
+| B1 full suite | 🔴 PR CI remains red after fixing runner setup | CI run `42964819231`: workspace tests, Playwright E2E, Rust, and server tests still fail. Server annotations include R1 policy/control expectations, sandbox 1s timeouts, and PostgreSQL contract mismatches. Resolve and rerun the authoritative matrix. |
+| B2 dependency advisories | 🔴 Re-opened for reconciliation | Push-time GitHub notice reports **73 default-branch Dependabot alerts** (3 critical, 22 high, 42 moderate, 6 low); conflicts with the older clean-audit closure. Review current production dependency scope and retain a fresh alert export/audit before closing. |
+| B3 migration rollback/restore | ✅ Migration matrix passed; overall CI suite still has unrelated failures | SQLite 3.40.1 SQL, native better-sqlite3 11.10.0 / SQLite 3.49.2, and PGlite 0.5.4 transcripts are retained below. Live PostgreSQL 16 drill step passed in CI run [42964819231](https://github.com/Warzonesiddiki/Agentic-OS-V3/actions/runs/42964819231); retained artifact: `r1-postgres-migration-drill` (90-day retention). The PGlite/live PostgreSQL checks use a minimal pre-R1 projects schema isolated from `public`; the CI drill passed before later server tests failed. |
 | B4 clean-machine golden path | 🔶 Runbook ready | `9203cfe`; executes after B1 green on supported env |
 | B5 security triage + independent review | 🔶 Matrix delivered | `668c925`+`695bb20`+`8b3132b`: 12 findings dispositioned (6 remediated w/ evidence); SEC-04 converts at next rerun; reviewer assigned (D2) |
 

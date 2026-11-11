@@ -6,10 +6,13 @@ DROP TRIGGER IF EXISTS r1_task_created_event;
 DROP INDEX IF EXISTS r1_task_events_project_task_sequence_idx;
 DROP TABLE IF EXISTS r1_task_events;
 
-ALTER TABLE r1_tasks DROP COLUMN IF EXISTS current_step_id;
-ALTER TABLE r1_tasks DROP COLUMN IF EXISTS input_reference;
-ALTER TABLE r1_tasks DROP COLUMN IF EXISTS policy_version;
-ALTER TABLE r1_tasks DROP COLUMN IF EXISTS capability_ids;
-ALTER TABLE r1_tasks DROP COLUMN IF EXISTS goal;
-ALTER TABLE r1_tasks DROP COLUMN IF EXISTS agent_id;
-ALTER TABLE r1_tasks DROP COLUMN IF EXISTS principal_id;
+-- SQLite does not accept DROP COLUMN IF EXISTS in supported runtime versions.
+-- This DOWN migration is an exact reverse of 0050 and must only run once,
+-- after the 0050 tables/triggers are removed.
+ALTER TABLE r1_tasks DROP COLUMN current_step_id;
+ALTER TABLE r1_tasks DROP COLUMN input_reference;
+ALTER TABLE r1_tasks DROP COLUMN policy_version;
+ALTER TABLE r1_tasks DROP COLUMN capability_ids;
+ALTER TABLE r1_tasks DROP COLUMN goal;
+ALTER TABLE r1_tasks DROP COLUMN agent_id;
+ALTER TABLE r1_tasks DROP COLUMN principal_id;

@@ -304,6 +304,7 @@ server/package.json                       @bastion
 package.json                              @bastion
 server/src/routes/v3-upgrade.ts           @bastion
 server/src/scripts/                       @bastion
+server/scripts/                            @bastion
 server/src/scripts/verify-system-readiness.ts @bastion
 server/src/scripts/profile-system-performance.ts @bastion
 docs/DEPLOYMENT.md                        @bastion
@@ -313,6 +314,7 @@ docs/DR_RUNBOOK.md                        @bastion
 # Development & Tooling
 scripts/ @Warzonesiddiki
 *.config.* @Warzonesiddiki
+server/vitest.integration.config.ts @quill
 *.sh @Warzonesiddiki
 DEVELOPMENT.md @Warzonesiddiki
 BENCHMARK.md @Warzonesiddiki
@@ -367,6 +369,7 @@ server/src/routes/r1.ts                      @Warzonesiddiki
 _bmad-output/                                @lorekeeper
 
 # Repo-wide dotfiles / lockfiles / meta not covered above.
+CODEOWNERS                                @Warzonesiddiki
 .gitignore                                @Warzonesiddiki
 .gitattributes                            @Warzonesiddiki
 .editorconfig                             @Warzonesiddiki
