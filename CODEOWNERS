@@ -314,6 +314,7 @@ docs/DR_RUNBOOK.md                        @bastion
 # Development & Tooling
 scripts/ @Warzonesiddiki
 *.config.* @Warzonesiddiki
+server/vitest.integration.config.ts @quill
 *.sh @Warzonesiddiki
 DEVELOPMENT.md @Warzonesiddiki
 BENCHMARK.md @Warzonesiddiki
