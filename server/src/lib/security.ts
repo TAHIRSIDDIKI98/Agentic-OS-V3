@@ -177,6 +177,25 @@ interface PrincipalRow {
   status: string;
 }
 
+/**
+ * Normalize a stored `scopes` value.
+ * Postgres (jsonb) yields an array; SQLite stores the same value as JSON text.
+ * Without this, `hasScope` iterated a string character-by-character, so wildcard
+ * scopes like `memory.*` never matched and substring matches could over-grant.
+ */
+function parseScopes(raw: unknown): Scope[] {
+  if (Array.isArray(raw)) return raw.filter((s): s is Scope => typeof s === 'string');
+  if (typeof raw === 'string') {
+    try {
+      const parsed: unknown = JSON.parse(raw);
+      if (Array.isArray(parsed)) return parsed.filter((s): s is Scope => typeof s === 'string');
+    } catch {
+      // Malformed/legacy value: treat as no scopes rather than throwing in auth.
+    }
+  }
+  return [];
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Db type is polymorphic Postgres/SQLite; narrowed at callsite
 async function loadPrincipals(db: any): Promise<PrincipalRow[]> {
   const now = Date.now();
@@ -187,7 +206,7 @@ async function loadPrincipals(db: any): Promise<PrincipalRow[]> {
     id: r.id,
     name: r.name,
     keyHash: r.keyHash,
-    scopes: r.scopes as Scope[],
+    scopes: parseScopes(r.scopes),
     status: r.status,
   }));
   activePrincipalIds = new Set(mapped.filter((r) => r.status === 'active').map((r) => r.id));
@@ -316,7 +335,15 @@ export async function createPrincipal(
   const id = `prn_${randomBytes(8).toString('hex')}`;
   await db
     .insert(apiKeys)
-    .values({ id, name, keyHash: hashApiKey(rawKey), scopes, status: 'active' });
+    .values({
+      id,
+      name,
+      keyHash: hashApiKey(rawKey),
+      // SQLite column is text: better-sqlite3 expands array bindings into extra
+      // parameters, which fails with "Too many parameter values were provided".
+      scopes: isSqlite ? JSON.stringify(scopes) : scopes,
+      status: 'active',
+    });
   invalidateAuthCache();
   return { id, rawKey };
 }
@@ -338,9 +365,7 @@ export async function listPrincipals(
   const items = rows.map((r: any) => ({
     id: r.id,
     name: r.name,
-    scopes: (r.scopes ?? []).filter((s: string): s is Scope =>
-      ALL_SCOPES.includes(s as (typeof ALL_SCOPES)[number])
-    ),
+    scopes: parseScopes(r.scopes),
     status: r.status,
     createdAt: r.createdAt,
     lastUsedAt: r.lastUsedAt,
