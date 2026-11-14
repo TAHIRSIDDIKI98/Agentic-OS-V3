@@ -27,6 +27,27 @@ import {
 import { createCronJob, listCronJobs, ingestAmbientTranscript } from './services/operations-ext.js';
 import { statsCache } from './lib/lru-cache.js';
 
+/**
+ * Scope required by each registered tool. Kept next to the registrations so the
+ * generated README table and the code cannot drift; a test fails if a tool is
+ * added without an entry here.
+ */
+export const TOOL_SCOPES = {
+  nexus_recall: 'memory:read',
+  nexus_remember: 'memory:write',
+  nexus_capture: 'memory:write',
+  nexus_feedback: 'memory:write',
+  nexus_audit_verify: 'audit:read',
+  nexus_stats: 'memory:read',
+  nexus_delegate: 'brain:admin',
+  nexus_agents: 'memory:read',
+  nexus_scheduler: 'memory:read',
+  nexus_cron_create: 'brain:admin',
+  nexus_cron_list: 'memory:read',
+  nexus_ambient_ingest: 'memory:write',
+  nexus_acl_check: 'memory:read',
+} as const satisfies Record<string, Scope>;
+
 export function createNexusMcpServer(actor: string, scopes: Scope[]): McpServer {
   const server = new McpServer({ name: 'nexus-2', version: '2.0.0' });
 
@@ -61,6 +82,8 @@ export function createNexusMcpServer(actor: string, scopes: Scope[]): McpServer 
       content: z.string().min(1),
       tags: z.array(z.string()).default([]),
       importance: z.number().min(0).max(1).default(0.5),
+      /** Which agent/client is writing (attribution, e.g. "claude-code"). */
+      client: z.string().min(1).max(80).optional(),
     },
     async (args) => {
       if (!can('memory:write')) return deny('nexus_remember', 'memory:write');
@@ -71,7 +94,7 @@ export function createNexusMcpServer(actor: string, scopes: Scope[]): McpServer 
           content: args.content,
           tags: args.tags,
           importance: args.importance,
-          source: 'mcp',
+          source: args.client ? `mcp:${args.client}` : 'mcp',
           projectId: null,
         },
         actor
@@ -85,10 +108,14 @@ export function createNexusMcpServer(actor: string, scopes: Scope[]): McpServer 
   server.tool(
     'nexus_capture',
     'Capture a session transcript and distill it (transcript is always preserved).',
-    { transcript: z.string().min(1), projectName: z.string().optional() },
-    async ({ transcript, projectName }) => {
+    {
+      transcript: z.string().min(1),
+      projectName: z.string().optional(),
+      client: z.string().min(1).max(80).optional(),
+    },
+    async ({ transcript, projectName, client }) => {
       if (!can('memory:write')) return deny('nexus_capture', 'memory:write');
-      const report = await captureSession(transcript, projectName, actor);
+      const report = await captureSession(transcript, projectName, actor, false, client);
       return { content: [{ type: 'text', text: JSON.stringify(report) }] };
     }
   );

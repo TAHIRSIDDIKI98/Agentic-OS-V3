@@ -7,6 +7,7 @@ import { randomUUID } from 'node:crypto';
 import { ApiError } from '../lib/errors.js';
 import { assertOperational } from './safety.service.js';
 import { ensureProject } from './project.service.js';
+import { statsCache } from '../lib/lru-cache.js';
 
 interface MemoryRow {
   kind: string;
@@ -24,6 +25,8 @@ interface CaptureReport {
   memories: number;
   transcript: string;
   reason?: string;
+  /** Memory id of the always-persisted raw transcript row. */
+  rawMemoryId?: string;
 }
 
 export async function createMemory(input: MemoryRow, actor: string): Promise<unknown> {
@@ -60,6 +63,8 @@ export async function createMemory(input: MemoryRow, actor: string): Promise<unk
       })
       .returning();
     if (!created) throw new Error('Failed to create memory — DB returned no row.');
+    // A write invalidates the cached brain snapshot (nexus_stats / dashboard).
+    statsCache.delete('stats');
     try {
       const { memoryWritesTotal } = await import('./metrics.js');
       memoryWritesTotal.inc({ kind: created.kind, source: created.source || 'user' });
@@ -167,11 +172,39 @@ export async function captureSession(
   transcript: string,
   projectName: string | undefined,
   actor: string,
-  forceFail = false
+  forceFail = false,
+  /** Agent/client that produced the transcript (attribution). */
+  client?: string
 ): Promise<CaptureReport> {
   await assertOperational();
   let projectId: string | null = null;
   if (projectName) projectId = (await ensureProject(projectName, 'session')).id;
+
+  // Invariant: the raw transcript is ALWAYS committed before distillation.
+  // Distillation is lossy and best-effort; losing the source of truth because
+  // an extractor failed (or no LLM is configured) is not acceptable.
+  const rawMemoryId = `mem_${randomUUID()}`;
+  await db.transaction(async (tx: Tx) => {
+    await assertOperational(tx);
+    await tx.insert(memories).values({
+      id: rawMemoryId,
+      kind: 'episodic',
+      title: 'Session transcript (raw)',
+      content: transcript,
+      tags: ['session', 'transcript', 'raw', ...(client ? [`client:${client}`] : [])],
+      importance: 0.5,
+      source: client ? `session-raw:${client}` : 'session-raw',
+      projectId,
+      tokenCost: estimateTokens(transcript),
+      recallCount: 0,
+    });
+    await appendAudit(
+      'session.raw_preserved',
+      { rawMemoryId, projectId, characters: transcript.length },
+      actor,
+      tx
+    );
+  });
 
   try {
     if (forceFail) throw new Error('Forced distillation failure.');
@@ -190,7 +223,7 @@ export async function captureSession(
             content: d.content,
             tags: d.tags,
             importance: d.importance,
-            source: 'session',
+            source: client ? `session:${client}` : 'session',
             projectId,
             tokenCost: estimateTokens(d.content),
             recallCount: 0,
@@ -200,50 +233,37 @@ export async function captureSession(
       }
       await appendAudit(
         'session.captured',
-        { distilled: true, memories: rows.length, projectId },
+        { distilled: true, memories: rows.length, projectId, rawMemoryId },
         actor,
         tx
       );
       return rows;
     });
-    return { distilled: true, transcriptPreserved: false, memories: created.length, transcript };
+    statsCache.delete('stats');
+    return {
+      distilled: true,
+      transcriptPreserved: true,
+      memories: created.length,
+      transcript,
+      rawMemoryId,
+    };
   } catch (e) {
     const reason = e instanceof Error ? e.message : 'distillation failed';
-    const rawProjectId =
-      projectId ??
-      (projectName
-        ? (
-            await ensureProject(projectName, 'session-raw').catch(() => ({
-              id: null as string | null,
-            }))
-          ).id
-        : null);
-    await db.transaction(async (tx: Tx) => {
-      await assertOperational(tx);
-      const [raw] = await tx
-        .insert(memories)
-        .values({
-          id: `mem_${randomUUID()}`,
-          kind: 'episodic',
-          title: 'Session transcript (undistilled)',
-          content: transcript,
-          tags: ['session', 'undistilled', 'preserved'],
-          importance: 0.5,
-          source: 'session-raw',
-          projectId: rawProjectId,
-          tokenCost: estimateTokens(transcript),
-          recallCount: 0,
-        })
-        .returning();
-      if (!raw) throw new Error('Failed to store undistilled transcript — DB returned no row.');
-      await appendAudit(
-        'session.captured',
-        { distilled: false, transcriptPreserved: true, reason, rawMemoryId: raw.id },
-        actor,
-        tx
-      );
-    });
-    return { distilled: false, transcriptPreserved: true, memories: 1, transcript, reason };
+    // The raw transcript is already committed; record the failed distillation
+    // and never remove or replace the preserved copy.
+    await appendAudit(
+      'session.captured',
+      { distilled: false, transcriptPreserved: true, reason, rawMemoryId },
+      actor
+    );
+    return {
+      distilled: false,
+      transcriptPreserved: true,
+      memories: 0,
+      transcript,
+      reason,
+      rawMemoryId,
+    };
   }
 }
 

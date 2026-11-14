@@ -389,48 +389,82 @@ NEXUS 2.0 is a full **Model Context Protocol** server, compatible with any MCP c
 
 ### MCP Tools
 
-| Tool                       | Description                                          | Scopes         |
-| -------------------------- | ---------------------------------------------------- | -------------- |
-| `nexus_recall`             | Token-budgeted recall across memories, skills, notes | `memory:read`  |
-| `nexus_remember`           | Store a durable memory                               | `memory:write` |
-| `nexus_capture`            | Capture and distill a session transcript             | `memory:write` |
-| `nexus_feedback`           | Record recall relevance feedback                     | `memory:write` |
-| `nexus_audit_verify`       | Verify hash-chained audit integrity                  | `audit:read`   |
-| `nexus_agents_list`        | List active agents                                   | `memory:read`  |
-| `nexus_agents_spawn`       | Spawn a new agent (kernel syscall)                   | `brain:admin`  |
-| `nexus_browser_navigate`   | Navigate to a URL                                    | `memory:write` |
-| `nexus_browser_extract`    | Extract text from page                               | `memory:write` |
-| `nexus_browser_screenshot` | Capture page screenshot                              | `memory:write` |
-| `nexus_cron_create`        | Create a scheduled cron job                          | `brain:admin`  |
-| `nexus_cron_list`          | List cron jobs                                       | `memory:read`  |
-| `nexus_scheduler_status`   | Check scheduler status                               | `memory:read`  |
-| `nexus_kill_switch`        | Emergency mutation blocking                          | `safety:write` |
+| Tool | Description | Scopes |
+| --- | --- | --- |
+| `nexus_acl_check` | Check if an agent ring permits a tool. | `memory:read` |
+| `nexus_agents` | List all registered agents and their states. | `memory:read` |
+| `nexus_ambient_ingest` | Ingest an ambient voice transcript for background distillation. | `memory:write` |
+| `nexus_audit_verify` | Verify the integrity of the hash-chained audit log. | `audit:read` |
+| `nexus_capture` | Capture a session transcript and distill it (transcript is always preserved). | `memory:write` |
+| `nexus_cron_create` | Schedule a 24/7 autonomous daemon. | `brain:admin` |
+| `nexus_cron_list` | List all scheduled daemons. | `memory:read` |
+| `nexus_delegate` | Spawn a specialized sub-agent for a task. | `brain:admin` |
+| `nexus_feedback` | Record recall relevance feedback. | `memory:write` |
+| `nexus_recall` | Token-budgeted recall across memories, skills, and notes. | `memory:read` |
+| `nexus_remember` | Store a durable memory. | `memory:write` |
+| `nexus_scheduler` | Get scheduler queue status. | `memory:read` |
+| `nexus_stats` | Return brain statistics: memory count, skill count, token footprint, audit entries, and DB health. | `memory:read` |
 
 ### MCP Resources
 
-| Resource URI                    | Description                 |
-| ------------------------------- | --------------------------- |
-| `nexus://memories/{id}`         | A specific memory by ID     |
-| `nexus://memories?kind={kind}`  | Memories filtered by kind   |
-| `nexus://skills/{id}`           | A specific skill by ID      |
-| `nexus://skills?category={cat}` | Skills filtered by category |
+| Resource URI | Description |
+| --- | --- |
+| `nexus://brain/ambient` | Compact top-importance memory context. |
+| `nexus://brain/health` | System health snapshot. |
+| `nexus://brain/stats` | Brain statistics. |
 
-### Connecting from Claude Desktop
+### Connect any agent in one command
+
+`nexus connect` writes the MCP entry for your agent, mints a scoped key, backs up
+any file it touches, and is safe to re-run (already-correct files are left alone).
+
+```bash
+# start the server first (SQLite by default, no DATABASE_URL needed)
+cd server && npm run dev
+
+# in another terminal — pick one agent, or --all for every agent detected
+npx tsx server/src/bin/nexus.ts list
+npx tsx server/src/bin/nexus.ts connect cursor
+npx tsx server/src/bin/nexus.ts connect --all --dry-run   # show what would change
+npx tsx server/src/bin/nexus.ts connect cursor --uninstall
+```
+
+Supported: Claude Code, Codex, Cursor, VS Code, Windsurf, Zed, OpenCode, Cline,
+Roo Code, Continue, Gemini CLI, Amazon Q. Config paths and formats per agent are
+the ones the vendors document; every write is idempotent and reversible.
+
+Claude Code additionally gets **capture hooks** (`SessionStart`,
+`UserPromptSubmit`, `Stop`, `PreCompact`) in `~/.claude/settings.json`: recall
+runs before each prompt with a 400 ms budget, capture runs after each turn, both
+fail open (a stopped server never blocks the agent), and credentials are redacted
+before anything leaves the machine.
+
+Agents without a native config file can be pointed at the endpoint by hand.
+NEXUS speaks **Streamable HTTP** at `/api/mcp`:
 
 ```json
 {
   "mcpServers": {
     "nexus": {
-      "command": "node",
-      "args": ["path/to/server/src/mcp-http.js"],
-      "env": {
-        "DATABASE_URL": "postgresql://postgres:pass@localhost:5432/nexus",
-        "NEXUS_API_KEY": "your-operator-key"
-      }
+      "type": "http",
+      "url": "http://127.0.0.1:9900/api/mcp",
+      "headers": { "Authorization": "Bearer <NEXUS_API_KEY>" }
     }
   }
 }
 ```
+
+For stdio-only clients, `nexus mcp-stdio` serves the same 13 tools over stdio
+(reads `NEXUS_API_KEY`; set `NEXUS_MCP_ORIGIN` if the server is not on
+`http://127.0.0.1:$PORT`).
+
+End-to-end checks: `node scripts/mcp-smoke.mjs` (HTTP), 
+`node scripts/mcp-stdio-smoke.mjs` (stdio), `node scripts/agent-connect-smoke.mjs`
+(connect → idempotent → hooks → uninstall).
+
+The tool and resource tables above are generated from the live server
+registration: `npx tsx server/src/scripts/mcp-tool-table.ts` prints them and
+fails on README drift, and a unit test enforces the same check in CI.
 
 ---
 
