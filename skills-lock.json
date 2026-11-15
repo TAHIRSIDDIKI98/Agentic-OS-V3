@@ -1,0 +1,89 @@
+{
+  "version": 2,
+  "skills": {
+    "context-engineering": {
+      "source": "addyosmani/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/context-engineering/SKILL.md",
+      "computedHash": "0b9e3d177ec4e42d9b39c76ef8ee751f88cce40e3879c785a1a8c6eeabc6119d"
+    },
+    "critical-thinking-logical-reasoning": {
+      "source": "sammcj/agentic-coding",
+      "sourceType": "github",
+      "skillPath": "skills/critical-thinking-logical-reasoning/SKILL.md",
+      "computedHash": "0bfde1a05c2f3bebf74e2ccc80232cd668e8eac44a26d650efe9650bcce31dd9"
+    },
+    "deep-agents-memory": {
+      "source": "langchain-ai/langchain-skills",
+      "sourceType": "github",
+      "skillPath": "config/skills/deep-agents-memory/SKILL.md",
+      "computedHash": "d44c10509847f0bdeb740c2c2f15dff80899fe8321639f8515b2987d852ab6e6"
+    },
+    "memory-management": {
+      "source": "anthropics/knowledge-work-plugins",
+      "sourceType": "github",
+      "skillPath": "productivity/skills/memory-management/SKILL.md",
+      "computedHash": "694f12b1819c68cfd3463a1006d2ad3330101804aefc815c2a2dd9667871fd79"
+    },
+    "memory-merger": {
+      "source": "github/awesome-copilot",
+      "sourceType": "github",
+      "skillPath": "skills/memory-merger/SKILL.md",
+      "computedHash": "a19ae1e8cc6ccfad790c3d3326f676418f028066aad952bf913c71a50a8fd567"
+    },
+    "notion-knowledge-capture": {
+      "source": "openai/skills",
+      "sourceType": "github",
+      "skillPath": "skills/.curated/notion-knowledge-capture/SKILL.md",
+      "computedHash": "8be4eded07a5c647daaf6577a9c3e6567a7466d90ecbc5de7a910117911bbdba"
+    },
+    "planning-and-task-breakdown": {
+      "source": "addyosmani/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/planning-and-task-breakdown/SKILL.md",
+      "computedHash": "e4ef8d478d672103693af0cab5a97a1914f776099ef0756c2a093d9ae061f024"
+    },
+    "research": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/research/SKILL.md",
+      "computedHash": "7662666af51f8b1672ed7d88360d4b82656da21bb7b11c49e956eeb3036b85d5"
+    },
+    "supabase-postgres-best-practices": {
+      "source": "supabase/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/supabase-postgres-best-practices/SKILL.md",
+      "computedHash": "3eb972c2d7c818e544e35cc33ea8d7147d4d78ae08142ef40037b0fbac7a2505"
+    },
+    "systematic-debugging": {
+      "source": "obra/superpowers",
+      "sourceType": "github",
+      "skillPath": "skills/systematic-debugging/SKILL.md",
+      "computedHash": "79ff0583175346e39431b0dc713b223edd1bd7a7ea2b6c8b78b2fb9a3fed6782"
+    },
+    "thought-based-reasoning": {
+      "source": "NeoLabHQ/context-engineering-kit",
+      "sourceType": "github",
+      "skillPath": "skills/thought-based-reasoning/SKILL.md",
+      "computedHash": "23a269c46e3e9d128158891a7d45c563393db498d36c4a69d99a9aa99167250f"
+    },
+    "to-spec": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/to-spec/SKILL.md",
+      "computedHash": "eb934b5eda9523c7853a2741544bd4721ee1bea471f5a04f8397827f67bdbdda"
+    },
+    "typescript-advanced-types": {
+      "source": "wshobson/agents",
+      "sourceType": "github",
+      "skillPath": "plugins/javascript-typescript/skills/typescript-advanced-types/SKILL.md",
+      "computedHash": "34c5b3863fde1fc85981ac583ecaf0140471b374d0b7002ac5bc0bea2cf38b24"
+    },
+    "webapp-testing": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "skillPath": "skills/webapp-testing/SKILL.md",
+      "computedHash": "48cd9a742a59250edec6db89cf081ef5465f365e2133f6d6c5e29c380b754b7d"
+    }
+  }
+}

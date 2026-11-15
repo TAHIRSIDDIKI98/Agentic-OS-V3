@@ -63,3 +63,6 @@ pnpm-lock.yaml
 yarn.lock
 .aider*
 server/data/
+
+# Agent skill CLI local agent links (absolute paths; not portable)
+.codebuddy/
