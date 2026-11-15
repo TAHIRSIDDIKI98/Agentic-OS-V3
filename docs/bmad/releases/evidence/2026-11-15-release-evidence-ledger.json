@@ -1,0 +1,307 @@
+{
+  "schemaVersion": "nexus.r1.release-evidence-ledger.v3",
+  "generatedAt": "2026-11-15T07:29:09.559Z",
+  "evidenceSource": {
+    "repositoryCommit": "016060818468b85f561d1087c4f8a87d2e3001e1",
+    "branch": "main",
+    "note": "Artifacts, scripts and supersession note are committed in 01606081; raw command output is retained verbatim (shell exit codes included)."
+  },
+  "environment": {
+    "node": "v22.23.5",
+    "pnpm": "unknown",
+    "platform": "win32-x64"
+  },
+  "commands": [
+    {
+      "id": "full-suite",
+      "evidenceClass": "full-release",
+      "command": "pnpm -r test",
+      "workingDirectory": ".",
+      "expected": {
+        "exitCode": 0,
+        "description": "Every workspace test suite passes."
+      },
+      "actual": {
+        "exitCode": 0,
+        "summary": "Command completed successfully; raw output retained.",
+        "observedAt": "2026-11-15T07:29:09.550Z"
+      },
+      "status": "pass",
+      "blockingReason": null,
+      "artifacts": [
+        {
+          "path": "docs/bmad/releases/evidence/2026-11-15-full-suite.log",
+          "sha256": "cc0edcfbfe28c77f0c48da6944f414a9e40850a56cc0d432c68471106bdcda75",
+          "role": "raw-command-output"
+        }
+      ],
+      "reviewer": {
+        "role": "independent E10-S30 reviewer",
+        "status": "unassigned"
+      }
+    },
+    {
+      "id": "sdk-suite",
+      "evidenceClass": "targeted",
+      "command": "npx vitest run (packages/sdk)",
+      "workingDirectory": "packages/sdk",
+      "expected": {
+        "exitCode": 0,
+        "description": "SDK suite passes, including cross-platform path handling."
+      },
+      "actual": {
+        "exitCode": 0,
+        "summary": "Command completed successfully; raw output retained.",
+        "observedAt": "2026-11-15T07:29:09.555Z"
+      },
+      "status": "pass",
+      "blockingReason": null,
+      "artifacts": [
+        {
+          "path": "docs/bmad/releases/evidence/2026-11-15-sdk-suite.log",
+          "sha256": "4985a9b8e349b954141644380adac569ad8f00ded6dfa76f01220f9d3d030b86",
+          "role": "raw-command-output"
+        }
+      ],
+      "reviewer": {
+        "role": "independent E10-S30 reviewer",
+        "status": "unassigned"
+      }
+    },
+    {
+      "id": "typecheck",
+      "evidenceClass": "compile",
+      "command": "pnpm -r typecheck",
+      "workingDirectory": ".",
+      "expected": {
+        "exitCode": 0,
+        "description": "All packages typecheck with a fresh, non-incremental tsc."
+      },
+      "actual": {
+        "exitCode": 0,
+        "summary": "Command completed successfully; raw output retained.",
+        "observedAt": "2026-11-15T07:29:09.556Z"
+      },
+      "status": "pass",
+      "blockingReason": null,
+      "artifacts": [
+        {
+          "path": "docs/bmad/releases/evidence/2026-11-15-typecheck.log",
+          "sha256": "c2028d4dd94560048a3fcb967bb44fcd2cce471a0e2d53746268a3e669a5c979",
+          "role": "raw-command-output"
+        }
+      ],
+      "reviewer": {
+        "role": "independent E10-S30 reviewer",
+        "status": "unassigned"
+      }
+    },
+    {
+      "id": "lint",
+      "evidenceClass": "lint",
+      "command": "pnpm -r lint",
+      "workingDirectory": ".",
+      "expected": {
+        "exitCode": 0,
+        "description": "Lint passes with zero errors."
+      },
+      "actual": {
+        "exitCode": 0,
+        "summary": "Command completed successfully; raw output retained.",
+        "observedAt": "2026-11-15T07:29:09.556Z"
+      },
+      "status": "pass",
+      "blockingReason": null,
+      "artifacts": [
+        {
+          "path": "docs/bmad/releases/evidence/2026-11-15-lint.log",
+          "sha256": "df9776466a01dc6439361d615261d75c5862342e109a22d046ee03aeb182c272",
+          "role": "raw-command-output"
+        }
+      ],
+      "reviewer": {
+        "role": "independent E10-S30 reviewer",
+        "status": "unassigned"
+      }
+    },
+    {
+      "id": "documentation-claim-scan",
+      "evidenceClass": "security",
+      "command": "scripts/scan-r1-documentation-claims.ts --check",
+      "workingDirectory": ".",
+      "expected": {
+        "exitCode": 0,
+        "description": "No unresolved release or perfection claims remain."
+      },
+      "actual": {
+        "exitCode": 0,
+        "summary": "Command completed successfully; raw output retained.",
+        "observedAt": "2026-11-15T07:29:09.557Z"
+      },
+      "status": "pass",
+      "blockingReason": null,
+      "artifacts": [
+        {
+          "path": "docs/bmad/releases/evidence/2026-11-15-documentation-claim-scan.log",
+          "sha256": "fa352dbf342a6b76ae0483865b99dc5c7530efb7db4eea563a29b09c3a16c377",
+          "role": "raw-command-output"
+        }
+      ],
+      "reviewer": {
+        "role": "independent E10-S30 reviewer",
+        "status": "unassigned"
+      }
+    },
+    {
+      "id": "evidence-validator-negative-tests",
+      "evidenceClass": "security",
+      "command": "scripts/test-r1-evidence-v3.ts",
+      "workingDirectory": ".",
+      "expected": {
+        "exitCode": 0,
+        "description": "The v3 validator rejects every mutated fixture for the right reason."
+      },
+      "actual": {
+        "exitCode": 0,
+        "summary": "Command completed successfully; raw output retained.",
+        "observedAt": "2026-11-15T07:29:09.557Z"
+      },
+      "status": "pass",
+      "blockingReason": null,
+      "artifacts": [
+        {
+          "path": "docs/bmad/releases/evidence/2026-11-15-evidence-validator-negative-tests.log",
+          "sha256": "639cd3fdfc6c3a53edc10548ec3fb5935d7a829380515dd2a20f9dce8dfa608b",
+          "role": "raw-command-output"
+        }
+      ],
+      "reviewer": {
+        "role": "independent E10-S30 reviewer",
+        "status": "unassigned"
+      }
+    },
+    {
+      "id": "production-dependency-audit",
+      "evidenceClass": "security",
+      "command": "pnpm audit --prod --json",
+      "workingDirectory": ".",
+      "expected": {
+        "exitCode": 0,
+        "description": "No open production advisories, or signed dispositions for each."
+      },
+      "actual": {
+        "exitCode": 1,
+        "summary": "Command exited 1; raw output retained.",
+        "observedAt": "2026-11-15T07:29:09.557Z"
+      },
+      "status": "blocked",
+      "blockingReason": "Production advisories remain open; remediation is tracked in the security triage matrix.",
+      "artifacts": [
+        {
+          "path": "docs/bmad/releases/evidence/2026-11-15-production-dependency-audit.log",
+          "sha256": "e8a2c4c85e41fe9fa2daa1ad075f23a1eac92fa648efd48925b4be3d120a0c93",
+          "role": "raw-command-output"
+        }
+      ],
+      "reviewer": {
+        "role": "independent E10-S30 reviewer",
+        "status": "unassigned"
+      }
+    },
+    {
+      "id": "migration-matrix",
+      "evidenceClass": "integration",
+      "command": "Forward 0049→0054 and roll back 0054→0049 on SQLite, PGlite and live PostgreSQL, then restore and verify.",
+      "workingDirectory": "server",
+      "expected": {
+        "exitCode": 0,
+        "description": "Migration matrix green on three engines with retained per-step logs."
+      },
+      "actual": {
+        "exitCode": null,
+        "summary": "Not executed in this batch.",
+        "observedAt": "2026-11-15T07:29:09.558Z"
+      },
+      "status": "not_run",
+      "blockingReason": "Not executed in this batch: this workstation has no PostgreSQL server and no Docker. Must run in CI with the pgvector service before Gate-0 exit.",
+      "artifacts": [
+        {
+          "path": "docs/bmad/releases/evidence/2026-11-15-unperformed-gates.md",
+          "sha256": "1e00d455fd95d2a405bb500d956b2fb1c2921c9a22b646a86266aa5904747678",
+          "role": "summary"
+        }
+      ],
+      "reviewer": {
+        "role": "independent E10-S30 reviewer",
+        "status": "unassigned"
+      }
+    },
+    {
+      "id": "clean-machine-golden-path",
+      "evidenceClass": "integration",
+      "command": "14-step golden path on a pristine machine: init → capture → governed task → approval → execute → crash recovery → export/import.",
+      "workingDirectory": "clean supported machine",
+      "expected": {
+        "exitCode": 0,
+        "description": "14/14 steps pass with no data repair; artifacts retained."
+      },
+      "actual": {
+        "exitCode": null,
+        "summary": "Not executed in this batch.",
+        "observedAt": "2026-11-15T07:29:09.559Z"
+      },
+      "status": "not_run",
+      "blockingReason": "Not executed in this batch: requires a clean supported machine and a built frontend. Owner: W4.",
+      "artifacts": [
+        {
+          "path": "docs/bmad/releases/evidence/2026-11-15-unperformed-gates.md",
+          "sha256": "1e00d455fd95d2a405bb500d956b2fb1c2921c9a22b646a86266aa5904747678",
+          "role": "summary"
+        }
+      ],
+      "reviewer": {
+        "role": "independent E10-S30 reviewer",
+        "status": "unassigned"
+      }
+    },
+    {
+      "id": "security-triage-review",
+      "evidenceClass": "security",
+      "command": "Independent review of the security triage matrix and retest evidence.",
+      "workingDirectory": "docs/bmad/security-triage-matrix-2026-08-24.md",
+      "expected": {
+        "exitCode": 0,
+        "description": "Independent reviewer signs the matrix and every retest."
+      },
+      "actual": {
+        "exitCode": null,
+        "summary": "Not executed in this batch.",
+        "observedAt": "2026-11-15T07:29:09.559Z"
+      },
+      "status": "not_run",
+      "blockingReason": "Reviewer not yet assigned (E10-S30). Only that reviewer may close this record.",
+      "artifacts": [
+        {
+          "path": "docs/bmad/releases/evidence/2026-11-15-unperformed-gates.md",
+          "sha256": "1e00d455fd95d2a405bb500d956b2fb1c2921c9a22b646a86266aa5904747678",
+          "role": "summary"
+        }
+      ],
+      "reviewer": {
+        "role": "independent E10-S30 reviewer",
+        "status": "unassigned"
+      }
+    }
+  ],
+  "releaseDecision": "blocked",
+  "decisionDerivation": {
+    "blockingCommandIds": [
+      "production-dependency-audit",
+      "migration-matrix",
+      "clean-machine-golden-path",
+      "security-triage-review"
+    ],
+    "statement": "Derived from the commands array: any non-pass record blocks the release. Passing compile, lint and targeted records cannot clear a failing full suite, an open advisory set, or unexecuted drills."
+  },
+  "supersedes": "docs/bmad/releases/evidence/2026-07-24-release-evidence-ledger.json"
+}
