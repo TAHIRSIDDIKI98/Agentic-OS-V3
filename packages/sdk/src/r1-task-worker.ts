@@ -160,6 +160,12 @@ export interface TaskWorkerOptions {
   readonly ownerId?: string;
   readonly leaseTtlMs?: number;
   readonly retryPolicy?: RetryPolicy;
+  /**
+   * Best-effort hook run after a task reaches `completed`. Consolidation is
+   * idempotent, so a failed hook never invalidates the completed transition.
+   */
+  readonly onCompleted?: (projectId: string, taskId: string) => Promise<void>;
+  readonly onCompletedError?: (error: unknown, projectId: string, taskId: string) => void;
 }
 
 export const RecoveryActionSchema = z.enum(['retry', 'cancel', 'compensate', 'resume']);
@@ -178,6 +184,8 @@ export class TaskWorker {
   private readonly ownerId: string;
   private readonly leaseTtlMs: number;
   private readonly retryPolicy: RetryPolicy;
+  private readonly onCompleted?: TaskWorkerOptions['onCompleted'];
+  private readonly onCompletedError?: TaskWorkerOptions['onCompletedError'];
 
   constructor(
     private readonly repos: R1Repositories,
@@ -190,6 +198,8 @@ export class TaskWorker {
     this.ownerId = options.ownerId ?? `worker-${randomUUID().slice(0, 8)}`;
     this.leaseTtlMs = options.leaseTtlMs ?? 30_000;
     this.retryPolicy = options.retryPolicy ?? RetryPolicySchema.parse({});
+    this.onCompleted = options.onCompleted;
+    this.onCompletedError = options.onCompletedError;
   }
 
   /** Claim next queued task */
@@ -288,6 +298,15 @@ export class TaskWorker {
     const updated: Task = { ...task, state: nextState as TaskState, updatedAt: this.now() };
     const saved = await this.repos.tasks.update(updated);
     await this.emitEvent(projectId, taskId, event as any, nextState as TaskState);
+    if (nextState === 'completed' && this.onCompleted) {
+      try {
+        await this.onCompleted(projectId, taskId);
+      } catch (error) {
+        // The transition is already durable; surface the failure without
+        // reopening a terminal task.
+        this.onCompletedError?.(error, projectId, taskId);
+      }
+    }
     return saved;
   }
 

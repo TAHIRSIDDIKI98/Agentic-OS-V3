@@ -36,6 +36,7 @@ import { statsCache } from './lib/lru-cache.js';
 export const TOOL_SCOPES = {
   nexus_recall: 'memory:read',
   nexus_context_pack: 'memory:read',
+  nexus_consolidate: 'memory:write',
   nexus_remember: 'memory:write',
   nexus_capture: 'memory:write',
   nexus_feedback: 'memory:write',
@@ -87,6 +88,36 @@ export function createNexusMcpServer(actor: string, scopes: Scope[]): McpServer 
       const runtime = getExtendedR1Runtime();
       const pack = await runtime.contextPack.build(projectId, { tokenBudget, focus, taskId });
       return { content: [{ type: 'text', text: JSON.stringify(pack) }] };
+    }
+  );
+
+  server.tool(
+    'nexus_consolidate',
+    'Consolidate a completed task into durable, evidence-backed project memory.',
+    {
+      projectId: z.string().uuid(),
+      taskId: z.string().uuid(),
+      statements: z
+        .array(
+          z.object({
+            text: z.string().min(1).max(2000),
+            type: z
+              .enum(['fact', 'decision', 'preference', 'instruction', 'summary'])
+              .optional(),
+            confidence: z.number().min(0).max(1).optional(),
+          })
+        )
+        .max(20)
+        .optional(),
+    },
+    async ({ projectId, taskId, statements }) => {
+      if (!can('memory:write')) return deny('nexus_consolidate', 'memory:write');
+      const runtime = getExtendedR1Runtime();
+      const result = await runtime.consolidation.consolidateTask(projectId, taskId, {
+        statements,
+        agentId: actor,
+      });
+      return { content: [{ type: 'text', text: JSON.stringify(result) }] };
     }
   );
 

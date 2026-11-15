@@ -18,6 +18,7 @@ import {
   TelemetryService,
   EvidenceTimelineService,
   ContextPackService,
+  TaskConsolidationService,
   SerenaCodeIntelligence,
   SqlCheckpoints,
   SqlLeases,
@@ -60,6 +61,7 @@ export interface ExtendedR1Runtime {
   readonly telemetry: TelemetryService;
   readonly evidenceTimeline: EvidenceTimelineService;
   readonly contextPack: ContextPackService;
+  readonly consolidation: TaskConsolidationService;
   readonly serena: SerenaCodeIntelligence;
   readonly mcp: MCPAdapter;
   readonly a2a: A2AAdapter;
@@ -93,7 +95,13 @@ export function createExtendedSqlR1Runtime(
   const feedback = new RecallFeedbackService(repos, feedbackRepo, contradictionRepo, {
     now: options.now,
   });
-  const worker = new TaskWorker(repos, checkpoints, leases, compensations, { now: options.now });
+  const consolidation = new TaskConsolidationService(repos, { now: options.now });
+  const worker = new TaskWorker(repos, checkpoints, leases, compensations, {
+    now: options.now,
+    onCompleted: async (projectId, taskId) => {
+      await consolidation.consolidateTask(projectId, taskId, { agentId: 'task-worker' });
+    },
+  });
   const eventStream = new TaskEventStreamService(repos);
   const approvals = new DurableApprovalService(repos, durableApprovalsRepo, {
     now: options.now,
@@ -184,6 +192,7 @@ export function createExtendedSqlR1Runtime(
     telemetry,
     evidenceTimeline,
     contextPack,
+    consolidation,
     serena,
     mcp,
     a2a,
@@ -203,7 +212,13 @@ export function createInMemoryExtendedRuntime(
   const transfer = new ProjectTransferService(repos);
   const recall = new R1RecallService(repos);
   const feedback = new RecallFeedbackService(repos);
-  const worker = new TaskWorker(repos);
+  const consolidation = new TaskConsolidationService(repos, { now: options.now });
+  const worker = new TaskWorker(repos, undefined, undefined, undefined, {
+    now: options.now,
+    onCompleted: async (projectId, taskId) => {
+      await consolidation.consolidateTask(projectId, taskId, { agentId: 'task-worker' });
+    },
+  });
   const eventStream = new TaskEventStreamService(repos);
   const approvals = new DurableApprovalService(repos);
   const toolGateway = new BoundedToolGateway(repos, {
@@ -235,6 +250,7 @@ export function createInMemoryExtendedRuntime(
     telemetry,
     evidenceTimeline,
     contextPack,
+    consolidation,
     serena,
     mcp,
     a2a,

@@ -4,7 +4,8 @@
  * All handlers use typed validation and delegate to SDK services.
  */
 import { Hono } from 'hono';
-import { R1RecallQuerySchema } from '@agentic-os/sdk';
+import { ConsolidationError, R1RecallQuerySchema } from '@agentic-os/sdk';
+import type { ConsolidationStatement } from '@agentic-os/sdk';
 import { requireScope, fail } from '../lib/auth-context.js';
 import type { NexusEnv } from '../lib/hono-env.js';
 import type { ExtendedR1Runtime } from '../services/r1-extended-runtime.js';
@@ -46,6 +47,51 @@ export function createExtendedR1Router(runtime: ExtendedR1Runtime): Hono<NexusEn
     const focus = c.req.query('focus');
     const taskId = c.req.query('taskId');
     return c.json(await runtime.contextPack.build(projectId, { tokenBudget, focus, taskId }), 200);
+  });
+
+  // --- Learning loop: completed task -> durable, evidence-backed memory ---
+  router.post('/projects/:projectId/tasks/:taskId/consolidate', async (c) => {
+    const principal = await requireScope(c, 'memory:write');
+    const { projectId, taskId } = c.req.param();
+    const body = (await c.req.json().catch(() => ({}))) as {
+      statements?: unknown;
+      confidenceThreshold?: unknown;
+      maxStatements?: unknown;
+    };
+    if (body.statements !== undefined && !Array.isArray(body.statements)) {
+      return c.json(
+        { error: { code: 'INVALID', message: 'statements must be an array' } },
+        400
+      );
+    }
+    const statements = (body.statements ?? [])
+      .filter(
+        (item): item is { text: string; type?: ConsolidationStatement['type']; confidence?: number } =>
+          typeof item === 'object' &&
+          item !== null &&
+          typeof (item as { text?: unknown }).text === 'string'
+      )
+      .map((item) => ({
+        text: item.text,
+        ...(item.type ? { type: item.type } : {}),
+        ...(typeof item.confidence === 'number' ? { confidence: item.confidence } : {}),
+      }));
+    try {
+      const result = await runtime.consolidation.consolidateTask(projectId, taskId, {
+        statements,
+        agentId: principal.id,
+        confidenceThreshold:
+          typeof body.confidenceThreshold === 'number' ? body.confidenceThreshold : undefined,
+        maxStatements: typeof body.maxStatements === 'number' ? body.maxStatements : undefined,
+      });
+      return c.json(result, 201);
+    } catch (error) {
+      if (error instanceof ConsolidationError) {
+        const status = error.code === 'TASK_NOT_COMPLETED' ? 409 : 404;
+        return c.json({ error: { code: error.code, message: error.message } }, status);
+      }
+      throw error;
+    }
   });
 
   // --- E2-S3 Feedback ---

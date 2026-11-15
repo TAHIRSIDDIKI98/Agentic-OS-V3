@@ -90,16 +90,35 @@ Verified: 6 SDK tests (budget, lifecycle filtering, focus ranking, truncation, d
 error cases) and 3 route tests (200 pack with citations, 400 invalid budget, 404 unknown project).
 SDK typecheck, server typecheck, lint and 73 MCP/security/route tests pass.
 
-**Gap — the learning loop is manual.** A context pack is only as good as the memories it packs.
-Today, turning a completed session into durable semantic memory requires an explicit capture call,
-and the consolidation/dedup/contradiction services are not chained into a single post-task
-pipeline. That is precisely the "gets smarter as we work" property.
+**The learning loop exists as of 2026-11-15.** `TaskConsolidationService`
+(`packages/sdk/src/r1-consolidation.ts`) turns a completed task into durable memory:
 
-**Next increment — session → memory → next pack.** On task completion, run one governed
-consolidation pass: extract candidate facts and decisions from the task's events and transcript,
-attach provenance (agent, evidence, confidence), dedupe against existing memories, flag
-contradictions for review, and write only `active` memories that pass the confidence threshold.
-Then assert the next context pack contains them. That closed loop is the product.
+- Only `completed` tasks are eligible; anything else is refused with a stable code.
+- Every memory is backed by project evidence. If the task has no evidence, one trace record is
+  appended whose SHA-256 covers the completion fact; `saveProvenanceMemory` then verifies the
+  evidence link and writes a lifecycle receipt.
+- Agents may submit what they actually learned as typed statements (`fact`, `decision`,
+  `preference`, `instruction`, `summary`), each with a confidence. Below the threshold the memory
+  is stored `candidate`, not `active`.
+- Duplicate and near-duplicate memories (token similarity ≥ 0.9) are reported instead of written,
+  which makes re-running a task safe.
+- The worker calls consolidation automatically when a task reaches `completed`. The hook is
+  best-effort: the transition is already durable, so a memory outage is surfaced to
+  `onCompletedError` and never reopens a terminal task.
+
+Exposed as `POST /api/v1/r1/projects/:projectId/tasks/:taskId/consolidate` and the MCP tool
+`nexus_consolidate`. Verified by 10 SDK tests (evidence, typing, idempotency, near-duplicates,
+refusal, limits, automatic hook, hook failure, context-pack integration, error cases), 4 route
+tests, and the full server suite.
+
+**Remaining gap — extraction quality.** The service stores assertions a caller supplies; it does
+not read a transcript and infer facts. That inference belongs in a governed LLM step with the same
+provenance rules, not in deterministic code. Contradiction detection for new memories is also not
+chained yet: near-duplicates are caught, semantic conflicts are not.
+
+**Next increment — contradiction-aware promotion.** Before writing `active`, run the existing
+contradiction service against the candidate; store conflicting pairs for review rather than
+silently preferring the newer statement.
 
 **Second gap — pack quality signals.** Recall has feedback weighting; context packs do not yet learn
 which sections an agent actually used. Record pack usage (which item IDs appeared in a subsequent
@@ -123,8 +142,8 @@ can mutate state, so it is safe to expose broadly and auditable by construction.
 
 ## Build order (why this order)
 
-1. **Session → memory → pack** (layer 4). Directly attacks the context limit; uses only existing
-   services; testable offline; highest value per unit of risk.
+1. ~~**Session → memory → pack** (layer 4).~~ **Done 2026-11-15** — consolidation runs on task
+   completion, and its memories appear in the next context pack (asserted by test).
 2. **Pack usage feedback** (layer 4). Makes ranking improve with real work rather than guesses.
 3. **Context-budget admission** (layer 1). Prevents parallel sub-agents from exhausting context
    before the loop above can help them.

@@ -396,6 +396,8 @@ NEXUS 2.0 is a full **Model Context Protocol** server, compatible with any MCP c
 | `nexus_ambient_ingest` | Ingest an ambient voice transcript for background distillation. | `memory:write` |
 | `nexus_audit_verify` | Verify the integrity of the hash-chained audit log. | `audit:read` |
 | `nexus_capture` | Capture a session transcript and distill it (transcript is always preserved). | `memory:write` |
+| `nexus_consolidate` | Consolidate a completed task into durable, evidence-backed project memory. | `memory:write` |
+| `nexus_context_pack` | Bounded, provenance-backed project context for long-horizon agent handoff. | `memory:read` |
 | `nexus_cron_create` | Schedule a 24/7 autonomous daemon. | `brain:admin` |
 | `nexus_cron_list` | List all scheduled daemons. | `memory:read` |
 | `nexus_delegate` | Spawn a specialized sub-agent for a task. | `brain:admin` |
