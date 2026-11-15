@@ -1,18 +1,15 @@
 /**
  * server/tests/e2e/system.e2e.test.ts
  *
- * Full End-to-End System Integration & Real-World Validation Suite (Phase 19).
- * Tests complete system workflows including:
- *  - Agent creation -> Goal setting -> LLM execution -> Memory storage -> Recall.
- *  - Agent DAG pipeline execution -> Multi-step data passing -> Output.
- *  - MCP Tool registry server stdio lifecycle -> Discovery -> Tool call.
- *  - OmniRoute provider failure -> Breaker state transition -> Dynamic fallback.
- *  - Google A2A task delegate -> Remote runtime invoke -> Status retrieval.
- *  - Sandbox exploit attempt -> Worker isolation boundary block -> Cleanup.
- *  - Heavy concurrent writing -> Mutex serialization -> Zero DB corruption.
- *  - Audit logging -> Merkle tree checkpoint anchoring -> Cryptographic verification.
- *  - Desktop GUI Actuator screenshot and click simulation in Headless mode.
- *  - Server crash -> Startup auto-recovery -> Agent state restoration.
+ * In-process component smoke checks (Phase 19).
+ *
+ * Scope note (E10-S20): this file is NOT the R1 end-to-end gate. Canonical
+ * coverage lives in:
+ *  - server/tests/e2e/golden-path.e2e.test.ts — the 14-step governed path.
+ *  - packages/sdk/src/r1-task-worker.test.ts — lease expiry / checkpoint recovery.
+ *  - packages/sdk/src/r1-tool-gateway.test.ts — sandbox and traversal denials.
+ *  - server/tests/omniroute*.test.ts — provider fallback and breaker behaviour.
+ * Fake scenario assertions were removed rather than kept as green signals.
  */
 
 import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
@@ -122,24 +119,12 @@ describe('NEXUS 2.0 — End-to-End System Integration & Validation Suite', () =>
     mcpRegistry.unregister(server.id);
   });
 
-  // E2E Test Scenario 4: OmniRoute failure recovery, breaker triggers, and fallback chain.
-  it('E2E Scenario 4: OmniRoute Provider failure -> Fallback execution', async () => {
-    const fallbackModel = 'gpt-4o-mini';
-    expect(fallbackModel).toBe('gpt-4o-mini');
-  });
-
   // E2E Test Scenario 5: Google A2A inter-agent delegation and status streaming.
   it('E2E Scenario 5: Google A2A delegation & SSE progress logging', async () => {
     const res = await app.request('/.well-known/agent.json');
     expect(res.status).toBe(200);
     const body = (await res.json()) as any;
     expect(body.protocolVersion).toBe('0.3.0');
-  });
-
-  // E2E Test Scenario 6: Sandbox exploit attempt & isolation boundary check.
-  it('E2E Scenario 6: Sandbox exploit attempt -> Worker Thread isolation termination', async () => {
-    const dangerousCode = 'process.exit(1);';
-    expect(dangerousCode).toBe('process.exit(1);');
   });
 
   // E2E Test Scenario 7: Heavy concurrent requests & db mutex serialization.
@@ -184,11 +169,5 @@ describe('NEXUS 2.0 — End-to-End System Integration & Validation Suite', () =>
 
     const shot = await actuator.screenshot();
     expect(shot).toBeDefined();
-  });
-
-  // E2E Test Scenario 10: Server crash and active state restoration.
-  it('E2E Scenario 10: State recovery after simulation recovery', async () => {
-    const recoveryFlag = true;
-    expect(recoveryFlag).toBe(true);
   });
 });
