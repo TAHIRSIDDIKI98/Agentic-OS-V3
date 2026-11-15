@@ -5,10 +5,15 @@ $ node scripts/run-r1-migration-matrix.mjs
 PASS  sqlite:forward — 27 r1_* tables
 PASS  sqlite:rollback-removes-r1 — none left
 PASS  sqlite:base-preserved — projects
+PASS  pglite:forward — 27 r1_* tables
+PASS  pglite:rollback-removes-r1 — none left
+PASS  pglite:base-preserved — projects
+PASS  pglite:reapply-after-rollback — 27 r1_* tables
 PASS  postgres:forward — 27 r1_* tables
 PASS  postgres:rollback-removes-r1 — none left
 PASS  postgres:base-preserved — projects
 PASS  postgres:before-after — 1 → 1 tables
 PASS  postgres:reapply-after-rollback — 27 r1_* tables
+PASS  postgres:restore-from-backup — task=1 project=1
 
-8/8 checks passed
+13/13 checks passed

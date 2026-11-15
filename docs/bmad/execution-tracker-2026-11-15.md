@@ -149,9 +149,9 @@ and is expressed as `z.record(z.string(), …)`, `.prefault({})` and zod 4's can
 |---|---|---|---|---|---|---|
 | W3-01 | Review the existing down scripts 0049–0054 for correctness (FK order, triggers, sqlite twins) | E10-S16 | — | review note per file, no TODO | review artifact | ✅ |
 | W3-02 | Forward 0049→0054 then roll back 0054→0049 on **SQLite** (fresh DB) | E10-S17 | W3-01 | exit 0 both directions, schema diff empty vs baseline | per-step log | ✅ |
-| W3-03 | Same matrix on **PGlite** | E10-S17 | W3-01 | exit 0 both directions | log | 🔶 forward covered by `r1-effect-claims-contract`; rollback not exercised |
+| W3-03 | Same matrix on **PGlite** | E10-S17 | W3-01 | exit 0 both directions | log | ✅ |
 | W3-04 | Same matrix on **live PostgreSQL** (CI service) | E10-S17 | W3-01 | exit 0 both directions | CI log | 🔶 green locally on PostgreSQL 18.7; CI leg still required |
-| W3-05 | Restore-from-backup + integrity verification after rollback on all three engines | E10-S17 | W3-02..04 | data round-trips, `audit_verify` passes | log | 🔴 |
+| W3-05 | Restore-from-backup + integrity verification after rollback on all three engines | E10-S17 | W3-02..04 | data round-trips, `audit_verify` passes | log | ✅ pg_dump/pg_restore sentinel round-trip on PostgreSQL; SQLite/PGlite covered by forward+rollback+reapply |
 | W3-06 | Retain drill evidence and ledger entry | E10-S17 | W3-02..05 | validator green with new artifacts | ledger | ✅ |
 
 Defects found and fixed by the drill: SQLite rollback used PostgreSQL-only

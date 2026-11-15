@@ -23,7 +23,7 @@ import { createRequire } from 'node:module';
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const MIGRATIONS = join(ROOT, 'server', 'src', 'db', 'migrations');
@@ -96,6 +96,37 @@ function runSqlite() {
   }
 }
 
+async function runPglite() {
+  const entry = requireFromServer.resolve('@electric-sql/pglite');
+  const mod = await import(pathToFileURL(entry).href);
+  const PGlite = mod.PGlite ?? mod.default?.PGlite;
+  if (!PGlite) throw new Error('PGlite export not found');
+  const db = new PGlite();
+  try {
+    await db.exec(PROJECTS_PG);
+    for (const name of FORWARD) await db.exec(read(name, 'postgres'));
+    const tablesOf = async () =>
+      (await db.query("select tablename from pg_tables where schemaname='public' order by tablename")).rows.map(
+        (row) => row.tablename
+      );
+    const migrated = await tablesOf();
+    const r1 = migrated.filter((table) => table.startsWith('r1_'));
+    record('pglite:forward', r1.length > 0, `${r1.length} r1_* tables`);
+
+    for (const name of [...FORWARD].reverse()) await db.exec(readDown(name, 'postgres'));
+    const after = await tablesOf();
+    const remainingR1 = after.filter((table) => table.startsWith('r1_'));
+    record('pglite:rollback-removes-r1', remainingR1.length === 0, remainingR1.join(',') || 'none left');
+    record('pglite:base-preserved', after.includes('projects'), after.join(','));
+
+    for (const name of FORWARD) await db.exec(read(name, 'postgres'));
+    const reapplied = (await tablesOf()).filter((table) => table.startsWith('r1_'));
+    record('pglite:reapply-after-rollback', reapplied.length === r1.length, `${reapplied.length} r1_* tables`);
+  } finally {
+    await db.close();
+  }
+}
+
 function psql(url, args, options = {}) {
   const result = spawnSync('psql', [url, '-v', 'ON_ERROR_STOP=1', '-q', ...args], {
     encoding: 'utf8',
@@ -131,6 +162,17 @@ function runPostgres(url) {
   const r1 = migrated.filter((table) => table.startsWith('r1_'));
   record('postgres:forward', r1.length > 0, `${r1.length} r1_* tables`);
 
+  // Sentinel rows + physical backup before rollback, restored after it.
+  psql(targetUrl, ['-c', "INSERT INTO projects (id, name) VALUES ('r1-matrix-sentinel', 'sentinel');"]);
+  psql(targetUrl, [
+    '-c',
+    "INSERT INTO r1_tasks (id, project_id, state, title, correlation_id, idempotency_key, created_at, updated_at) VALUES ('r1-matrix-sentinel-task', 'r1-matrix-sentinel', 'queued', 'sentinel', 'sentinel-corr', 'sentinel-idem', NOW(), NOW());",
+  ]);
+  const dumpDir = mkdtempSync(join(tmpdir(), 'nexus-r1-restore-'));
+  const dump = join(dumpDir, 'matrix.dump');
+  const dumped = spawnSync('pg_dump', [targetUrl, '-Fc', '-f', dump], { encoding: 'utf8' });
+  if (dumped.status !== 0) throw new Error(`pg_dump failed: ${dumped.stderr || dumped.stdout}`);
+
   for (const name of [...FORWARD].reverse()) {
     psql(targetUrl, ['-f', join(MIGRATIONS, 'down', `${name}.down.sql`)]);
   }
@@ -144,11 +186,40 @@ function runPostgres(url) {
   for (const name of FORWARD) psql(targetUrl, ['-f', join(MIGRATIONS, `${name}.sql`)]);
   const reforwarded = psql(targetUrl, ['-tAc', "select count(*) from pg_tables where schemaname='public' and tablename like 'r1_%'"]).trim();
   record('postgres:reapply-after-rollback', Number(reforwarded) === r1.length, `${reforwarded} r1_* tables`);
+
+  // Restore the pre-rollback backup into a fresh database and verify the sentinels.
+  const restoreName = 'nexus_r1_restore';
+  psql(adminUrl, ['-c', `DROP DATABASE IF EXISTS ${restoreName};`]);
+  psql(adminUrl, ['-c', `CREATE DATABASE ${restoreName};`]);
+  const restoreUrl = new URL(targetUrl);
+  restoreUrl.pathname = `/${restoreName}`;
+  const restored = spawnSync(
+    'pg_restore',
+    ['--no-owner', '--no-privileges', '--dbname', restoreUrl.toString(), dump],
+    { encoding: 'utf8' }
+  );
+  if (restored.status !== 0) throw new Error(`pg_restore failed: ${restored.stderr || restored.stdout}`);
+  const sentinelTask = psql(restoreUrl.toString(), [
+    '-tAc',
+    "select count(*) from r1_tasks where id='r1-matrix-sentinel-task'",
+  ]).trim();
+  const sentinelProject = psql(restoreUrl.toString(), [
+    '-tAc',
+    "select count(*) from projects where id='r1-matrix-sentinel'",
+  ]).trim();
+  record(
+    'postgres:restore-from-backup',
+    sentinelTask === '1' && sentinelProject === '1',
+    `task=${sentinelTask} project=${sentinelProject}`
+  );
+  psql(adminUrl, ['-c', `DROP DATABASE ${restoreName};`]);
+  rmSync(dumpDir, { recursive: true, force: true });
 }
 
-function main() {
+async function main() {
   mkdirSync(join(ROOT, '.local', 'baseline'), { recursive: true });
   runSqlite();
+  await runPglite();
   const pgUrl = process.env.NEXUS_PG_URL;
   if (pgUrl) {
     runPostgres(pgUrl);
@@ -163,4 +234,7 @@ function main() {
   process.exit(failures.length ? 1 : 0);
 }
 
-main();
+main().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});
