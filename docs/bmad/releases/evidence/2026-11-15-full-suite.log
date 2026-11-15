@@ -1,0 +1,652 @@
+$ pnpm -r test
+# cwd: .
+# exit: 0
+
+Scope: 5 of 6 workspace projects
+packages/a2a-server test$ vitest run
+packages/sdk test$ vitest run
+packages/sdk test: [1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90mC:/Users/Tahir/Documents/GitHub/Agentic-OS-V3/packages/sdk[39m
+packages/a2a-server test: [1m[46m RUN [49m[22m [36mv3.2.6 [39m[90mC:/Users/Tahir/Documents/GitHub/Agentic-OS-V3/packages/a2a-server[39m
+packages/a2a-server test:  [32m✓[39m test/orchestration-signed-rpc.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+packages/a2a-server test:  [32m✓[39m test/orchestration-a2a.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 54[2mms[22m[39m
+packages/a2a-server test: [2m Test Files [22m [1m[32m2 passed[39m[22m[90m (2)[39m
+packages/a2a-server test: [2m      Tests [22m [1m[32m19 passed[39m[22m[90m (19)[39m
+packages/a2a-server test: [2m   Start at [22m 12:55:52
+packages/a2a-server test: [2m   Duration [22m 1.98s[2m (transform 191ms, setup 0ms, collect 403ms, tests 72ms, environment 2ms, prepare 835ms)[22m
+packages/sdk test:  [32m✓[39m src/r1-types.test.ts [2m([22m[2m59 tests[22m[2m)[22m[90m 58[2mms[22m[39m
+packages/sdk test:  [32m✓[39m src/r1-sync.test.ts [2m([22m[2m25 tests[22m[2m)[22m[90m 62[2mms[22m[39m
+packages/sdk test:  [32m✓[39m src/r1-serena.test.ts [2m([22m[2m49 tests[22m[2m)[22m[90m 106[2mms[22m[39m
+packages/sdk test:  [32m✓[39m src/r1-mcp-adapter.test.ts [2m([22m[2m43 tests[22m[2m)[22m[90m 136[2mms[22m[39m
+packages/sdk test:  [32m✓[39m src/r1-a2a-adapter.test.ts [2m([22m[2m41 tests[22m[2m)[22m[90m 153[2mms[22m[39m
+packages/sdk test:  [32m✓[39m src/r1-tool-gateway.test.ts [2m([22m[2m6 tests[22m[2m)[22m[90m 65[2mms[22m[39m
+packages/sdk test:  [32m✓[39m src/project-transfer.test.ts [2m([22m[2m12 tests[22m[2m)[22m[90m 158[2mms[22m[39m
+packages/a2a-server test: Done
+packages/sdk test:  [32m✓[39m src/sql-repositories.test.ts [2m([22m[2m4 tests[22m[2m)[22m[90m 21[2mms[22m[39m
+packages/sdk test:  [32m✓[39m src/in-memory-repositories.test.ts [2m([22m[2m3 tests[22m[2m)[22m[90m 24[2mms[22m[39m
+packages/sdk test:  [32m✓[39m src/capability-policy.test.ts [2m([22m[2m4 tests[22m[2m)[22m[90m 25[2mms[22m[39m
+packages/sdk test:  [32m✓[39m src/r1-services.test.ts [2m([22m[2m7 tests[22m[2m)[22m[90m 30[2mms[22m[39m
+packages/sdk test:  [32m✓[39m src/capability-governance-store.test.ts [2m([22m[2m2 tests[22m[2m)[22m[90m 22[2mms[22m[39m
+packages/sdk test:  [32m✓[39m src/r1-task-worker.test.ts [2m([22m[2m2 tests[22m[2m)[22m[90m 22[2mms[22m[39m
+packages/sdk test: [2m Test Files [22m [1m[32m13 passed[39m[22m[90m (13)[39m
+packages/sdk test: [2m      Tests [22m [1m[32m257 passed[39m[22m[90m (257)[39m
+packages/sdk test: [2m   Start at [22m 12:55:52
+packages/sdk test: [2m   Duration [22m 3.63s[2m (transform 3.85s, setup 0ms, collect 6.01s, tests 880ms, environment 8ms, prepare 5.61s)[22m
+packages/sdk test: Done
+packages/devtools test$ vitest run
+server test$ vitest run
+packages/devtools test: [1m[46m RUN [49m[22m [36mv3.2.6 [39m[90mC:/Users/Tahir/Documents/GitHub/Agentic-OS-V3/packages/devtools[39m
+server test: [1m[46m RUN [49m[22m [36mv3.2.6 [39m[90mC:/Users/Tahir/Documents/GitHub/Agentic-OS-V3/server[39m
+packages/devtools test:  [32m✓[39m src/index.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 10[2mms[22m[39m
+packages/devtools test: [2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+packages/devtools test: [2m      Tests [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+packages/devtools test: [2m   Start at [22m 12:55:57
+packages/devtools test: [2m   Duration [22m 2.23s[2m (transform 766ms, setup 0ms, collect 1.17s, tests 10ms, environment 0ms, prepare 429ms)[22m
+server test: {"level":"warn","msg":"portkey.fetch_retry","ts":"2026-11-15T07:25:59.817Z","attempt":1,"status":429,"url":"https://api.portkey.ai/v1/chat/completions","errorSnippet":"rate"}
+packages/devtools test: Done
+server test: {"level":"warn","msg":"portkey.fetch_retry","ts":"2026-11-15T07:26:02.057Z","attempt":2,"status":429,"url":"https://api.portkey.ai/v1/chat/completions","errorSnippet":"rate"}
+server test: {"level":"info","msg":"message_bus_initialized","ts":"2026-11-15T07:26:03.969Z","instance":"container"}
+server test: {"level":"info","msg":"message_bus_initialized","ts":"2026-11-15T07:26:04.565Z","instance":"container"}
+server test:  [32m✓[39m tests/sandbox-security.test.ts [2m([22m[2m22 tests[22m[2m)[22m[33m 5315[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m sandbox — timeout enforcement[2m > [22mterminates infinite loops via timeout [33m 2077[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m sandbox — timeout enforcement[2m > [22mterminates long-running synchronous computation [33m 1510[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m sandbox — memory limit enforcement[2m > [22mrejects memory bomb via large array allocation [33m 440[2mms[22m[39m
+server test: {"level":"warn","msg":"portkey.fetch_retry","ts":"2026-11-15T07:26:06.321Z","attempt":3,"status":429,"url":"https://api.portkey.ai/v1/chat/completions","errorSnippet":"rate"}
+server test: {"level":"info","msg":"message_bus_initialized","ts":"2026-11-15T07:26:06.377Z","instance":"container"}
+server test:  [32m✓[39m tests/sqlite-mcp-write-paths.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 8129[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m SQLite write paths used by MCP tools[2m > [22mspawns an agent (nexus_delegate) [33m 4840[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m SQLite write paths used by MCP tools[2m > [22menqueues a task with a structured input payload [33m 807[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m SQLite write paths used by MCP tools[2m > [22mcreates a cron job (nexus_cron_create) [33m 947[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m SQLite write paths used by MCP tools[2m > [22mingests an ambient transcript (nexus_ambient_ingest) [33m 675[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m SQLite write paths used by MCP tools[2m > [22minvalidates the cached brain stats after a memory write [33m 855[2mms[22m[39m
+server test:  [32m✓[39m tests/session-capture-invariant.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 8876[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m session capture preserves the transcript[2m > [22mpersists the full raw transcript and reports it [33m 5843[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m session capture preserves the transcript[2m > [22mextracts a declarative fact without an LLM [33m 600[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m session capture preserves the transcript[2m > [22mmakes the captured fact recallable [33m 892[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m session capture preserves the transcript[2m > [22mrecords which agent/client produced the session [33m 774[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m session capture preserves the transcript[2m > [22mkeeps the raw transcript when distillation fails [33m 763[2mms[22m[39m
+server test:  [32m✓[39m tests/r1-effect-claims-contract.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 8791[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m E10-S9 SQL effect-claim contract[2m > [22matomically scopes claims on PGlite PostgreSQL semantics [33m 8682[2mms[22m[39m
+server test: {"level":"info","msg":"db_backend","ts":"2026-11-15T07:26:13.236Z","backend":"sqlite","path":"./agentic-os.db"}
+server test: {"level":"info","msg":"db_backend","ts":"2026-11-15T07:26:13.828Z","backend":"sqlite","path":"./agentic-os.db"}
+server test:  [32m✓[39m tests/readme-mcp-tools.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 6087[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m README MCP surface[2m > [22mmatches the registered tools and resources [33m 5740[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m README MCP surface[2m > [22mdeclares a scope for every registered tool [33m 342[2mms[22m[39m
+server test: {"level":"info","msg":"message_bus_initialized","ts":"2026-11-15T07:26:14.260Z","instance":"container"}
+server test:  [32m✓[39m tests/services/unified-gateway/portkey.test.ts [2m([22m[2m27 tests[22m[2m)[22m[33m 14557[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m dispatchPortkeyRequest[2m > [22mthrows portkey_<provider>_<status>:<text> on non-ok response [33m 14518[2mms[22m[39m
+server test: {"level":"error","msg":"kernel_panic","ts":"2026-11-15T07:26:14.417Z","reason":"phase11-test"}
+server test: {"level":"info","msg":"kernel_panic_cleared","ts":"2026-11-15T07:26:14.418Z"}
+server test:  [32m✓[39m tests/phase11-kernel.test.ts [2m([22m[2m32 tests[22m[2m)[22m[33m 5039[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m Phase 11 baseline — kernel.ts already-present surface[2m > [22mloads and exposes the event bus, ring budgets, deadlock & gang surfaces [33m 4462[2mms[22m[39m
+server test:  [32m✓[39m tests/scheduler-phase11.test.ts [2m([22m[2m8 tests[22m[2m)[22m[33m 3921[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m Phase 11 Scheduling Policies[2m > [22mMLFQ ordering — highest queue (Q0) is picked first regardless of age [33m 3904[2mms[22m[39m
+server test:  [32m✓[39m tests/audit-chain-sqlite.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 6555[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m audit chain on SQLite[2m > [22mverifies a chain of object-payload entries [33m 4801[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m audit chain on SQLite[2m > [22mdetects a tampered payload [33m 501[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m audit chain on SQLite[2m > [22mserializes concurrent appends so sequence numbers never collide [33m 616[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m audit chain on SQLite[2m > [22mkeeps string payloads stable across a write/verify round trip [33m 633[2mms[22m[39m
+server test: {"level":"warn","msg":"dag.executor.step.failed","ts":"2026-11-15T07:26:17.079Z","stepId":"a","attempt":1,"err":"boom"}
+server test:  [32m✓[39m tests/services/siem-forwarder.test.ts [2m([22m[2m10 tests[22m[2m)[22m[33m 1928[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m network sinks (splunk/elastic/datadog/webhook)[2m > [22mrecords a failed-forward error when no endpoint configured (flush swallows it) [33m 620[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m network sinks (splunk/elastic/datadog/webhook)[2m > [22mrecords a failed-forward error for elastic sink without endpoint [33m 645[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m network sinks (splunk/elastic/datadog/webhook)[2m > [22mincludes the missing-endpoint reason in the logged failure [33m 624[2mms[22m[39m
+server test: {"level":"info","msg":"dag.executor.compensate","ts":"2026-11-15T07:26:17.324Z","runId":"1qGSDD8riZegwa83xdXlkN","stepId":"a"}
+server test: {"level":"warn","msg":"dag.executor.step.failed","ts":"2026-11-15T07:26:17.331Z","stepId":"a","attempt":1,"err":"boom"}
+server test: {"level":"error","msg":"dag.executor.stall","ts":"2026-11-15T07:26:17.638Z","runId":"1Do2M10PAqDgq469ve1Zrn","pending":["b"]}
+server test: {"level":"info","msg":"dag.executor.compensate","ts":"2026-11-15T07:26:17.639Z","runId":"1Do2M10PAqDgq469ve1Zrn","stepId":"b"}
+server test: {"level":"info","msg":"dag.executor.compensate","ts":"2026-11-15T07:26:17.639Z","runId":"1Do2M10PAqDgq469ve1Zrn","stepId":"a"}
+server test: {"level":"warn","msg":"dag.executor.step.failed","ts":"2026-11-15T07:26:17.646Z","stepId":"a","attempt":1,"err":"boom"}
+server test: {"level":"warn","msg":"dag.executor.step.retry","ts":"2026-11-15T07:26:17.745Z","stepId":"a","attempt":1,"err":"step a exceeded soft timeout of 30ms"}
+server test: {"level":"warn","msg":"dag.executor.step.failed","ts":"2026-11-15T07:26:17.808Z","stepId":"a","attempt":1,"err":"boom"}
+server test: {"level":"error","msg":"dag.executor.stall","ts":"2026-11-15T07:26:18.111Z","runId":"18UyoZZ6cyM4QUPaaSDWAn","pending":["b","c"]}
+server test: {"level":"info","msg":"dag.executor.compensate","ts":"2026-11-15T07:26:18.112Z","runId":"18UyoZZ6cyM4QUPaaSDWAn","stepId":"b"}
+server test: {"level":"info","msg":"dag.executor.compensate","ts":"2026-11-15T07:26:18.112Z","runId":"18UyoZZ6cyM4QUPaaSDWAn","stepId":"c"}
+server test: {"level":"info","msg":"dag.executor.compensate","ts":"2026-11-15T07:26:18.112Z","runId":"18UyoZZ6cyM4QUPaaSDWAn","stepId":"a"}
+server test: {"level":"warn","msg":"dag.executor.step.failed","ts":"2026-11-15T07:26:18.128Z","stepId":"a","attempt":1,"err":"boom"}
+server test: {"level":"info","msg":"dag.executor.compensate","ts":"2026-11-15T07:26:18.451Z","runId":"36HMpempWHjtNPCoq3TDdc","stepId":"a"}
+server test: {"level":"warn","msg":"dag.executor.step.failed","ts":"2026-11-15T07:26:18.467Z","stepId":"a","attempt":1,"err":"boom"}
+server test: {"level":"info","msg":"dag.executor.compensate","ts":"2026-11-15T07:26:18.743Z","runId":"3NmRgntZhf02FqFOhdn2NE","stepId":"a"}
+server test: {"level":"error","msg":"dag.executor.compensate.fail","ts":"2026-11-15T07:26:18.744Z","runId":"3NmRgntZhf02FqFOhdn2NE","stepId":"a","err":"undo failed"}
+server test:  [32m✓[39m tests/services/dag-executor.test.ts [2m([22m[2m9 tests[22m[2m)[22m[33m 1695[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m dag-executor — correctness[2m > [22mpropagates a failed dependency to dependents by NEVER executing them (blocked, not run) [33m 314[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m dag-executor — real compensation (self-healing)[2m > [22minvokes onCompensate for every compensatable step that did NOT complete [33m 315[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m dag-executor — real compensation (self-healing)[2m > [22mDEFAULT rollback clears the blackboard key the step wrote (real, not audit-only) [33m 335[2mms[22m[39m
+server test: {"level":"info","msg":"headless_actuator_screenshot","ts":"2026-11-15T07:26:20.437Z","cropped":false}
+server test: {"level":"info","msg":"headless_actuator_moveMouse","ts":"2026-11-15T07:26:20.444Z","x":10,"y":20}
+server test: {"level":"info","msg":"headless_actuator_click","ts":"2026-11-15T07:26:20.555Z","x":10,"y":20,"button":"left"}
+server test: {"level":"info","msg":"headless_actuator_type","ts":"2026-11-15T07:26:20.666Z","text":"Test typing"}
+server test: {"level":"info","msg":"headless_actuator_scroll","ts":"2026-11-15T07:26:20.778Z","amount":5,"direction":"down"}
+server test: {"level":"info","msg":"headless_actuator_keypress","ts":"2026-11-15T07:26:20.887Z","key":"enter"}
+server test: {"level":"info","msg":"desktop_actuation_start","ts":"2026-11-15T07:26:20.892Z","traceId":"vlm_f3c6b177","prompt":"Click on start button","mode":"headless"}
+server test: {"level":"info","msg":"headless_actuator_screenshot","ts":"2026-11-15T07:26:20.893Z","cropped":false}
+server test: {"level":"info","msg":"headless_actuator_click","ts":"2026-11-15T07:26:20.894Z","x":100,"y":200,"button":"left"}
+server test: {"level":"info","msg":"headless_actuator_type","ts":"2026-11-15T07:26:20.998Z","text":"Hello World"}
+server test: {"level":"info","msg":"desktop_actuation_done","ts":"2026-11-15T07:26:20.998Z","traceId":"vlm_f3c6b177","actionsExecuted":2,"screenshotCount":1,"summary":"Mock task completed"}
+server test:  [32m✓[39m tests/desktop-actuator.test.ts [2m([22m[2m10 tests[22m[2m)[22m[33m 816[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m HeadlessActuator Implementation[2m > [22mexecutes GUI actions without error [33m 446[2mms[22m[39m
+server test:  [32m✓[39m tests/r1-application-sqlite-contract.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 5100[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m R1 SQLite application-client contract[2m > [22mruns repository contracts through the application SQLite client [33m 4442[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m R1 SQLite application-client contract[2m > [22mpersists committed project and task state after the application client restarts [33m 654[2mms[22m[39m
+server test:  [32m✓[39m tests/services/embeddings.test.ts [2m([22m[2m16 tests[22m[2m)[22m[33m 3639[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m embeddings service[2m > [22mrebuildEmbeddings[2m > [22mreturns semantic + 0 docs when configured and DB empty [33m 347[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m embeddings service[2m > [22mrebuildEmbeddings[2m > [22membeds skills without embeddings [33m 363[2mms[22m[39m
+server test:  [32m✓[39m tests/principal-scopes-sqlite.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 3932[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m principal scopes on SQLite[2m > [22mmints a key and authorizes only the granted scopes [33m 636[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m principal scopes on SQLite[2m > [22mhonors wildcard families [33m 1131[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m principal scopes on SQLite[2m > [22mtreats malformed stored scopes as no grants instead of crashing auth [33m 1471[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m principal scopes on SQLite[2m > [22mlists principals with parsed scopes [33m 391[2mms[22m[39m
+server test:  [32m✓[39m tests/security.test.ts [2m([22m[2m10 tests[22m[2m)[22m[33m 1837[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m api key hashing[2m > [22mverifies a correct key [33m 558[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m api key hashing[2m > [22mrejects a wrong key [33m 612[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m api key hashing[2m > [22mproduces salted hashes (different per call) [33m 634[2mms[22m[39m
+server test:  [32m✓[39m tests/siem-forwarder.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 647[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m Aegis: siem-forwarder[2m > [22mwebhook without endpoint fails validation and is dropped after retries (no crash) [33m 619[2mms[22m[39m
+server test: [90mstdout[2m | tests/bench-scheduler.test.ts[2m > [22m[2mscheduler pick hot-path benchmark[2m > [22m[2mMLFQPolicy.pick stays millisecond-scale over 10000 tasks (min-of-samples)
+server test: [22m[39m[scheduler bench] MLFQ pick n=10000 iters=300 avg=0.9795ms p95=2.5012ms min=0.5154ms
+server test: [90mstdout[2m | tests/bench-scheduler.test.ts[2m > [22m[2mscheduler pick hot-path benchmark[2m > [22m[2mEDFPolicy.pick stays millisecond-scale over 10000 tasks (min-of-samples)
+server test: [22m[39m[scheduler bench] EDF pick n=10000 iters=300 avg=1.4441ms p95=5.3108ms min=0.4218ms
+server test: [90mstdout[2m | tests/bench-scheduler.test.ts[2m > [22m[2mscheduler pick hot-path benchmark[2m > [22m[2mFairSharePolicy.pick stays single-pass fast over 10000 tasks (min-of-samples)
+server test: [22m[39m[scheduler bench] FairShare pick n=10000 iters=300 avg=1.4066ms p95=2.7651ms min=0.9609ms
+server test:  [32m✓[39m tests/bench-scheduler.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 1469[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m scheduler pick hot-path benchmark[2m > [22mMLFQPolicy.pick stays millisecond-scale over 10000 tasks (min-of-samples) [33m 410[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m scheduler pick hot-path benchmark[2m > [22mEDFPolicy.pick stays millisecond-scale over 10000 tasks (min-of-samples) [33m 545[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m scheduler pick hot-path benchmark[2m > [22mFairSharePolicy.pick stays single-pass fast over 10000 tasks (min-of-samples) [33m 486[2mms[22m[39m
+server test:  [32m✓[39m tests/services/recall.test.ts [2m([22m[2m19 tests[22m[2m)[22m[33m 1578[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m recall service[2m > [22mreturns relevant results for keyword queries [33m 489[2mms[22m[39m
+server test:  [32m✓[39m tests/services/skill-template-engine.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 872[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m skill-template-engine — env-threshold gate[2m > [22mdefault threshold is 1.0 (100%) — a partial-match script does NOT pass [33m 648[2mms[22m[39m
+server test:  [32m✓[39m tests/services/scheduler-property.test.ts [2m([22m[2m16 tests[22m[2m)[22m[33m 1156[2mms[22m[39m
+server test:  [32m✓[39m tests/services/kernel.test.ts [2m([22m[2m51 tests[22m[2m)[22m[33m 499[2mms[22m[39m
+server test: {"level":"info","msg":"wasm_guest_log","ts":"2026-11-15T07:26:31.031Z","pluginId":"test-plugin-1","message":"info"}
+server test: {"level":"warn","msg":"wasm_http_denied","ts":"2026-11-15T07:26:31.041Z","pluginId":"test-plugin-1","host":"evil.example.com"}
+server test:  [32m✓[39m tests/r1-project-transfer-contract.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 26839[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m E1-S3 transfer — SQLite application client[2m > [22mexports from SQLite and restores into a fresh database after migration [33m 514[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m E1-S3 transfer — SQLite application client[2m > [22mrolls the whole import back when the transaction is interrupted mid-apply [33m 567[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m E1-S3 transfer — PostgreSQL engine[2m > [22mround-trips a redacted bundle between two PostgreSQL databases and rejects tampering [33m 25685[2mms[22m[39m
+server test: {"level":"info","msg":"wasm_http_fetch","ts":"2026-11-15T07:26:31.515Z","pluginId":"test-plugin-1","agentId":"agent-1","host":"api.github.com","status":404,"fuelUsed":10}
+server test: {"level":"info","msg":"wasm_http_fetch","ts":"2026-11-15T07:26:31.527Z","pluginId":"test-plugin-1","agentId":"agent-1","host":"api.github.com","status":200,"fuelUsed":10}
+server test:  [32m✓[39m tests/wasm-host-functions.test.ts [2m([22m[2m30 tests[22m[2m)[22m[33m 545[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m wasm-host-functions[2m > [22mcreateHostFunctions[2m > [22mall operations consume fuel [33m 435[2mms[22m[39m
+server test:  [32m✓[39m tests/services/agent-runtime.test.ts [2m([22m[2m42 tests[22m[2m)[22m[33m 842[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m ActionRegistry[2m > [22mexecute runs handler and succeeds [33m 344[2mms[22m[39m
+server test:  [32m✓[39m tests/sandbox.test.ts [2m([22m[2m12 tests[22m[2m)[22m[33m 488[2mms[22m[39m
+server test:  [32m✓[39m tests/bench-scheduler-equivalence.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 412[2mms[22m[39m
+server test:  [32m✓[39m tests/mcp-server.test.ts [2m([22m[2m27 tests[22m[2m)[22m[33m 511[2mms[22m[39m
+server test: [90mstdout[2m | tests/bench-metrics-overhead.test.ts[2m > [22m[2mmetrics / overhead hot-path benchmark[2m > [22m[2mrecordExport with labels stays cheap at 20000 calls (p95 < threshold)
+server test: [22m[39m[metrics bench] recordExport iters=20000 avg=0.0053ms p95=0.0071ms
+server test: {"level":"info","msg":"dag.created","ts":"2026-11-15T07:26:34.012Z","id":"dag_7956c595-cbc","name":"wf"}
+server test: {"level":"info","msg":"dag.node_added","ts":"2026-11-15T07:26:34.016Z","dagId":"dag_7956c595-cbc","nodeId":"node_3c2a49b3-2e4","agentId":"a"}
+server test: {"level":"info","msg":"dag.node_added","ts":"2026-11-15T07:26:34.016Z","dagId":"dag_7956c595-cbc","nodeId":"node_c18ec3fc-d2f","agentId":"b"}
+server test: {"level":"info","msg":"dag.node_added","ts":"2026-11-15T07:26:34.017Z","dagId":"dag_7956c595-cbc","nodeId":"node_7940887b-2b3","agentId":"c"}
+server test: {"level":"info","msg":"dag.node_added","ts":"2026-11-15T07:26:34.017Z","dagId":"dag_7956c595-cbc","nodeId":"node_8a0be22b-713","agentId":"d"}
+server test: {"level":"info","msg":"dag.edge_added","ts":"2026-11-15T07:26:34.018Z","dagId":"dag_7956c595-cbc","from":"node_3c2a49b3-2e4","to":"node_c18ec3fc-d2f"}
+server test: {"level":"info","msg":"dag.edge_added","ts":"2026-11-15T07:26:34.018Z","dagId":"dag_7956c595-cbc","from":"node_3c2a49b3-2e4","to":"node_7940887b-2b3"}
+server test: {"level":"info","msg":"dag.edge_added","ts":"2026-11-15T07:26:34.018Z","dagId":"dag_7956c595-cbc","from":"node_c18ec3fc-d2f","to":"node_8a0be22b-713"}
+server test: {"level":"info","msg":"dag.edge_added","ts":"2026-11-15T07:26:34.018Z","dagId":"dag_7956c595-cbc","from":"node_7940887b-2b3","to":"node_8a0be22b-713"}
+server test: {"level":"info","msg":"dag.compiled","ts":"2026-11-15T07:26:34.019Z","dagId":"dag_7956c595-cbc","waves":3}
+server test: {"level":"info","msg":"dag.created","ts":"2026-11-15T07:26:34.030Z","id":"dag_4547b63e-b52","name":"cyclic"}
+server test: {"level":"info","msg":"dag.node_added","ts":"2026-11-15T07:26:34.030Z","dagId":"dag_4547b63e-b52","nodeId":"node_28d203f4-a65","agentId":"a"}
+server test: {"level":"info","msg":"dag.node_added","ts":"2026-11-15T07:26:34.030Z","dagId":"dag_4547b63e-b52","nodeId":"node_c71359a5-288","agentId":"b"}
+server test: {"level":"info","msg":"dag.edge_added","ts":"2026-11-15T07:26:34.031Z","dagId":"dag_4547b63e-b52","from":"node_28d203f4-a65","to":"node_c71359a5-288"}
+server test: {"level":"info","msg":"dag.edge_added","ts":"2026-11-15T07:26:34.031Z","dagId":"dag_4547b63e-b52","from":"node_c71359a5-288","to":"node_28d203f4-a65"}
+server test: {"level":"info","msg":"dag.created","ts":"2026-11-15T07:26:34.035Z","id":"dag_01bbada0-297","name":"bad"}
+server test: {"level":"info","msg":"dag.node_added","ts":"2026-11-15T07:26:34.035Z","dagId":"dag_01bbada0-297","nodeId":"node_433ff4e6-451","agentId":"a"}
+server test: {"level":"info","msg":"dag.created","ts":"2026-11-15T07:26:34.041Z","id":"dag_c9e2b944-3ab","name":"routed"}
+server test: {"level":"info","msg":"dag.node_added","ts":"2026-11-15T07:26:34.042Z","dagId":"dag_c9e2b944-3ab","nodeId":"node_8cba0b06-12f","agentId":"a"}
+server test: {"level":"info","msg":"dag.node_added","ts":"2026-11-15T07:26:34.042Z","dagId":"dag_c9e2b944-3ab","nodeId":"node_93a617ac-046","agentId":"b"}
+server test: {"level":"info","msg":"dag.edge_added","ts":"2026-11-15T07:26:34.043Z","dagId":"dag_c9e2b944-3ab","from":"node_8cba0b06-12f","to":"node_93a617ac-046"}
+server test: {"level":"warn","msg":"agent.tool.retry","ts":"2026-11-15T07:26:34.050Z","agentId":"retry-agent","attempt":1,"err":"Error: ETIMEDOUT transient"}
+server test: [90mstdout[2m | tests/bench-metrics-overhead.test.ts[2m > [22m[2mmetrics / overhead hot-path benchmark[2m > [22m[2maccountOverhead (kernel nanosecond accounting) is O(1) at 100000 calls
+server test: [22m[39m[overhead bench] accountOverhead iters=100000 avg=0.00040ms p95=0.00050ms totalNs=123400000
+server test:  [32m✓[39m tests/bench-metrics-overhead.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 365[2mms[22m[39m
+server test:  [32m✓[39m tests/agent-dag.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 287[2mms[22m[39m
+server test: (node:9764) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+server test: (Use `node --trace-warnings ...` to show where the warning was created)
+server test:  [32m✓[39m tests/r1-sqlite-restart.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 256[2mms[22m[39m
+server test:  [32m✓[39m tests/agent-hooks.test.ts [2m([22m[2m12 tests[22m[2m)[22m[33m 317[2mms[22m[39m
+server test:  [32m✓[39m tests/services/llm-gateway-v2.test.ts [2m([22m[2m40 tests[22m[2m)[22m[33m 652[2mms[22m[39m
+server test: {"level":"info","msg":"db_backend","ts":"2026-11-15T07:26:36.712Z","backend":"sqlite","path":"./agentic-os.db"}
+server test:  [32m✓[39m tests/bench-llm-cache.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 257[2mms[22m[39m
+server test:  [32m✓[39m tests/brain-v3.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 550[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m brain v3 export/import[2m > [22mround-trips all Phase 12 structures [33m 474[2mms[22m[39m
+server test:  [32m✓[39m tests/services/brain.test.ts [2m([22m[2m8 tests[22m[2m)[22m[33m 416[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m brain service[2m > [22mimportBrain[2m > [22minserts valid payload [33m 321[2mms[22m[39m
+server test:  [32m✓[39m tests/services/audit-worker.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 253[2mms[22m[39m
+server test: [90mstderr[2m | tests/gate.test.ts
+server test: [22m[39mUsing an object as a third argument is deprecated. Vitest 4 will throw an error if the third argument is not a timeout number. Please use the second argument for options. See more at https://vitest.dev/guide/migration
+server test:  [32m✓[39m tests/gate.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 329[2mms[22m[39m
+server test:  [32m✓[39m tests/routes/kernel-introspect.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 362[2mms[22m[39m
+server test: {"level":"info","msg":"warmup-scheduler: registered","ts":"2026-11-15T07:26:39.652Z","name":"perf-cache","weight":50}
+server test: [90mstdout[2m | tests/e2e/system.e2e.test.ts
+server test: [22m[39m[2026-11-15T07:26:39.655Z] [INFO] perf-bridge: booted {"seedNodes":0,"circuitBreakers":0}
+server test:  [32m✓[39m tests/r1-application-postgres-contract.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 35285[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m R1 PostgreSQL application contract[2m > [22mruns the full R1 repository, idempotency and append-only contract on PostgreSQL [33m 17583[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m R1 PostgreSQL application contract[2m > [22mpersists and evaluates governed capabilities and the policy API on PostgreSQL [33m 8522[2mms[22m[39m
+server test:    [33m[2m✓[22m[39m R1 PostgreSQL application contract[2m > [22mpreserves committed project and task state across an engine restart [33m 9170[2mms[22m[39m
+server test:  [32m✓[39m tests/killswitch-race.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 360[2mms[22m[39m
+server test:  [32m✓[39m tests/migration.test.ts [2m([22m[2m11 tests[22m[2m)[22m[33m 412[2mms[22m[39m
+server test: [90mstdout[2m | tests/bench-message-bus.test.ts[2m > [22m[2mmessage-bus publish hot-path benchmark[2m > [22m[2mpublishes 5000 events to 50 subscribers with p95 latency under threshold
+server test: [22m[39m[message-bus bench] subs=50 iters=5000 avg=0.0410ms p95=0.0677ms
+server test:  [32m✓[39m tests/bench-message-bus.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 277[2mms[22m[39m
+server test: {"level":"info","msg":"response-cache: invalidated tags","ts":"2026-11-15T07:26:41.711Z","tags":["x"],"count":2}
+server test: {"level":"info","msg":"response-cache: cleared","ts":"2026-11-15T07:26:41.756Z","count":1}
+server test: {"level":"info","msg":"kernel-node-pool: registered","ts":"2026-11-15T07:26:41.763Z","id":"n1","url":"http://n1"}
+server test: {"level":"info","msg":"kernel-node-pool: registered","ts":"2026-11-15T07:26:41.763Z","id":"n2","url":"http://n2"}
+server test: {"level":"warn","msg":"slow-query-advisor: slow query observed","ts":"2026-11-15T07:26:41.793Z","norm":"select * from users where id = ?","p95":300,"avg":300}
+server test: {"level":"warn","msg":"slow-query-advisor: slow query observed","ts":"2026-11-15T07:26:41.794Z","norm":"select * from users where id = ?","p95":300,"avg":300}
+server test: {"level":"warn","msg":"slow-query-advisor: slow query observed","ts":"2026-11-15T07:26:41.794Z","norm":"select * from users where id = ?","p95":300,"avg":300}
+server test: {"level":"warn","msg":"slow-query-advisor: slow query observed","ts":"2026-11-15T07:26:41.794Z","norm":"select * from users where id = ?","p95":300,"avg":300}
+server test: {"level":"warn","msg":"slow-query-advisor: slow query observed","ts":"2026-11-15T07:26:41.794Z","norm":"select * from users where id = ?","p95":300,"avg":300}
+server test: {"level":"info","msg":"warmup-scheduler: registered","ts":"2026-11-15T07:26:41.802Z","name":"a","weight":10}
+server test: {"level":"info","msg":"warmup-scheduler: registered","ts":"2026-11-15T07:26:41.802Z","name":"b","weight":90}
+server test: {"level":"info","msg":"warmup-scheduler: cold-start warmAll complete","ts":"2026-11-15T07:26:41.803Z","count":2}
+server test: {"level":"info","msg":"warmup-scheduler: registered","ts":"2026-11-15T07:26:41.805Z","name":"fail","weight":1}
+server test: {"level":"info","msg":"warmup-scheduler: cold-start warmAll complete","ts":"2026-11-15T07:26:41.805Z","count":1}
+server test: {"level":"warn","msg":"warmup-scheduler: task failed","ts":"2026-11-15T07:26:41.805Z","err":{},"name":"fail"}
+server test: {"level":"info","msg":"circuit-breaker-pool: registered resource","ts":"2026-11-15T07:26:41.807Z","name":"db","failureThreshold":2}
+server test: {"level":"info","msg":"circuit-breaker-pool: registered resource","ts":"2026-11-15T07:26:41.808Z","name":"api","failureThreshold":2,"cooldownMs":20}
+server test: {"level":"warn","msg":"circuit-breaker-pool: breaker OPENED","ts":"2026-11-15T07:26:41.809Z","name":"api"}
+server test: {"level":"info","msg":"event-loop-lag: started","ts":"2026-11-15T07:26:41.811Z","sampleMs":10}
+server test: {"level":"info","msg":"graceful-drain: begin","ts":"2026-11-15T07:26:41.813Z"}
+server test: {"level":"info","msg":"graceful-drain: cancelled","ts":"2026-11-15T07:26:41.813Z"}
+server test: {"level":"info","msg":"graceful-drain: begin","ts":"2026-11-15T07:26:41.814Z"}
+server test: {"level":"info","msg":"graceful-drain: complete","ts":"2026-11-15T07:26:41.814Z","inFlight":0}
+server test: {"level":"info","msg":"graceful-drain: begin","ts":"2026-11-15T07:26:41.814Z"}
+server test: {"level":"info","msg":"circuit-breaker-pool: attempting self-heal","ts":"2026-11-15T07:26:41.838Z","name":"api"}
+server test: {"level":"info","msg":"circuit-breaker-pool: healed, breaker reset","ts":"2026-11-15T07:26:41.839Z","name":"api"}
+server test: {"level":"info","msg":"graceful-drain: complete","ts":"2026-11-15T07:26:41.839Z","inFlight":0}
+server test: [90mstderr[2m | tests/phase15-performance.test.ts[2m > [22m[2mnodeReplicaRegistry[2m > [22m[2mupserts, routes and drains replicas
+server test: [22m[39m[2026-11-15T07:26:41.873Z] [WARN] replica-registry: unhealthy {"id":"n2"}
+server test:  [32m✓[39m tests/phase15-performance.test.ts [2m([22m[2m27 tests[22m[2m)[22m[32m 197[2mms[22m[39m
+server test: {"level":"info","msg":"message_bus_initialized","ts":"2026-11-15T07:26:42.048Z","instance":"container"}
+server test: {"level":"info","msg":"guardrail.threshold.updated","ts":"2026-11-15T07:26:42.380Z","id":"smoke.concurrency","metric":"concurrency"}
+server test:  [32m✓[39m tests/metrics.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 255[2mms[22m[39m
+server test:  [32m✓[39m tests/smoke-new-services.test.ts [2m([22m[2m32 tests[22m[2m)[22m[33m 349[2mms[22m[39m
+server test: {"level":"info","msg":"db_backend","ts":"2026-11-15T07:26:42.774Z","backend":"sqlite","path":"./agentic-os.db"}
+server test: {"level":"info","msg":"self_opt_tick_started","ts":"2026-11-15T07:26:42.924Z","intervalMs":60000}
+server test: {"level":"info","msg":"self_opt_tick_started","ts":"2026-11-15T07:26:42.925Z","intervalMs":60000}
+server test: {"level":"info","msg":"self_opt_tick_started","ts":"2026-11-15T07:26:42.925Z","intervalMs":60000}
+server test:  [32m✓[39m tests/security-mcp.test.ts [2m([22m[2m43 tests[22m[2m)[22m[32m 285[2mms[22m[39m
+server test: {"level":"warn","msg":"dashboard_absent","ts":"2026-11-15T07:26:43.424Z","dir":"../dist","note":"API-only mode."}
+server test: {"level":"info","msg":"message_bus_initialized","ts":"2026-11-15T07:26:43.539Z","instance":"container"}
+server test: {"level":"info","msg":"headless_actuator_screenshot","ts":"2026-11-15T07:26:43.599Z","cropped":false}
+server test:  [32m✓[39m tests/e2e/system.e2e.test.ts [2m([22m[2m10 tests[22m[2m)[22m[33m 456[2mms[22m[39m
+server test:  [32m✓[39m tests/r1-performance-reliability.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 205[2mms[22m[39m
+server test:  [32m✓[39m tests/db-concurrency.test.ts [2m([22m[2m6 tests[22m[2m)[22m[33m 328[2mms[22m[39m
+server test:  [32m✓[39m tests/otel.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 300[2mms[22m[39m
+server test:  [32m✓[39m tests/env.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 192[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-priming.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 67[2mms[22m[39m
+server test: {"level":"info","msg":"db_backend","ts":"2026-11-15T07:26:46.798Z","backend":"sqlite","path":"./agentic-os.db"}
+server test: {"level":"info","msg":"warmup-scheduler: registered","ts":"2026-11-15T07:26:47.386Z","name":"perf-cache","weight":50}
+server test: [90mstdout[2m | tests/a2a.test.ts
+server test: [22m[39m[2026-11-15T07:26:47.386Z] [INFO] perf-bridge: booted {"seedNodes":0,"circuitBreakers":0}
+server test:  [32m✓[39m tests/self-opt-emit.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 151[2mms[22m[39m
+server test: {"level":"info","msg":"self_opt_tick_started","ts":"2026-11-15T07:26:47.814Z","intervalMs":60000}
+server test: {"level":"info","msg":"self_opt_tick_started","ts":"2026-11-15T07:26:47.815Z","intervalMs":60000}
+server test: {"level":"info","msg":"self_opt_tick_started","ts":"2026-11-15T07:26:47.815Z","intervalMs":60000}
+server test:  [32m✓[39m tests/agent-connect.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 117[2mms[22m[39m
+server test: {"level":"warn","msg":"dashboard_absent","ts":"2026-11-15T07:26:47.878Z","dir":"../dist","note":"API-only mode."}
+server test: {"level":"warn","msg":"dashboard_absent","ts":"2026-11-15T07:26:47.956Z","dir":"../dist","note":"API-only mode."}
+server test:  [32m✓[39m tests/self-opt-controller.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 156[2mms[22m[39m
+server test: {"level":"warn","msg":"dashboard_absent","ts":"2026-11-15T07:26:47.990Z","dir":"../dist","note":"API-only mode."}
+server test: {"level":"warn","msg":"dashboard_absent","ts":"2026-11-15T07:26:48.053Z","dir":"../dist","note":"API-only mode."}
+server test: {"level":"warn","msg":"dashboard_absent","ts":"2026-11-15T07:26:48.067Z","dir":"../dist","note":"API-only mode."}
+server test: {"level":"warn","msg":"dashboard_absent","ts":"2026-11-15T07:26:48.103Z","dir":"../dist","note":"API-only mode."}
+server test: {"level":"warn","msg":"dashboard_absent","ts":"2026-11-15T07:26:48.105Z","dir":"../dist","note":"API-only mode."}
+server test: {"level":"warn","msg":"dashboard_absent","ts":"2026-11-15T07:26:48.108Z","dir":"../dist","note":"API-only mode."}
+server test:  [32m✓[39m tests/a2a.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 240[2mms[22m[39m
+server test:  [32m✓[39m tests/connectors.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 177[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-templates.test.ts [2m([22m[2m20 tests[22m[2m)[22m[32m 166[2mms[22m[39m
+server test:  [32m✓[39m tests/r1-sandbox-runner.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 146[2mms[22m[39m
+server test: {"level":"info","msg":"worker_prewarm_cache_intent","ts":"2026-11-15T07:26:49.132Z","hint":100}
+server test:  [32m✓[39m tests/task-worker.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 122[2mms[22m[39m
+server test:  [32m✓[39m tests/cache-stampede-severity.test.ts [2m([22m[2m25 tests[22m[2m)[22m[32m 88[2mms[22m[39m
+server test: {"level":"warn","msg":"signal_hook_error","ts":"2026-11-15T07:26:49.999Z","event":"on_agent_end","name":"slow","error":"Hook \"slow\" timed out after 20ms","elapsedMs":25}
+server test: {"level":"warn","msg":"signal_hook_error","ts":"2026-11-15T07:26:50.012Z","event":"on_handoff","name":"bad","error":"boom","elapsedMs":0}
+server test:  [32m✓[39m tests/signal-hooks.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 115[2mms[22m[39m
+server test:  [32m✓[39m tests/enterprise.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 73[2mms[22m[39m
+server test:  [32m✓[39m tests/ranking-trainer.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 65[2mms[22m[39m
+server test:  [32m✓[39m tests/file-watcher.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 297[2mms[22m[39m
+server test: {"level":"info","msg":"network-policy set","ts":"2026-11-15T07:26:52.324Z","agentId":"a1"}
+server test:  [32m✓[39m tests/phase14-security.test.ts [2m([22m[2m30 tests[22m[2m)[22m[32m 99[2mms[22m[39m
+server test: {"level":"info","msg":"hsm.key.rotated","ts":"2026-11-15T07:26:52.466Z","backend":"local"}
+server test: {"level":"info","msg":"hsm.key.rotated","ts":"2026-11-15T07:26:52.469Z","backend":"local"}
+server test: {"level":"info","msg":"db_backend","ts":"2026-11-15T07:26:52.469Z","backend":"sqlite","path":"./agentic-os.db"}
+server test:  [32m✓[39m tests/crypto-audit.test.ts [2m([22m[2m21 tests[22m[2m)[22m[32m 59[2mms[22m[39m
+server test: {"level":"info","msg":"warmup-scheduler: registered","ts":"2026-11-15T07:26:53.176Z","name":"perf-cache","weight":50}
+server test:  [32m✓[39m tests/wasm-plugin-runtime.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 66[2mms[22m[39m
+server test: [90mstdout[2m | tests/health.test.ts
+server test: [22m[39m[2026-11-15T07:26:53.178Z] [INFO] perf-bridge: booted {"seedNodes":0,"circuitBreakers":0}
+server test:  [32m✓[39m tests/r1-routes.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 111[2mms[22m[39m
+server test:  [32m✓[39m tests/bench-trace-exporter.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 69[2mms[22m[39m
+server test:  [32m✓[39m tests/routes/agents.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 62[2mms[22m[39m
+server test: {"level":"info","msg":"self_opt_tick_started","ts":"2026-11-15T07:26:53.778Z","intervalMs":60000}
+server test: {"level":"info","msg":"self_opt_tick_started","ts":"2026-11-15T07:26:53.779Z","intervalMs":60000}
+server test: {"level":"info","msg":"self_opt_tick_started","ts":"2026-11-15T07:26:53.779Z","intervalMs":60000}
+server test: {"level":"warn","msg":"dashboard_absent","ts":"2026-11-15T07:26:53.849Z","dir":"../dist","note":"API-only mode."}
+server test: {"level":"warn","msg":"dashboard_absent","ts":"2026-11-15T07:26:53.919Z","dir":"../dist","note":"API-only mode."}
+server test: {"level":"warn","msg":"dashboard_absent","ts":"2026-11-15T07:26:53.937Z","dir":"../dist","note":"API-only mode."}
+server test:  [32m✓[39m tests/health.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 137[2mms[22m[39m
+server test:  [32m✓[39m tests/services/llm.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 69[2mms[22m[39m
+server test:  [32m✓[39m tests/mcp-registry.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 67[2mms[22m[39m
+server test:  [32m✓[39m tests/scheduler-property.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 80[2mms[22m[39m
+server test:  [32m✓[39m tests/security-lib-negative.test.ts [2m([22m[2m36 tests[22m[2m)[22m[32m 69[2mms[22m[39m
+server test:  [32m✓[39m tests/services/audit-routes.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 62[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-graph-browser.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 37[2mms[22m[39m
+server test:  [32m✓[39m tests/phase20-reliability.test.ts [2m([22m[2m31 tests[22m[2m)[22m[32m 51[2mms[22m[39m
+server test:  [32m✓[39m tests/routes/agent-lifecycle.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 68[2mms[22m[39m
+server test:  [32m✓[39m tests/llm-coalesce.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 41[2mms[22m[39m
+server test:  [32m✓[39m tests/routes/v3-upgrade.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 82[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-recall-eval.test.ts [2m([22m[2m28 tests[22m[2m)[22m[32m 158[2mms[22m[39m
+server test:  [32m✓[39m tests/skill-ast-compiler.test.ts [2m([22m[2m36 tests[22m[2m)[22m[32m 260[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-search-suggest.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 99[2mms[22m[39m
+server test:  [32m✓[39m tests/marketplace.service.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 59[2mms[22m[39m
+server test: {"level":"info","msg":"network-policy set","ts":"2026-11-15T07:26:58.986Z","agentId":"a1"}
+server test: {"level":"info","msg":"network-policy set","ts":"2026-11-15T07:26:58.991Z","agentId":"a2"}
+server test:  [32m✓[39m tests/sentinel-core.test.ts [2m([22m[2m29 tests[22m[2m)[22m[32m 69[2mms[22m[39m
+server test:  [32m✓[39m tests/guardrails-negative.test.ts [2m([22m[2m19 tests[22m[2m)[22m[32m 58[2mms[22m[39m
+server test:  [32m✓[39m tests/metron-tracing.test.ts [2m([22m[2m20 tests[22m[2m)[22m[32m 51[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-storage.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 53[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-nl-query.answer.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+server test: {"level":"info","msg":"guardrail.threshold.updated","ts":"2026-11-15T07:27:00.535Z","id":"test.tokens","metric":"tokens"}
+server test: {"level":"info","msg":"guardrail.threshold.updated","ts":"2026-11-15T07:27:00.545Z","id":"test.tokens","metric":"tokens"}
+server test:  [32m✓[39m tests/guardrails.test.ts [2m([22m[2m22 tests[22m[2m)[22m[32m 45[2mms[22m[39m
+server test:  [32m✓[39m tests/self-improvement-toml.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 87[2mms[22m[39m
+server test:  [32m✓[39m tests/enterprise-rbac.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 90[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-quota.test.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 46[2mms[22m[39m
+server test:  [32m✓[39m tests/services/reliability/core.test.ts [2m([22m[2m27 tests[22m[2m)[22m[32m 48[2mms[22m[39m
+server test:  [32m✓[39m tests/services/insider-threat.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 37[2mms[22m[39m
+server test: {"level":"info","msg":"peer_registered","ts":"2026-11-15T07:27:02.299Z","peerId":"peer-1","endpoint":"https://example.com"}
+server test: {"level":"info","msg":"peer_registered","ts":"2026-11-15T07:27:02.311Z","peerId":"peer-1","endpoint":"https://example.com"}
+server test: {"level":"info","msg":"peer_registered","ts":"2026-11-15T07:27:02.311Z","peerId":"peer-1","endpoint":"https://updated.com"}
+server test: {"level":"info","msg":"peer_registered","ts":"2026-11-15T07:27:02.313Z","peerId":"peer-1","endpoint":"https://example.com"}
+server test: {"level":"info","msg":"peer_removed","ts":"2026-11-15T07:27:02.313Z","peerId":"peer-1"}
+server test: {"level":"info","msg":"peer_registered","ts":"2026-11-15T07:27:02.315Z","peerId":"p1","endpoint":"https://example.com"}
+server test: {"level":"info","msg":"peer_registered","ts":"2026-11-15T07:27:02.315Z","peerId":"p2","endpoint":"https://example.com"}
+server test: {"level":"info","msg":"peer_registered","ts":"2026-11-15T07:27:02.316Z","peerId":"p3","endpoint":"https://example.com"}
+server test: {"level":"info","msg":"peer_registered","ts":"2026-11-15T07:27:02.319Z","peerId":"p1","endpoint":"https://example.com"}
+server test: {"level":"info","msg":"peer_registered","ts":"2026-11-15T07:27:02.319Z","peerId":"p2","endpoint":"https://example.com"}
+server test: {"level":"info","msg":"peer_registered","ts":"2026-11-15T07:27:02.319Z","peerId":"p3","endpoint":"https://example.com"}
+server test: {"level":"info","msg":"peer_registered","ts":"2026-11-15T07:27:02.320Z","peerId":"p0","endpoint":"https://example.com"}
+server test: {"level":"info","msg":"peer_registered","ts":"2026-11-15T07:27:02.320Z","peerId":"p1","endpoint":"https://example.com"}
+server test: {"level":"info","msg":"peer_registered","ts":"2026-11-15T07:27:02.320Z","peerId":"p2","endpoint":"https://example.com"}
+server test: {"level":"info","msg":"peer_registered","ts":"2026-11-15T07:27:02.320Z","peerId":"p3","endpoint":"https://example.com"}
+server test: {"level":"info","msg":"peer_registered","ts":"2026-11-15T07:27:02.321Z","peerId":"p4","endpoint":"https://example.com"}
+server test: {"level":"info","msg":"peer_registered","ts":"2026-11-15T07:27:02.321Z","peerId":"p1","endpoint":"https://example.com"}
+server test: {"level":"info","msg":"peer_registered","ts":"2026-11-15T07:27:02.322Z","peerId":"p1","endpoint":"https://example.com"}
+server test: {"level":"info","msg":"peer_registered","ts":"2026-11-15T07:27:02.323Z","peerId":"p1","endpoint":"https://example.com"}
+server test: {"level":"warn","msg":"peer_offline","ts":"2026-11-15T07:27:02.324Z","peerId":"p1","missed":2}
+server test: {"level":"info","msg":"peer_registered","ts":"2026-11-15T07:27:02.324Z","peerId":"p1","endpoint":"https://example.com"}
+server test: {"level":"info","msg":"peer_registered","ts":"2026-11-15T07:27:02.324Z","peerId":"p2","endpoint":"https://example.com"}
+server test: {"level":"info","msg":"peer_registered","ts":"2026-11-15T07:27:02.324Z","peerId":"p3","endpoint":"https://example.com"}
+server test:  [32m✓[39m tests/federated-node-discovery.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 44[2mms[22m[39m
+server test:  [32m✓[39m tests/lib/auth-context.test.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 54[2mms[22m[39m
+server test: {"level":"info","msg":"p2p_swarm_started","ts":"2026-11-15T07:27:02.979Z","myId":"nexus-test-9900","port":9900}
+server test: {"level":"info","msg":"p2p_peer_discovered","ts":"2026-11-15T07:27:02.984Z","peerId":"peer-1","host":"10.0.0.1"}
+server test: {"level":"info","msg":"p2p_swarm_stopped","ts":"2026-11-15T07:27:02.989Z"}
+server test: {"level":"info","msg":"p2p_swarm_started","ts":"2026-11-15T07:27:02.991Z","myId":"nexus-test-9900","port":9900}
+server test: {"level":"info","msg":"p2p_peer_discovered","ts":"2026-11-15T07:27:02.991Z","peerId":"peer-1","host":"10.0.0.1"}
+server test: {"level":"info","msg":"p2p_swarm_stopped","ts":"2026-11-15T07:27:02.992Z"}
+server test: {"level":"info","msg":"p2p_swarm_stopped","ts":"2026-11-15T07:27:02.992Z"}
+server test: {"level":"info","msg":"p2p_swarm_started","ts":"2026-11-15T07:27:02.993Z","myId":"nexus-test-9900","port":9900}
+server test: {"level":"info","msg":"p2p_swarm_stopped","ts":"2026-11-15T07:27:02.993Z"}
+server test: {"level":"info","msg":"p2p_swarm_started","ts":"2026-11-15T07:27:02.994Z","myId":"nexus-test-9900","port":9900}
+server test: {"level":"info","msg":"p2p_peer_discovered","ts":"2026-11-15T07:27:02.994Z","peerId":"peer-9","host":"10.0.0.9"}
+server test: {"level":"info","msg":"p2p_swarm_stopped","ts":"2026-11-15T07:27:02.995Z"}
+server test: {"level":"info","msg":"p2p_swarm_started","ts":"2026-11-15T07:27:02.996Z","myId":"nexus-test-9900","port":9900}
+server test: {"level":"info","msg":"p2p_peer_discovered","ts":"2026-11-15T07:27:02.996Z","peerId":"peer-1","host":"10.0.0.1"}
+server test: {"level":"info","msg":"p2p_swarm_stopped","ts":"2026-11-15T07:27:02.998Z"}
+server test: {"level":"info","msg":"p2p_swarm_started","ts":"2026-11-15T07:27:02.999Z","myId":"nexus-test-9900","port":9900}
+server test: {"level":"info","msg":"p2p_peer_discovered","ts":"2026-11-15T07:27:02.999Z","peerId":"peer-1","host":"10.0.0.1"}
+server test: {"level":"info","msg":"p2p_swarm_stopped","ts":"2026-11-15T07:27:03.001Z"}
+server test: {"level":"info","msg":"p2p_swarm_started","ts":"2026-11-15T07:27:03.001Z","myId":"nexus-test-9900","port":9900}
+server test: {"level":"info","msg":"p2p_peer_discovered","ts":"2026-11-15T07:27:03.002Z","peerId":"peer-1","host":"10.0.0.1"}
+server test: {"level":"info","msg":"p2p_swarm_stopped","ts":"2026-11-15T07:27:03.004Z"}
+server test: {"level":"info","msg":"p2p_swarm_stopped","ts":"2026-11-15T07:27:03.005Z"}
+server test: {"level":"info","msg":"p2p_swarm_stopped","ts":"2026-11-15T07:27:03.006Z"}
+server test:  [32m✓[39m tests/p2p-swarm.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 45[2mms[22m[39m
+server test:  [32m✓[39m tests/metron-probe-health.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 48[2mms[22m[39m
+server test:  [32m✓[39m tests/services/vdp.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 46[2mms[22m[39m
+server test:  [32m✓[39m tests/self-improvement-harness-control.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 116[2mms[22m[39m
+server test:  [32m✓[39m tests/r1-security-isolation.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 39[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-attachments.store.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 28[2mms[22m[39m
+server test:  [32m✓[39m tests/routes/sse.test.ts [2m([22m[2m6 tests[22m[2m | [22m[33m1 skipped[39m[2m)[22m[32m 46[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-tag-taxonomy.async.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 40[2mms[22m[39m
+server test: {"level":"info","msg":"mlfq_tuner_configured","ts":"2026-11-15T07:27:05.223Z","cfg":{"intervalMs":15000,"highLatencyMs":1500,"lowLatencyMs":200,"maxStepMs":50,"minQuantumMs":10,"maxQuantumMs":2000,"enabled":true}}
+server test: {"level":"info","msg":"mlfq_tuner_configured","ts":"2026-11-15T07:27:05.228Z","cfg":{"intervalMs":15000,"highLatencyMs":1500,"lowLatencyMs":200,"maxStepMs":50,"minQuantumMs":10,"maxQuantumMs":2000,"enabled":true}}
+server test: {"level":"info","msg":"mlfq_tuner_configured","ts":"2026-11-15T07:27:05.229Z","cfg":{"intervalMs":15000,"highLatencyMs":1500,"lowLatencyMs":200,"maxStepMs":50,"minQuantumMs":10,"maxQuantumMs":2000,"enabled":true}}
+server test: {"level":"Q0","msg":"scheduler_quantum_set","ts":"2026-11-15T07:27:05.231Z","ms":100}
+server test: {"level":"info","msg":"scheduler_pid_gain_set","ts":"2026-11-15T07:27:05.234Z","gain":{"kp":4,"ki":0.1,"kd":0.01}}
+server test: {"level":"info","msg":"mlfq_tuner_configured","ts":"2026-11-15T07:27:05.245Z","cfg":{"intervalMs":15000,"highLatencyMs":1500,"lowLatencyMs":200,"maxStepMs":50,"minQuantumMs":10,"maxQuantumMs":2000,"enabled":true}}
+server test: {"level":"info","msg":"mlfq_tuner_configured","ts":"2026-11-15T07:27:05.245Z","cfg":{"intervalMs":15000,"highLatencyMs":1500,"lowLatencyMs":200,"maxStepMs":50,"minQuantumMs":10,"maxQuantumMs":2000,"enabled":true}}
+server test: {"level":"Q2","msg":"scheduler_quantum_set","ts":"2026-11-15T07:27:05.246Z","ms":175}
+server test: {"level":"info","msg":"scheduler_pid_gain_set","ts":"2026-11-15T07:27:05.246Z","gain":{"kp":1.53,"ki":0.1,"kd":0.01}}
+server test: {"level":"info","msg":"mlfq_tuner_configured","ts":"2026-11-15T07:27:05.249Z","cfg":{"intervalMs":15000,"highLatencyMs":1500,"lowLatencyMs":200,"maxStepMs":50,"minQuantumMs":10,"maxQuantumMs":2000,"enabled":true}}
+server test: {"level":"info","msg":"mlfq_tuner_configured","ts":"2026-11-15T07:27:05.250Z","cfg":{"intervalMs":15000,"highLatencyMs":1500,"lowLatencyMs":200,"maxStepMs":50,"minQuantumMs":10,"maxQuantumMs":2000,"enabled":true}}
+server test: {"level":"info","msg":"mlfq_tuner_configured","ts":"2026-11-15T07:27:05.251Z","cfg":{"intervalMs":15000,"highLatencyMs":1500,"lowLatencyMs":200,"maxStepMs":50,"minQuantumMs":10,"maxQuantumMs":2000,"enabled":true}}
+server test: {"level":"info","msg":"mlfq_tuner_configured","ts":"2026-11-15T07:27:05.252Z","cfg":{"intervalMs":15000,"highLatencyMs":1500,"lowLatencyMs":200,"maxStepMs":50,"minQuantumMs":10,"maxQuantumMs":2000,"enabled":true}}
+server test: {"level":"info","msg":"mlfq_tuner_configured","ts":"2026-11-15T07:27:05.252Z","cfg":{"intervalMs":15000,"highLatencyMs":1500,"lowLatencyMs":200,"maxStepMs":50,"minQuantumMs":10,"maxQuantumMs":10,"enabled":true}}
+server test: {"level":"Q3","msg":"scheduler_quantum_set","ts":"2026-11-15T07:27:05.253Z","ms":10}
+server test: {"level":"info","msg":"scheduler_pid_gain_set","ts":"2026-11-15T07:27:05.254Z","gain":{"kp":4,"ki":0.1,"kd":0.01}}
+server test: {"level":"info","msg":"mlfq_tuner_configured","ts":"2026-11-15T07:27:05.254Z","cfg":{"intervalMs":15000,"highLatencyMs":1500,"lowLatencyMs":200,"maxStepMs":50,"minQuantumMs":10,"maxQuantumMs":2000,"enabled":true}}
+server test: {"level":"info","msg":"mlfq_tuner_configured","ts":"2026-11-15T07:27:05.255Z","cfg":{"intervalMs":15000,"highLatencyMs":1500,"lowLatencyMs":200,"maxStepMs":50,"minQuantumMs":10,"maxQuantumMs":2000,"enabled":true}}
+server test: {"level":"Q0","msg":"scheduler_quantum_set","ts":"2026-11-15T07:27:05.255Z","ms":100}
+server test: {"level":"info","msg":"scheduler_pid_gain_set","ts":"2026-11-15T07:27:05.255Z","gain":{"kp":4,"ki":0.1,"kd":0.01}}
+server test:  [32m✓[39m tests/consensus-perf.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 46[2mms[22m[39m
+server test: {"level":"info","msg":"mlfq_tuner_configured","ts":"2026-11-15T07:27:05.257Z","cfg":{"intervalMs":15000,"highLatencyMs":1500,"lowLatencyMs":200,"maxStepMs":50,"minQuantumMs":10,"maxQuantumMs":2000,"enabled":true}}
+server test: {"level":"info","msg":"quota_registry_swept","ts":"2026-11-15T07:27:05.261Z","count":1}
+server test: {"level":"warn","msg":"preemption_leak_reaped","ts":"2026-11-15T07:27:05.266Z","count":1,"ids":["stuck"]}
+server test: {"level":"warn","msg":"scheduler_breaker_transition","ts":"2026-11-15T07:27:05.269Z","from":"closed","to":"open","reason":"failure_threshold_exceeded","active":0}
+server test: {"level":"warn","msg":"scheduler_breaker_transition","ts":"2026-11-15T07:27:05.269Z","from":"open","to":"half-open","reason":"cooldown_elapsed","active":0}
+server test: {"level":"warn","msg":"scheduler_breaker_transition","ts":"2026-11-15T07:27:05.269Z","from":"half-open","to":"closed","reason":"probe_succeeded","active":0}
+server test:  [32m✓[39m tests/forge-selfheal.test.ts [2m([22m[2m20 tests[22m[2m)[22m[32m 74[2mms[22m[39m
+server test:  [32m✓[39m tests/self-opt-tuners.test.ts [2m([22m[2m24 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+server test:  [32m✓[39m tests/services/skill-compiler-capability.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 40[2mms[22m[39m
+server test:  [32m✓[39m tests/services/llm-gateway-v2.pure.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 34[2mms[22m[39m
+server test:  [32m✓[39m tests/services/lib-audit.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 35[2mms[22m[39m
+server test:  [32m✓[39m tests/services/blockchain.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 42[2mms[22m[39m
+server test: {"level":"info","msg":"message_bus_initialized","ts":"2026-11-15T07:27:07.540Z","instance":"container"}
+server test:  [32m✓[39m tests/resource-quota.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 37[2mms[22m[39m
+server test:  [32m✓[39m tests/routes/automation.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 39[2mms[22m[39m
+server test:  [32m✓[39m tests/kernel-introspect.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 71[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-forget.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 51[2mms[22m[39m
+server test:  [32m✓[39m tests/services/llm-scheduler.test.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 37[2mms[22m[39m
+server test:  [32m✓[39m tests/services/supply-chain.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+server test:  [32m✓[39m tests/agent-persistence.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 53[2mms[22m[39m
+server test:  [32m✓[39m tests/kernel-persistence.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 41[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-perfection.test.ts [2m([22m[2m29 tests[22m[2m)[22m[32m 51[2mms[22m[39m
+server test:  [32m✓[39m tests/services/audit-engine.test.ts [2m([22m[2m22 tests[22m[2m)[22m[32m 36[2mms[22m[39m
+server test:  [32m✓[39m tests/services/providers/openai.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 35[2mms[22m[39m
+server test:  [32m✓[39m tests/orchestrator.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 38[2mms[22m[39m
+server test:  [32m✓[39m tests/perf-cache.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 26[2mms[22m[39m
+server test: {"level":"warn","msg":"preemption_leak_reaped","ts":"2026-11-15T07:27:10.451Z","count":2,"ids":["old1","old2"]}
+server test: {"level":"warn","msg":"preemption_leak_reaped","ts":"2026-11-15T07:27:10.457Z","count":1,"ids":["fresh"]}
+server test:  [32m✓[39m tests/preemption-leak-guard.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 37[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-cold-storage.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+server test: {"level":"info","msg":"guardrail.threshold.updated","ts":"2026-11-15T07:27:10.526Z","id":"g1","metric":"tokens"}
+server test:  [32m✓[39m tests/guardrails-quarantine.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 34[2mms[22m[39m
+server test: {"level":"info","msg":"workflow.compiled","ts":"2026-11-15T07:27:10.599Z","name":"research","steps":3,"order":3}
+server test:  [32m✓[39m tests/workflow-dsl.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 33[2mms[22m[39m
+server test:  [32m✓[39m tests/self-opt.test.ts [2m([22m[2m20 tests[22m[2m)[22m[32m 36[2mms[22m[39m
+server test:  [32m✓[39m tests/guards-extended.test.ts [2m([22m[2m34 tests[22m[2m)[22m[32m 33[2mms[22m[39m
+server test: {"level":"error","msg":"task_queued_listener_error","ts":"2026-11-15T07:27:11.471Z","error":"boom"}
+server test:  [32m✓[39m tests/task-notifier.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 33[2mms[22m[39m
+server test:  [32m✓[39m tests/plugin-manifest.test.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 37[2mms[22m[39m
+server test: {"level":"info","msg":"hotpatch_applied","ts":"2026-11-15T07:27:11.968Z","mod":"mod","version":1}
+server test: {"level":"info","msg":"hotpatch_applied","ts":"2026-11-15T07:27:11.973Z","mod":"mod","version":2}
+server test: {"level":"info","msg":"hotpatch_applied","ts":"2026-11-15T07:27:11.976Z","mod":"m","version":1}
+server test: {"level":"info","msg":"hotpatch_applied","ts":"2026-11-15T07:27:11.976Z","mod":"m","version":2}
+server test: {"level":"info","msg":"hotpatch_applied","ts":"2026-11-15T07:27:11.977Z","mod":"m","version":3}
+server test: {"level":"info","msg":"hotpatch_rolled_back","ts":"2026-11-15T07:27:11.977Z","mod":"m","version":2}
+server test: {"level":"info","msg":"hotpatch_applied","ts":"2026-11-15T07:27:11.979Z","mod":"x","version":1}
+server test: {"level":"info","msg":"hotpatch_rolled_back","ts":"2026-11-15T07:27:11.979Z","mod":"x","version":1}
+server test: {"level":"info","msg":"hotpatch_applied","ts":"2026-11-15T07:27:11.981Z","mod":"shared","version":1}
+server test: {"level":"info","msg":"hotpatch_rolled_back","ts":"2026-11-15T07:27:11.981Z","mod":"shared","version":1}
+server test:  [32m✓[39m tests/kernel-hotpatch.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 30[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-rehearsal.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+server test:  [32m✓[39m tests/pipeline-dag-validation.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+server test:  [32m✓[39m tests/secrets-scanner.test.ts [2m([22m[2m20 tests[22m[2m)[22m[32m 34[2mms[22m[39m
+server test:  [32m✓[39m tests/audit-chain.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 27[2mms[22m[39m
+server test:  [32m✓[39m tests/consensus.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+server test:  [32m✓[39m tests/services/portkey-bridge.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+server test:  [32m✓[39m tests/dlp-scanner.test.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 26[2mms[22m[39m
+server test:  [32m✓[39m tests/blackboard.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+server test: {"level":"info","msg":"kernel_panic_cleared","ts":"2026-11-15T07:27:13.218Z"}
+server test: {"level":"info","msg":"message_bus_initialized","ts":"2026-11-15T07:27:13.222Z","instance":"container"}
+server test: {"level":"error","msg":"kernel_panic","ts":"2026-11-15T07:27:13.224Z","reason":"test reason","extra":{"foo":"bar"}}
+server test: {"level":"info","msg":"kernel_panic_cleared","ts":"2026-11-15T07:27:13.228Z"}
+server test: {"level":"info","msg":"kernel_panic_cleared","ts":"2026-11-15T07:27:13.229Z"}
+server test: {"level":"error","msg":"kernel_panic","ts":"2026-11-15T07:27:13.229Z","reason":"first"}
+server test: {"level":"info","msg":"kernel_panic_cleared","ts":"2026-11-15T07:27:13.231Z"}
+server test: {"level":"info","msg":"kernel_panic_cleared","ts":"2026-11-15T07:27:13.231Z"}
+server test: {"level":"error","msg":"kernel_panic","ts":"2026-11-15T07:27:13.231Z","reason":"reason"}
+server test: {"level":"info","msg":"kernel_panic_cleared","ts":"2026-11-15T07:27:13.232Z"}
+server test: {"level":"info","msg":"kernel_panic_cleared","ts":"2026-11-15T07:27:13.232Z"}
+server test:  [32m✓[39m tests/kernel-panic.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 26[2mms[22m[39m
+server test:  [32m✓[39m tests/specialization-registry.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+server test: {"level":"warn","msg":"omniroute.health_degraded","ts":"2026-11-15T07:27:13.764Z","provider":"test-provider-5xx","status":"degraded","consecutive5xxCount":1,"statusCode":503,"reason":"Service Unavailable"}
+server test: {"level":"warn","msg":"omniroute.health_degraded","ts":"2026-11-15T07:27:13.767Z","provider":"test-provider-5xx","status":"degraded","consecutive5xxCount":2,"statusCode":500,"reason":"Internal Server Error"}
+server test: {"level":"warn","msg":"omniroute.health_degraded","ts":"2026-11-15T07:27:13.768Z","provider":"test-provider-5xx","status":"down","consecutive5xxCount":3,"statusCode":502,"reason":"Bad Gateway"}
+server test:  [32m✓[39m tests/omniroute-bridge.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 28[2mms[22m[39m
+server test:  [32m✓[39m tests/services/ransomware-detector.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+server test:  [32m✓[39m tests/marketplace.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+server test:  [32m✓[39m tests/lib/tokens.test.ts [2m([22m[2m23 tests[22m[2m)[22m[32m 23[2mms[22m[39m
+server test: {"level":"info","msg":"message_bus_reset","ts":"2026-11-15T07:27:14.470Z"}
+server test: {"level":"info","msg":"message_bus_initialized","ts":"2026-11-15T07:27:14.473Z","instance":"container"}
+server test: {"level":"info","msg":"message_bus_reset","ts":"2026-11-15T07:27:14.479Z"}
+server test: {"level":"info","msg":"message_bus_initialized","ts":"2026-11-15T07:27:14.480Z","instance":"container"}
+server test: {"level":"info","msg":"message_bus_reset","ts":"2026-11-15T07:27:14.481Z"}
+server test: {"level":"info","msg":"message_bus_initialized","ts":"2026-11-15T07:27:14.481Z","instance":"container"}
+server test: {"level":"info","msg":"message_bus_reset","ts":"2026-11-15T07:27:14.482Z"}
+server test: {"level":"info","msg":"message_bus_initialized","ts":"2026-11-15T07:27:14.482Z","instance":"container"}
+server test:  [32m✓[39m tests/bus.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 26[2mms[22m[39m
+server test:  [32m✓[39m tests/services/providers/anthropic.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 23[2mms[22m[39m
+server test:  [32m✓[39m tests/federated-recall.test.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 41[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-cluster.ops.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+server test:  [32m✓[39m tests/kernel-schema-validation.test.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+server test:  [32m✓[39m tests/agent-permissions.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-privacy-zones.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+server test:  [32m✓[39m tests/services/providers/vllm.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+server test:  [32m✓[39m tests/lib/errors.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+server test:  [32m✓[39m tests/services/providers/m3.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+server test:  [32m✓[39m tests/services/omniroute.test.ts [2m([22m[2m22 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-encryption-v2.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+server test:  [32m✓[39m tests/services/providers/ollama.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+server test:  [32m✓[39m tests/crypto-suite.test.ts [2m([22m[2m21 tests[22m[2m)[22m[32m 23[2mms[22m[39m
+server test:  [32m✓[39m tests/mcp-http.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 45[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-backup.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+server test:  [32m✓[39m tests/services/vlm.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 23[2mms[22m[39m
+server test: {"level":"warn","msg":"scheduler_breaker_transition","ts":"2026-11-15T07:27:17.004Z","from":"closed","to":"open","reason":"boom","active":0}
+server test: {"level":"warn","msg":"scheduler_breaker_transition","ts":"2026-11-15T07:27:17.008Z","from":"closed","to":"open","reason":"failure_threshold_exceeded","active":0}
+server test: {"level":"warn","msg":"scheduler_breaker_transition","ts":"2026-11-15T07:27:17.008Z","from":"open","to":"half-open","reason":"cooldown_elapsed","active":0}
+server test: {"level":"warn","msg":"scheduler_breaker_transition","ts":"2026-11-15T07:27:17.008Z","from":"half-open","to":"closed","reason":"probe_succeeded","active":0}
+server test: {"level":"warn","msg":"scheduler_breaker_transition","ts":"2026-11-15T07:27:17.009Z","from":"closed","to":"open","reason":"kernel_panic","active":0}
+server test: {"level":"warn","msg":"scheduler_breaker_transition","ts":"2026-11-15T07:27:17.010Z","from":"open","to":"closed","reason":"manual_reset","active":0}
+server test: {"level":"warn","msg":"scheduler_breaker_transition","ts":"2026-11-15T07:27:17.010Z","from":"closed","to":"open","reason":"db_unreachable","active":0}
+server test:  [32m✓[39m tests/scheduler-resilience-risk.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 27[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-trainer.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+server test: [90mstdout[2m | tests/bench-sse-bus.test.ts[2m > [22m[2msse-bus fan-out benchmark[2m > [22m[2mpublishes to 100 subscribers with p95 latency under threshold
+server test: [22m[39m[sse-bus bench] N=100 iters=200 avg=0.0220ms p95=0.0380ms
+server test:  [32m✓[39m tests/bench-sse-bus.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-multimodal.test.ts [2m([22m[2m18 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+server test:  [32m✓[39m tests/rateLimit.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+server test:  [32m✓[39m tests/services/providers/google.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+server test:  [32m✓[39m tests/conditional-router.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-export-v3.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 30[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-multilingual.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+server test:  [32m✓[39m tests/data-classification.test.ts [2m([22m[2m20 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+server test:  [32m✓[39m tests/services/reliability/slo-load-shedder.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-query.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 26[2mms[22m[39m
+server test:  [32m✓[39m tests/skill-template-engine.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+server test:  [32m✓[39m tests/vault.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+server test:  [32m✓[39m tests/dedup-engine.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+server test:  [32m✓[39m tests/project.service.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+server test:  [32m✓[39m tests/metron-caches.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+server test:  [32m✓[39m tests/sse-bus.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-batch.apply.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+server test:  [32m✓[39m tests/planner.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+server test:  [32m✓[39m tests/incident-response.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+server test:  [32m✓[39m tests/gap-items.test.ts [2m([22m[2m18 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+server test:  [32m✓[39m tests/services/reliability/gap.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+server test:  [32m✓[39m tests/self-improvement-harness.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-provenance.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+server test:  [32m✓[39m tests/dag-executor.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+server test:  [32m✓[39m tests/shadow-daemon-zscore.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+server test:  [32m✓[39m tests/services/llm-router.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-encryption.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+server test:  [32m✓[39m tests/config/kernel-schema.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+server test: {"level":"info","msg":"scheduler_pid_gain_set","ts":"2026-11-15T07:27:23.150Z","gain":{"kp":2.5,"ki":0.1,"kd":0.01}}
+server test: {"level":"info","msg":"scheduler_pid_gain_set","ts":"2026-11-15T07:27:23.156Z","gain":{"kp":1,"ki":0.1,"kd":0.01}}
+server test: {"level":"info","msg":"scheduler_queue_capacity_set","ts":"2026-11-15T07:27:23.161Z","capacity":2048}
+server test: {"level":"info","msg":"scheduler_rl_policy_set","ts":"2026-11-15T07:27:23.162Z","policy":"fairshare"}
+server test: {"level":"info","msg":"scheduler_rl_policy_set","ts":"2026-11-15T07:27:23.163Z","policy":"mlfq"}
+server test: {"level":"info","msg":"hotpatch_applied","ts":"2026-11-15T07:27:23.166Z","mod":"scheduler","version":1}
+server test:  [32m✓[39m tests/forge-live-seam.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+server test:  [32m✓[39m tests/services/cspm.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+server test:  [32m✓[39m tests/scheduler-core.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+server test:  [32m✓[39m tests/services/vendor-assessor.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+server test:  [32m✓[39m tests/pipeline-executor.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+server test:  [32m✓[39m tests/self-opt-adapters.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+server test:  [32m✓[39m tests/lib/security-headers.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+server test:  [32m✓[39m tests/services/compliance-reporter.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+server test:  [32m✓[39m tests/metron-overhead.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+server test:  [32m✓[39m tests/lib/envelope.test.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+server test:  [32m✓[39m tests/kernel-bootstrap.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-search-explanation.deep.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+server test:  [32m✓[39m tests/merge-strategies.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+server test:  [32m✓[39m tests/kernel-schema.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+server test:  [32m✓[39m tests/agent-loop.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+server test:  [32m✓[39m tests/services/fairness-corrector.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+server test:  [32m✓[39m tests/services/anomaly-detector.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+server test:  [32m✓[39m tests/capability-governance.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 20[2mms[22m[39m
+server test:  [32m✓[39m tests/metrics-validation.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 16[2mms[22m[39m
+server test:  [32m✓[39m tests/lib/graph.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+server test:  [32m✓[39m tests/blockchain.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-stitcher.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+server test:  [32m✓[39m tests/rate-limit.service.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+server test:  [32m✓[39m tests/services/session-recorder.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+server test:  [32m✓[39m tests/services/breach-notifier.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+server test:  [32m✓[39m tests/services/reliability/degraded-mode.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+server test:  [32m✓[39m tests/tokens.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+server test:  [32m✓[39m tests/compliance-reporter.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-lifecycle.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+server test:  [32m✓[39m tests/sse-bridge.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 14[2mms[22m[39m
+server test:  [32m✓[39m tests/deadlock-detector.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+server test:  [32m✓[39m tests/overhead-accounting.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-nl-query.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-causal-chains.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-emotion.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-tag-taxonomy.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+server test:  [32m✓[39m tests/services/feedback.service.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+server test:  [32m✓[39m tests/self-opt-gap-items.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+server test:  [32m✓[39m tests/services/evidence-collector.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+server test:  [32m✓[39m tests/session.service.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-analysis.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+server test:  [32m✓[39m tests/audit.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 27[2mms[22m[39m
+server test:  [32m✓[39m tests/self-opt-guardrail.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+server test:  [32m✓[39m tests/services/auditing.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-hierarchy.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+server test:  [32m✓[39m tests/fairness-corrector.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 28[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-dedup.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-cluster.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+server test:  [32m✓[39m tests/feedback.service.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-attachments.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+server test:  [32m✓[39m tests/ring-audit.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 39[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-decay.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 37[2mms[22m[39m
+server test:  [32m✓[39m tests/self-opt-telemetry.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+server test:  [32m✓[39m tests/llm.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+server test:  [32m✓[39m tests/lib/strings.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+server test:  [32m✓[39m tests/r1-runtime.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 9[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-search-explanation.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-diff-sync.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-contradiction.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-batch.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-fragmentation.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 37[2mms[22m[39m
+server test:  [32m✓[39m tests/pulse-probe.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 7[2mms[22m[39m
+server test:  [32m✓[39m tests/memory-conflict-resolver.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+server test:  [32m✓[39m tests/services/wasm-capability-resolution.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+server test: [2m Test Files [22m [1m[32m262 passed[39m[22m[90m (262)[39m
+server test: [2m      Tests [22m [1m[32m2593 passed[39m[22m[2m | [22m[33m1 skipped[39m[90m (2594)[39m
+server test: [2m   Start at [22m 12:55:57
+server test: [2m   Duration [22m 99.78s[2m (transform 24.96s, setup 8.17s, collect 267.47s, tests 173.48s, environment 157ms, prepare 94.67s)[22m
+server test: Done

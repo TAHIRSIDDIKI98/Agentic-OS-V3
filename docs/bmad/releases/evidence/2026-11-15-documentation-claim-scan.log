@@ -1,0 +1,5 @@
+$ pnpm exec tsx scripts/scan-r1-documentation-claims.ts --check
+# cwd: .
+# exit: 0
+
+R1 documentation claim scan: findings=60; unresolvedCurrentClaims=0.

@@ -24,7 +24,10 @@ const evidenceDirectory = resolve(repositoryRoot, 'docs/bmad/releases/evidence')
 const sourceLedgerPath = resolve(evidenceDirectory, '2026-07-24-release-evidence-ledger.json');
 const sourceTriagePath = resolve(evidenceDirectory, '2026-07-24-full-suite-triage.json');
 const validatorPath = 'scripts/validate-r1-release-evidence.ts';
-const pnpmExecutable = process.platform === 'win32' ? 'pnpm.cmd' : 'pnpm';
+// Spawn node directly against the tsx CLI. Spawning `pnpm.cmd` on Windows
+// requires a shell; without one the child never launches, the test sees empty
+// output, and a broken harness masquerades as a broken validator.
+const tsxCliPath = resolve(repositoryRoot, 'node_modules/tsx/dist/cli.mjs');
 
 function readJson<T>(path: string): T {
   return JSON.parse(readFileSync(path, 'utf8')) as T;
@@ -45,8 +48,8 @@ function expectValidatorFailure(
   expectedDiagnostic: string
 ): void {
   const result = spawnSync(
-    pnpmExecutable,
-    ['exec', 'tsx', validatorPath, '--ledger', ledgerPath, '--triage', triagePath],
+    process.execPath,
+    [tsxCliPath, validatorPath, '--ledger', ledgerPath, '--triage', triagePath],
     { cwd: repositoryRoot, encoding: 'utf8' }
   );
   if (result.status === 0) {

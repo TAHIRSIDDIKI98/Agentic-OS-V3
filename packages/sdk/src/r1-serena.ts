@@ -104,6 +104,15 @@ async function defaultSymbolProvider(file: string, content: string): Promise<rea
   return symbols;
 }
 
+/**
+ * Normalize separators so index keys and lookups agree on Windows and POSIX.
+ * Windows returns backslash paths from glob; a caller may query with either
+ * `src/math.ts` or `/tmp/project/src/math.ts`.
+ */
+function canonicalPath(p: string): string {
+  return p.replace(/\\/g, '/');
+}
+
 export class SerenaCodeIntelligence {
   private readonly now: () => string;
   private readonly cache = new Map<string, ProjectIndex>();
@@ -145,7 +154,13 @@ export class SerenaCodeIntelligence {
         const content = await this.fsRead(file);
         const syms = await this.symbolProvider(file, content);
         symbols.push(...syms);
-        map[file] = [...syms] as any;
+        // Key by absolute path AND project-relative path so both query forms hit.
+        const canonicalFile = canonicalPath(file);
+        map[canonicalFile] = [...syms];
+        const relativeFile = canonicalPath(path.relative(projectRoot, file));
+        if (relativeFile && relativeFile !== canonicalFile) {
+          map[relativeFile] = [...syms];
+        }
       } catch {}
     }
     const index: ProjectIndex = { symbols, files, map, indexedAt: this.now() };
@@ -172,12 +187,26 @@ export class SerenaCodeIntelligence {
     const parsed = GetSymbolInfoQuerySchema.parse(query);
     const index = this.cache.get(parsed.projectId);
     if (!index) throw new Error('Project not indexed');
-    const fullPath = path.isAbsolute(parsed.file) ? parsed.file : path.join(projectRoot, parsed.file);
+    // join (not resolve) keeps root-relative POSIX roots portable on Windows:
+    // resolve would inject the current drive letter, which the caller did not
+    // supply and which breaks POSIX-style project roots.
+    const fullPath = path.isAbsolute(parsed.file)
+      ? parsed.file
+      : path.join(projectRoot, parsed.file);
+    const canonicalLookup = canonicalPath(parsed.file);
     const content = await this.fsRead(fullPath);
     const lines = content.split('\n');
     const lineContent = lines[parsed.line] ?? '';
     // Find closest symbol
-    const candidates = (index.map[fullPath] ?? index.symbols.filter((s) => s.file === fullPath || s.file === parsed.file)).filter((s) => Math.abs(s.line - parsed.line) <= 3);
+    const candidates = (
+      index.map[canonicalLookup] ??
+      index.map[canonicalPath(fullPath)] ??
+      index.symbols.filter(
+        (s) =>
+          canonicalPath(s.file) === canonicalLookup ||
+          canonicalPath(s.file) === canonicalPath(fullPath)
+      )
+    ).filter((s) => Math.abs(s.line - parsed.line) <= 3);
     const symbol = candidates[0] ?? { name: 'unknown', kind: 'variable' as const, file: parsed.file, line: parsed.line, column: parsed.column ?? 0, signature: lineContent.slice(0, 200) };
 
     // Extract read-only symbol region (10 lines context)

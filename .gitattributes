@@ -4,3 +4,7 @@
 # Preserve raw command transcripts exactly; they may include terminal whitespace.
 docs/bmad/releases/evidence/*.log -whitespace
 docs/bmad/releases/evidence/**/*.log -whitespace
+
+# Release evidence is hashed byte-for-byte. Never let checkout rewrite it:
+# CRLF conversion on Windows would invalidate every recorded SHA-256.
+docs/bmad/releases/evidence/** -text

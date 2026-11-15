@@ -1,0 +1,23 @@
+$ pnpm -r typecheck
+# cwd: .
+# exit: 0
+
+Scope: 5 of 6 workspace projects
+packages/a2a-server typecheck$ tsc --noEmit
+packages/sdk typecheck$ tsc -p tsconfig.json --noEmit
+packages/a2a-server typecheck: Done
+packages/sdk typecheck: Done
+packages/devtools typecheck$ tsc --noEmit
+server pretypecheck$ npm --prefix ../packages/a2a-server run build && npm --prefix ../packages/sdk run build
+server pretypecheck: > @agentic-os/a2a-server@2.0.0 build
+server pretypecheck: > tsc
+server pretypecheck: > @agentic-os/sdk@1.0.0 build
+server pretypecheck: > npm run build:esm && npm run build:cjs
+server pretypecheck: > @agentic-os/sdk@1.0.0 build:esm
+server pretypecheck: > tsc -p tsconfig.json
+packages/devtools typecheck: Done
+server pretypecheck: > @agentic-os/sdk@1.0.0 build:cjs
+server pretypecheck: > tsc -p tsconfig.cjs.json
+server pretypecheck: Done
+server typecheck$ tsc --noEmit --incremental false
+server typecheck: Done

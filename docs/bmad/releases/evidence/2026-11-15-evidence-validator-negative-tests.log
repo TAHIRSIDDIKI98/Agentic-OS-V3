@@ -1,0 +1,5 @@
+$ pnpm exec tsx scripts/test-r1-evidence-v3.ts
+# cwd: .
+# exit: 0
+
+R1 v3 evidence validator negative tests passed: nonzero pass, path escape, forged hash, manual approval, blocking-list mismatch, not_run-with-exit, and unreviewed approval were all rejected.
