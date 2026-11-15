@@ -22,10 +22,10 @@ $ npx vitest run tests/e2e/golden-path.e2e.test.ts
 13. export bundle validated by a clean import dry-run
 14. usefulness feedback recorded and readable
 
- [32m✓[39m tests/e2e/golden-path.e2e.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 151[2mms[22m[39m
+ [32m✓[39m tests/e2e/golden-path.e2e.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 163[2mms[22m[39m
 
 [2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
 [2m      Tests [22m [1m[32m1 passed[39m[22m[90m (1)[39m
-[2m   Start at [22m 16:39:25
-[2m   Duration [22m 2.56s[2m (transform 525ms, setup 32ms, collect 1.77s, tests 151ms, environment 0ms, prepare 144ms)[22m
+[2m   Start at [22m 17:20:30
+[2m   Duration [22m 2.89s[2m (transform 591ms, setup 33ms, collect 1.98s, tests 163ms, environment 0ms, prepare 221ms)[22m
 
