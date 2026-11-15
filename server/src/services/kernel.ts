@@ -10,8 +10,15 @@
  *
  * Every operation appends to the hash-chained audit log.
  */
-import { db } from '../db/client.js';
+import { db, isSqlite } from '../db/client.js';
 import { agents, agentTasks, ringPolicies, auditLog } from '../db/client.js';
+
+/**
+ * JSON-shaped columns are plain text in SQLite (schema-sqlite.ts) and jsonb in
+ * Postgres. better-sqlite3 rejects raw objects, so serialize for SQLite only and
+ * let drizzle handle jsonb on Postgres.
+ */
+const jsonColumn = <T>(value: T): T | string => (isSqlite ? JSON.stringify(value) : value);
 import { appendAudit } from '../lib/audit.js';
 import { getEnv } from '../lib/env.js';
 import { logToolReceipt } from './audit-engine.js';
@@ -93,7 +100,11 @@ export async function spawnAgent(input: SpawnAgentInput, actor: string) {
       kind: input.kind ?? 'sub-agent',
       parentId: input.parentId ?? null,
       ring,
-      scopes: input.scopes ?? [],
+      // SQLite declares these columns as plain text, so the JSON payloads must
+      // be serialized here; passing JS objects makes better-sqlite3 mis-bind
+      // positional parameters (surfaced as NOT NULL / "Too few parameter values").
+      // Postgres keeps jsonb, which drizzle serializes itself.
+      scopes: jsonColumn(input.scopes ?? []),
       status: 'idle',
       llmModel: input.llmModel ?? null,
       tokenBudget: input.tokenBudget ?? 100000,
@@ -101,8 +112,8 @@ export async function spawnAgent(input: SpawnAgentInput, actor: string) {
       timeoutMs: input.timeoutMs ?? 120000,
       maxRetries: input.maxRetries ?? 3,
       schedulingMode: input.schedulingMode ?? 'preemptive',
-      cgroup,
-      metadata: {},
+      cgroup: jsonColumn(cgroup),
+      metadata: jsonColumn({}),
     })
     .returning();
 
@@ -383,7 +394,7 @@ export async function enqueueTask(input: EnqueueTaskInput, actor: string) {
       queue: KIND_QUEUE[input.kind ?? 'interactive'] ?? 'Q1',
       priority: QUEUE_PRIORITY[KIND_QUEUE[input.kind ?? 'interactive'] ?? 'Q1'] ?? 60,
       status: 'succeeded' as const,
-      input: input.input ?? {},
+      input: jsonColumn(input.input ?? {}),
       output: compiled.output,
       error: null,
       idempotencyKey: input.idempotencyKey ?? null,
@@ -454,7 +465,7 @@ export async function enqueueTask(input: EnqueueTaskInput, actor: string) {
       queue,
       priority,
       status: 'queued',
-      input: input.input ?? {},
+      input: jsonColumn(input.input ?? {}),
       idempotencyKey: input.idempotencyKey ?? null,
       traceId: input.traceId ?? null,
       deadline: input.deadline

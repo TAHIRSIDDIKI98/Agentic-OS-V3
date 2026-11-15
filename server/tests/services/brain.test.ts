@@ -63,6 +63,9 @@ describe('brain service', () => {
 
   describe('importBrain', () => {
     it('inserts valid payload', async () => {
+      // importBrain dedupes skills by name, so a leftover row from an earlier
+      // run in the shared test database would make this assertion order-dependent.
+      await db.delete(skills).where(eq(skills.name, 'i-skill'));
       const r = await importBrain(
         {
           format: 'nexus-brain',

@@ -4,8 +4,11 @@
  * Contains: Cron daemon management, ambient voice ingestion,
  * HITL approval gates, Zod auto-correction loop, circuit breaker.
  */
-import { db } from '../db/client.js';
+import { db, isSqlite } from '../db/client.js';
 import { cronJobs, agentTasks, stateSnapshots } from '../db/client.js';
+
+/** SQLite stores JSON-shaped columns as text; Postgres jsonb needs the raw value. */
+const jsonColumn = <T>(value: T): T | string => (isSqlite ? JSON.stringify(value) : value);
 import { appendAudit } from '../lib/audit.js';
 import { enqueueTask, spawnAgent } from './kernel.js';
 import { randomUUID } from 'node:crypto';
@@ -39,7 +42,9 @@ export async function createCronJob(input: CronJobInput, actor: string) {
       cron: input.cron,
       agentKind: input.agentKind ?? 'daemon',
       taskLabel: input.taskLabel,
-      taskInput: input.taskInput ?? {},
+      // Plain-text column in SQLite: serialize here (see schema-sqlite.ts).
+      // Postgres keeps jsonb, which drizzle serializes itself.
+      taskInput: jsonColumn(input.taskInput ?? {}),
       enabled: true,
       nextRunAt,
       runCount: 0,

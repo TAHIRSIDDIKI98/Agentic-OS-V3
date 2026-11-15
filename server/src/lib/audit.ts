@@ -119,9 +119,53 @@ async function chainTip(_client: Tx): Promise<{ sequence: number; entryHash: str
 }
 
 /**
+ * SQLite has no advisory lock, and appending reads the chain tip before it
+ * inserts. Two concurrent appends therefore read the same tip and collide on
+ * the UNIQUE(sequence) index (observed through nexus_delegate, which appends
+ * from the request while the worker and audit watchdog append in the
+ * background). Serialize in-process appends, and retry with jitter for a second
+ * writer process sharing the same file.
+ */
+let appendChain: Promise<unknown> = Promise.resolve();
+
+function serializeSqliteAppend<T>(task: () => Promise<T>): Promise<T> {
+  const run = appendChain.then(task, task);
+  appendChain = run.then(
+    () => undefined,
+    () => undefined
+  );
+  return run;
+}
+
+const SEQUENCE_COLLISION = /UNIQUE constraint failed: audit_log\.sequence/i;
+const APPEND_MAX_ATTEMPTS = 8;
+
+async function appendAuditEntry(
+  doAppend: (client: Tx) => Promise<AuditEntry>
+): Promise<AuditEntry> {
+  if (!isSqlite) return await db.transaction(doAppend);
+  return await serializeSqliteAppend(async () => {
+    let lastError: unknown;
+    for (let attempt = 0; attempt < APPEND_MAX_ATTEMPTS; attempt++) {
+      try {
+        return await doAppend(db);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        if (!SEQUENCE_COLLISION.test(message)) throw error;
+        lastError = error;
+        await new Promise((resolve) =>
+          setTimeout(resolve, 5 + Math.random() * 20 * (attempt + 1))
+        );
+      }
+    }
+    throw lastError ?? new Error('appendAudit: exhausted sequence retries');
+  });
+}
+
+/**
  * Append a hash-chained entry. If `tx` is provided, append within the caller's
  * transaction (so the audit record commits or rolls back WITH the mutation).
- * Otherwise open a dedicated transaction.
+ * Otherwise append through the serialized path above.
  */
 export async function appendAudit(
   action: string,
@@ -148,8 +192,9 @@ export async function appendAudit(
       createdAt.getTime(),
       payload
     );
-    const insertPayload =
-      isSqlite && typeof payload === 'object' ? JSON.stringify(payload) : payload;
+    // Always encode on SQLite so storage is unambiguous: the verifier can decode
+    // every row back to the exact value that was hashed (object OR string).
+    const insertPayload = isSqlite ? JSON.stringify(payload) : payload;
     let row: AuditEntry | undefined;
     if (isSqlite) {
       await client.insert(auditLog).values({
@@ -220,12 +265,28 @@ export async function appendAudit(
     return row as AuditEntry;
   };
 
-  const entry = tx
-    ? await doAppend(tx)
-    : isSqlite
-      ? await doAppend(db)
-      : await db.transaction(doAppend);
+  const entry = tx ? await doAppend(tx) : await appendAuditEntry(doAppend);
   return entry;
+}
+
+/**
+ * SQLite stores object payloads as JSON text, but `appendAudit` hashes the
+ * payload OBJECT. Verification must therefore restore the pre-serialization
+ * shape before hashing, otherwise every SQLite chain fails at entry 1.
+ *
+ * Only values that decode to an object/array are re-parsed: a payload that was
+ * a plain JS string hashed as that string and must stay byte-identical.
+ */
+function canonicalPayloadForHash(payload: unknown): unknown {
+  if (!isSqlite || typeof payload !== 'string') return payload;
+  try {
+    // The SQLite writer stores JSON.stringify(payload), so decoding restores
+    // exactly what was hashed — including string payloads that look like JSON.
+    return JSON.parse(payload) as unknown;
+  } catch {
+    // Not JSON (a pre-fix row that stored a plain string): hash it as-is.
+    return payload;
+  }
 }
 
 /** Pure, exported entry-hash — directly unit-testable without a database. */
@@ -278,7 +339,7 @@ export async function verifyAuditChain(): Promise<AuditVerifyResult> {
         e.action,
         e.actor,
         e.createdAt.getTime(),
-        e.payload
+        canonicalPayloadForHash(e.payload)
       );
       if (expected !== e.entryHash) {
         return { valid: false, verifiedEntries: verified, brokenAt: seq, total };
@@ -355,7 +416,7 @@ export async function verifyAuditChainFast(): Promise<AuditVerifyResult> {
         e.action,
         e.actor,
         e.createdAt.getTime(),
-        e.payload
+        canonicalPayloadForHash(e.payload)
       );
       if (expected !== e.entryHash) {
         return { valid: false, verifiedEntries: verified, brokenAt: seq, total };
@@ -411,7 +472,7 @@ export async function verifyAuditChainFast(): Promise<AuditVerifyResult> {
         e.action,
         e.actor,
         e.createdAt.getTime(),
-        e.payload
+        canonicalPayloadForHash(e.payload)
       );
       if (expected !== e.entryHash) {
         return { valid: false, verifiedEntries: verified, brokenAt: seq, total };

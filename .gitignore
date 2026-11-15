@@ -2,6 +2,9 @@
 node_modules/
 .pnpm-store/
 
+# Local toolchain / scratch (Phase 0 baseline: pinned Node 22 + pnpm for reproducible gates)
+.local/
+
 # Build outputs
 dist/
 build/

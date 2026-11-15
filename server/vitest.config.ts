@@ -5,6 +5,9 @@ export default defineConfig({
     globals: true,
     environment: 'node',
     include: ['tests/**/*.test.ts'],
+    // Each test file gets its own SQLite database (see the setup file): parallel
+    // files must never share or wipe each other's rows.
+    setupFiles: ['./tests/setup-isolated-db.ts'],
     exclude: ['node_modules', 'dist', 'tests/integration'],
     coverage: {
       provider: 'v8',

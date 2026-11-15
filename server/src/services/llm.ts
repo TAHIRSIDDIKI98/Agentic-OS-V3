@@ -349,29 +349,63 @@ export async function distillTranscript(transcript: string): Promise<DistilledMe
 
 // ── Heuristic Fallback ────────────────────────────────────────
 
+/** Explicit instruction/preference language. */
+const PREFERENCE_SIGNAL = /\b(prefer|always|never|policy|rule|must not|avoid|don't|do not)\b/i;
+/** Language that marks an explicit "remember this" moment. */
+const REMEMBER_SIGNAL = /\b(remember|note|decided|lesson|learned|todo|fixme|important)\b/i;
+/** A concrete, checkable detail: URL, filename, port, dotted version, CONSTANT. */
+const CONCRETE_DETAIL =
+  /(\bhttps?:\/\/\S+|\b[a-z0-9_.-]+\.(?:json|ya?ml|toml|ts|tsx|js|mjs|cjs|py|sh|md|sql|env|lock)\b|\bport\s*\d{2,5}\b|:\d{4,5}\b|\bv?\d+\.\d+(?:\.\d+)?\b|\b[A-Z][A-Z0-9_]{2,}\b)/;
+/** Declarative/config statements about how the project actually works. */
+const DECLARATIVE_VERB =
+  /\b(is|are|was|were|uses?|deploys?|ships?|runs?|stores?|pins?|targets?|lives?|hosts?|depends?|configures?|requires?)\b/i;
+
+/** Drop chat-speaker prefixes so the stored fact is the sentence itself. */
+function stripSpeaker(line: string): string {
+  return line.replace(/^\s*(?:user|assistant|system|human|ai|me|you)\s*:\s*/i, '').trim();
+}
+
+/**
+ * Heuristic extraction used when no LLM is configured (or the call fails).
+ *
+ * The previous version only matched instruction words, so plain declarative
+ * facts ("we deploy with docker compose on port 8080") were dropped into a
+ * truncated session summary and mislabeled. A line now counts as a fact when it
+ * states something with a concrete, checkable detail.
+ */
 function heuristicDistill(transcript: string): DistilledMemory[] {
-  const SIGNAL =
-    /\b(remember|note|decided|lesson|learned|always|never|rule|policy|important|fact|preference|todo|fix)\b/i;
   const out: DistilledMemory[] = [];
-  for (const line of transcript.split(/\n|(?<=[.!?])\s+/).map((l) => l.trim())) {
-    if (line.length <= 8 || !SIGNAL.test(line)) continue;
+  const seen = new Set<string>();
+
+  for (const rawLine of transcript.split(/\n|(?<=[.!?])\s+/)) {
+    const content = stripSpeaker(rawLine).replace(/\s+/g, ' ').trim();
+    if (content.length <= 8 || content.split(/\s+/).length < 4) continue;
+    if (seen.has(content.toLowerCase())) continue;
+
+    const preference = PREFERENCE_SIGNAL.test(content);
+    const declarative = CONCRETE_DETAIL.test(content) && DECLARATIVE_VERB.test(content);
+    const remembered = REMEMBER_SIGNAL.test(content);
+    if (!preference && !declarative && !remembered) continue;
+
+    seen.add(content.toLowerCase());
     out.push({
-      kind: /prefer|always|never|policy|rule/i.test(line) ? 'preference' : 'reflexion',
-      title: line.slice(0, 80),
-      content: line,
+      kind: preference ? 'preference' : declarative ? 'fact' : 'reflexion',
+      title: content.slice(0, 120),
+      content,
       tags: [],
-      importance: 0.6,
+      importance: declarative ? 0.7 : 0.6,
     });
   }
+
   if (!out.length)
     out.push({
       kind: 'episodic',
       title: 'Session summary',
-      content: transcript.slice(0, 600),
-      tags: [],
+      content: stripSpeaker(transcript.slice(0, 600)),
+      tags: ['session'],
       importance: 0.4,
     });
-  return out;
+  return out.slice(0, 25);
 }
 
 // ── Agent Chat ────────────────────────────────────────────────
