@@ -7,8 +7,8 @@ packages/a2a-server typecheck$ tsc --noEmit
 packages/sdk typecheck$ tsc -p tsconfig.json --noEmit
 packages/a2a-server typecheck: Done
 packages/sdk typecheck: Done
-server pretypecheck$ npm --prefix ../packages/a2a-server run build && npm --prefix ../packages/sdk run build
 packages/devtools typecheck$ tsc --noEmit
+server pretypecheck$ npm --prefix ../packages/a2a-server run build && npm --prefix ../packages/sdk run build
 server pretypecheck: > @agentic-os/a2a-server@2.0.0 build
 server pretypecheck: > tsc
 server pretypecheck: > @agentic-os/sdk@1.0.0 build

@@ -1,8 +1,8 @@
 {
   "schemaVersion": "nexus.r1.release-evidence-ledger.v3",
-  "generatedAt": "2026-11-15T11:03:54.865Z",
+  "generatedAt": "2026-11-15T11:10:34.451Z",
   "evidenceSource": {
-    "repositoryCommit": "0eaa9a50d5814234724f60c56ef71e7be06a319a",
+    "repositoryCommit": "2ee7681605edfbf70b9294a91c48e52077b17073",
     "branch": "main",
     "note": "Generated from the working tree at the recorded commit; artifacts are committed in the same batch. Raw command output is retained verbatim (shell exit codes included)."
   },
@@ -24,7 +24,7 @@
       "actual": {
         "exitCode": 0,
         "summary": "Command completed successfully; raw output retained.",
-        "observedAt": "2026-11-15T11:03:54.861Z"
+        "observedAt": "2026-11-15T11:10:34.446Z"
       },
       "status": "pass",
       "blockingReason": null,
@@ -52,14 +52,14 @@
       "actual": {
         "exitCode": 0,
         "summary": "Command completed successfully; raw output retained.",
-        "observedAt": "2026-11-15T11:03:54.863Z"
+        "observedAt": "2026-11-15T11:10:34.448Z"
       },
       "status": "pass",
       "blockingReason": null,
       "artifacts": [
         {
           "path": "docs/bmad/releases/evidence/2026-11-15-full-suite.log",
-          "sha256": "8d37ca688fb986777fc9bd16163370caabb2e426c33d1d507ab6df3dd73abffa",
+          "sha256": "71d7657d104d7af84fad58e6ad5d423d8d2b0f4fdf9903ade118a4d7b7f09502",
           "role": "raw-command-output"
         }
       ],
@@ -80,14 +80,14 @@
       "actual": {
         "exitCode": 0,
         "summary": "Command completed successfully; raw output retained.",
-        "observedAt": "2026-11-15T11:03:54.863Z"
+        "observedAt": "2026-11-15T11:10:34.449Z"
       },
       "status": "pass",
       "blockingReason": null,
       "artifacts": [
         {
           "path": "docs/bmad/releases/evidence/2026-11-15-sdk-suite.log",
-          "sha256": "abd553aaa64bd6e1db976b3008edcf914673a7b7ed5ff2a3bbbe872b5a3f344b",
+          "sha256": "8eb8b30bf705f37bfdd075ddd00d6221eb86f76e13d6bad7aa7ef6fd05ea2556",
           "role": "raw-command-output"
         }
       ],
@@ -108,14 +108,14 @@
       "actual": {
         "exitCode": 0,
         "summary": "Command completed successfully; raw output retained.",
-        "observedAt": "2026-11-15T11:03:54.863Z"
+        "observedAt": "2026-11-15T11:10:34.449Z"
       },
       "status": "pass",
       "blockingReason": null,
       "artifacts": [
         {
           "path": "docs/bmad/releases/evidence/2026-11-15-typecheck.log",
-          "sha256": "7e0df1b486a1c528364af2e58e6c44c4d5029099b1ad00cc016708ed5b8cdc7d",
+          "sha256": "c2028d4dd94560048a3fcb967bb44fcd2cce471a0e2d53746268a3e669a5c979",
           "role": "raw-command-output"
         }
       ],
@@ -136,14 +136,14 @@
       "actual": {
         "exitCode": 0,
         "summary": "Command completed successfully; raw output retained.",
-        "observedAt": "2026-11-15T11:03:54.864Z"
+        "observedAt": "2026-11-15T11:10:34.449Z"
       },
       "status": "pass",
       "blockingReason": null,
       "artifacts": [
         {
           "path": "docs/bmad/releases/evidence/2026-11-15-lint.log",
-          "sha256": "053dd2a26e2ccaab8186abcbd3e9c831abee369ab1b54765ba1973ed2de4294d",
+          "sha256": "df9776466a01dc6439361d615261d75c5862342e109a22d046ee03aeb182c272",
           "role": "raw-command-output"
         }
       ],
@@ -164,7 +164,7 @@
       "actual": {
         "exitCode": 0,
         "summary": "Command completed successfully; raw output retained.",
-        "observedAt": "2026-11-15T11:03:54.864Z"
+        "observedAt": "2026-11-15T11:10:34.449Z"
       },
       "status": "pass",
       "blockingReason": null,
@@ -192,7 +192,7 @@
       "actual": {
         "exitCode": 0,
         "summary": "Command completed successfully; raw output retained.",
-        "observedAt": "2026-11-15T11:03:54.864Z"
+        "observedAt": "2026-11-15T11:10:34.449Z"
       },
       "status": "pass",
       "blockingReason": null,
@@ -220,7 +220,7 @@
       "actual": {
         "exitCode": 0,
         "summary": "Command completed successfully; raw output retained.",
-        "observedAt": "2026-11-15T11:03:54.864Z"
+        "observedAt": "2026-11-15T11:10:34.450Z"
       },
       "status": "pass",
       "blockingReason": null,
@@ -248,14 +248,14 @@
       "actual": {
         "exitCode": 0,
         "summary": "Command completed successfully; raw output retained.",
-        "observedAt": "2026-11-15T11:03:54.864Z"
+        "observedAt": "2026-11-15T11:10:34.450Z"
       },
       "status": "pass",
       "blockingReason": null,
       "artifacts": [
         {
           "path": "docs/bmad/releases/evidence/2026-11-15-golden-path.log",
-          "sha256": "ffd02196d3901e3bcef0ea43bb837292cbce24559fef0a364fd6fe5d8ac1ac8b",
+          "sha256": "4a7a84a6a21bd2d2f8a5908a338a618471c0490d2a3ecb0e0153806ff566b3e3",
           "role": "raw-command-output"
         }
       ],
@@ -276,7 +276,7 @@
       "actual": {
         "exitCode": 0,
         "summary": "Command completed successfully; raw output retained.",
-        "observedAt": "2026-11-15T11:03:54.864Z"
+        "observedAt": "2026-11-15T11:10:34.450Z"
       },
       "status": "pass",
       "blockingReason": null,
@@ -304,7 +304,7 @@
       "actual": {
         "exitCode": null,
         "summary": "Not executed in this batch.",
-        "observedAt": "2026-11-15T11:03:54.864Z"
+        "observedAt": "2026-11-15T11:10:34.450Z"
       },
       "status": "not_run",
       "blockingReason": "Not executed in this batch: requires a clean supported machine and a built frontend. Owner: W4.",
@@ -332,7 +332,7 @@
       "actual": {
         "exitCode": null,
         "summary": "Not executed in this batch.",
-        "observedAt": "2026-11-15T11:03:54.865Z"
+        "observedAt": "2026-11-15T11:10:34.450Z"
       },
       "status": "not_run",
       "blockingReason": "Reviewer not yet assigned (E10-S30). Only that reviewer may close this record.",

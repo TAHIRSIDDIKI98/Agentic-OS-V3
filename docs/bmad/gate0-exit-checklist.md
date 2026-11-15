@@ -12,7 +12,7 @@ Updated: 2026-11-15 (R1 evidence wave v3)
 | 2 | E10-S1…S5 stories have detailed AC + acceptance evidence | 🔶 Partial | S1–S10 evidence is carried by the v3 ledger command records and the tracker's per-task evidence column. Story-by-story AC mapping still needs the E10-S30 reviewer pass |
 | 3 | Every full-suite failure has owner, disposition, rerun evidence | ✅ Met | Root `pnpm -r test` exit 0 — a2a 2 files, SDK 13 files / 257 tests, devtools 1 file, server 262 files / 2593 passing / 1 skipped. Artifact: `docs/bmad/releases/evidence/2026-11-15-full-suite.log` |
 | 4 | Release document carries no stale counts/claims | ✅ Met | R1-release-gate.md carries the 2026-07-24 supersession notice; campaign reports bannered; README badge/prereqs truthful; claim scan exits 0 |
-| 5 | Evidence ledger reproducible + independently confirmed | 🔶 Pending | v3 ledger (`2026-11-15-release-evidence-ledger.json`) executes every command in the batch, hashes each artifact, and validates with `scripts/validate-r1-evidence-v3.ts`. Reproducible ✅; independent confirmation ❌ — the E10-S30 reviewer is still unassigned |
+| 5 | Evidence ledger reproducible + independently confirmed | 🔶 Pending | v3 ledger (`2026-11-15-release-evidence-ledger.json`) executes every command in the batch, hashes each artifact, and validates with `scripts/validate-r1-evidence-v3.ts`. Reproducible ✅; independent confirmation ❌ — the E10-S30 reviewer is still unassigned. Review inputs are consolidated in `docs/bmad/e10-s30-review-packet-2026-11-15.md` |
 
 ## Blocker scoreboard
 
