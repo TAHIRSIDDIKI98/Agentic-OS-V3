@@ -122,7 +122,17 @@ export function createExtendedSqlR1Runtime(
   });
   const killSwitch = new KillSwitchService(repos, killSwitchStore, { now: options.now });
   const telemetry = new TelemetryService({ now: options.now, spanExporter: { export: async (spans) => { for (const s of spans) await telemetrySql.saveSpan(s); } } });
-  const evidenceTimeline = new EvidenceTimelineService(repos, { now: options.now });
+  const evidenceTimeline = new EvidenceTimelineService(repos, {
+    now: options.now,
+    // Durable approvals live outside R1Repositories; include decided ones so the
+    // timeline and evidence export retain the full approval history.
+    listApprovals: async (projectId, taskId) => {
+      const all = durableApprovalsRepo.listForProject
+        ? await durableApprovalsRepo.listForProject(projectId)
+        : await durableApprovalsRepo.listPending(projectId);
+      return taskId ? all.filter((approval) => approval.taskId === taskId) : all;
+    },
+  });
   const serena = new SerenaCodeIntelligence({ now: options.now });
   const mcp = new MCPAdapter(new SqlMCPRepo(executor), { now: options.now });
   // A2A's adapter contract does not yet carry project scope with an approval ID.

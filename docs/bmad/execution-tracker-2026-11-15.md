@@ -163,7 +163,7 @@ only R1-owned tables and indexes.
 
 | ID | Task | Story | Deps | Acceptance | Evidence | Status |
 |---|---|---|---|---|---|---|
-| W4-01 | Implement the real 14-step golden-path test from `GOLDEN-PATH-SPECIFICATION.md` (beyond `server/tests/e2e/system.e2e.test.ts`) | E10-S25 | W1, W3 | 14/14 steps, no data repair | test + log | 🔴 |
+| W4-01 | Implement the real 14-step golden-path test from `GOLDEN-PATH-SPECIFICATION.md` (beyond `server/tests/e2e/system.e2e.test.ts`) | E10-S25 | W1, W3 | 14/14 steps, no data repair | test + log | ✅ `server/tests/e2e/golden-path.e2e.test.ts` — 14/14 on SQLite with real approval gating, disk writes, lease-expiry recovery and clean import dry-run. Step 9 asserts POSIX-first fail-closed on Windows; real command execution runs on POSIX CI |
 | W4-02 | Wire Playwright e2e into CI with a built frontend + server | WS8 | W4-01 | CI job runs and passes | CI log | 🔴 |
 | W4-03 | Enforce coverage thresholds (80%) in CI, not just config | E10-S26 | — | CI fails below threshold | CI log | 🔴 |
 | W4-04 | Execute the clean-machine drill on Windows + Linux per runbook | E10-S29 | W0-07, W4-01 | runbook steps pass on both OSes | transcripts | 🔴 |

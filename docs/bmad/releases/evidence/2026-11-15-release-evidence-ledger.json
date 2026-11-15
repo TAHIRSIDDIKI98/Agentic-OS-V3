@@ -1,8 +1,8 @@
 {
   "schemaVersion": "nexus.r1.release-evidence-ledger.v3",
-  "generatedAt": "2026-11-15T08:05:18.158Z",
+  "generatedAt": "2026-11-15T11:03:54.865Z",
   "evidenceSource": {
-    "repositoryCommit": "15ebaf02d2c582e5e570865116c2367150a59e26",
+    "repositoryCommit": "0eaa9a50d5814234724f60c56ef71e7be06a319a",
     "branch": "main",
     "note": "Generated from the working tree at the recorded commit; artifacts are committed in the same batch. Raw command output is retained verbatim (shell exit codes included)."
   },
@@ -12,6 +12,34 @@
     "platform": "win32-x64"
   },
   "commands": [
+    {
+      "id": "sdk-build",
+      "evidenceClass": "compile",
+      "command": "pnpm --filter @agentic-os/sdk build",
+      "workingDirectory": ".",
+      "expected": {
+        "exitCode": 0,
+        "description": "The SDK dist consumed by the server tests matches the source under test."
+      },
+      "actual": {
+        "exitCode": 0,
+        "summary": "Command completed successfully; raw output retained.",
+        "observedAt": "2026-11-15T11:03:54.861Z"
+      },
+      "status": "pass",
+      "blockingReason": null,
+      "artifacts": [
+        {
+          "path": "docs/bmad/releases/evidence/2026-11-15-sdk-build.log",
+          "sha256": "20aaa66a2d73f9f88bb1937f276507dee7a102c0d5e078c09617c21a273f759d",
+          "role": "raw-command-output"
+        }
+      ],
+      "reviewer": {
+        "role": "independent E10-S30 reviewer",
+        "status": "unassigned"
+      }
+    },
     {
       "id": "full-suite",
       "evidenceClass": "full-release",
@@ -24,14 +52,14 @@
       "actual": {
         "exitCode": 0,
         "summary": "Command completed successfully; raw output retained.",
-        "observedAt": "2026-11-15T08:05:18.155Z"
+        "observedAt": "2026-11-15T11:03:54.863Z"
       },
       "status": "pass",
       "blockingReason": null,
       "artifacts": [
         {
           "path": "docs/bmad/releases/evidence/2026-11-15-full-suite.log",
-          "sha256": "cbdff8f8d3a471185cb6a8bab0446193650bd86d7122d726d251cc7ce819b76c",
+          "sha256": "8d37ca688fb986777fc9bd16163370caabb2e426c33d1d507ab6df3dd73abffa",
           "role": "raw-command-output"
         }
       ],
@@ -52,14 +80,14 @@
       "actual": {
         "exitCode": 0,
         "summary": "Command completed successfully; raw output retained.",
-        "observedAt": "2026-11-15T08:05:18.156Z"
+        "observedAt": "2026-11-15T11:03:54.863Z"
       },
       "status": "pass",
       "blockingReason": null,
       "artifacts": [
         {
           "path": "docs/bmad/releases/evidence/2026-11-15-sdk-suite.log",
-          "sha256": "b930102d7a5c029010437c206e90348b6578bd26d42cd1b66414db9018d5c425",
+          "sha256": "abd553aaa64bd6e1db976b3008edcf914673a7b7ed5ff2a3bbbe872b5a3f344b",
           "role": "raw-command-output"
         }
       ],
@@ -80,14 +108,14 @@
       "actual": {
         "exitCode": 0,
         "summary": "Command completed successfully; raw output retained.",
-        "observedAt": "2026-11-15T08:05:18.157Z"
+        "observedAt": "2026-11-15T11:03:54.863Z"
       },
       "status": "pass",
       "blockingReason": null,
       "artifacts": [
         {
           "path": "docs/bmad/releases/evidence/2026-11-15-typecheck.log",
-          "sha256": "c2028d4dd94560048a3fcb967bb44fcd2cce471a0e2d53746268a3e669a5c979",
+          "sha256": "7e0df1b486a1c528364af2e58e6c44c4d5029099b1ad00cc016708ed5b8cdc7d",
           "role": "raw-command-output"
         }
       ],
@@ -108,14 +136,14 @@
       "actual": {
         "exitCode": 0,
         "summary": "Command completed successfully; raw output retained.",
-        "observedAt": "2026-11-15T08:05:18.157Z"
+        "observedAt": "2026-11-15T11:03:54.864Z"
       },
       "status": "pass",
       "blockingReason": null,
       "artifacts": [
         {
           "path": "docs/bmad/releases/evidence/2026-11-15-lint.log",
-          "sha256": "df9776466a01dc6439361d615261d75c5862342e109a22d046ee03aeb182c272",
+          "sha256": "053dd2a26e2ccaab8186abcbd3e9c831abee369ab1b54765ba1973ed2de4294d",
           "role": "raw-command-output"
         }
       ],
@@ -136,7 +164,7 @@
       "actual": {
         "exitCode": 0,
         "summary": "Command completed successfully; raw output retained.",
-        "observedAt": "2026-11-15T08:05:18.157Z"
+        "observedAt": "2026-11-15T11:03:54.864Z"
       },
       "status": "pass",
       "blockingReason": null,
@@ -164,7 +192,7 @@
       "actual": {
         "exitCode": 0,
         "summary": "Command completed successfully; raw output retained.",
-        "observedAt": "2026-11-15T08:05:18.157Z"
+        "observedAt": "2026-11-15T11:03:54.864Z"
       },
       "status": "pass",
       "blockingReason": null,
@@ -192,7 +220,7 @@
       "actual": {
         "exitCode": 0,
         "summary": "Command completed successfully; raw output retained.",
-        "observedAt": "2026-11-15T08:05:18.157Z"
+        "observedAt": "2026-11-15T11:03:54.864Z"
       },
       "status": "pass",
       "blockingReason": null,
@@ -200,6 +228,34 @@
         {
           "path": "docs/bmad/releases/evidence/2026-11-15-production-dependency-audit.log",
           "sha256": "8145715f121b4743f094c0339e16749f53da65efaa08ab42df48f8472811764f",
+          "role": "raw-command-output"
+        }
+      ],
+      "reviewer": {
+        "role": "independent E10-S30 reviewer",
+        "status": "unassigned"
+      }
+    },
+    {
+      "id": "golden-path",
+      "evidenceClass": "integration",
+      "command": "npx vitest run tests/e2e/golden-path.e2e.test.ts",
+      "workingDirectory": "server",
+      "expected": {
+        "exitCode": 0,
+        "description": "The 14-step R1 golden path passes end-to-end without data repair (Windows asserts POSIX-first fail-closed for step 9)."
+      },
+      "actual": {
+        "exitCode": 0,
+        "summary": "Command completed successfully; raw output retained.",
+        "observedAt": "2026-11-15T11:03:54.864Z"
+      },
+      "status": "pass",
+      "blockingReason": null,
+      "artifacts": [
+        {
+          "path": "docs/bmad/releases/evidence/2026-11-15-golden-path.log",
+          "sha256": "ffd02196d3901e3bcef0ea43bb837292cbce24559fef0a364fd6fe5d8ac1ac8b",
           "role": "raw-command-output"
         }
       ],
@@ -220,7 +276,7 @@
       "actual": {
         "exitCode": 0,
         "summary": "Command completed successfully; raw output retained.",
-        "observedAt": "2026-11-15T08:05:18.157Z"
+        "observedAt": "2026-11-15T11:03:54.864Z"
       },
       "status": "pass",
       "blockingReason": null,
@@ -248,7 +304,7 @@
       "actual": {
         "exitCode": null,
         "summary": "Not executed in this batch.",
-        "observedAt": "2026-11-15T08:05:18.157Z"
+        "observedAt": "2026-11-15T11:03:54.864Z"
       },
       "status": "not_run",
       "blockingReason": "Not executed in this batch: requires a clean supported machine and a built frontend. Owner: W4.",
@@ -276,7 +332,7 @@
       "actual": {
         "exitCode": null,
         "summary": "Not executed in this batch.",
-        "observedAt": "2026-11-15T08:05:18.157Z"
+        "observedAt": "2026-11-15T11:03:54.865Z"
       },
       "status": "not_run",
       "blockingReason": "Reviewer not yet assigned (E10-S30). Only that reviewer may close this record.",

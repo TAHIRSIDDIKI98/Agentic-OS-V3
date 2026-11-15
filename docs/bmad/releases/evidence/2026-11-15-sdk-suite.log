@@ -5,22 +5,22 @@ $ npx vitest run
 
 [1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90mC:/Users/Tahir/Documents/GitHub/Agentic-OS-V3/packages/sdk[39m
 
- [32m✓[39m src/r1-sync.test.ts [2m([22m[2m25 tests[22m[2m)[22m[90m 48[2mms[22m[39m
- [32m✓[39m src/r1-mcp-adapter.test.ts [2m([22m[2m43 tests[22m[2m)[22m[90m 105[2mms[22m[39m
- [32m✓[39m src/r1-serena.test.ts [2m([22m[2m49 tests[22m[2m)[22m[90m 87[2mms[22m[39m
- [32m✓[39m src/r1-tool-gateway.test.ts [2m([22m[2m6 tests[22m[2m)[22m[90m 55[2mms[22m[39m
- [32m✓[39m src/r1-types.test.ts [2m([22m[2m59 tests[22m[2m)[22m[90m 58[2mms[22m[39m
- [32m✓[39m src/r1-a2a-adapter.test.ts [2m([22m[2m41 tests[22m[2m)[22m[90m 100[2mms[22m[39m
- [32m✓[39m src/project-transfer.test.ts [2m([22m[2m12 tests[22m[2m)[22m[90m 125[2mms[22m[39m
- [32m✓[39m src/sql-repositories.test.ts [2m([22m[2m4 tests[22m[2m)[22m[90m 14[2mms[22m[39m
- [32m✓[39m src/in-memory-repositories.test.ts [2m([22m[2m3 tests[22m[2m)[22m[90m 16[2mms[22m[39m
- [32m✓[39m src/r1-services.test.ts [2m([22m[2m7 tests[22m[2m)[22m[90m 25[2mms[22m[39m
- [32m✓[39m src/capability-policy.test.ts [2m([22m[2m4 tests[22m[2m)[22m[90m 25[2mms[22m[39m
- [32m✓[39m src/capability-governance-store.test.ts [2m([22m[2m2 tests[22m[2m)[22m[90m 23[2mms[22m[39m
- [32m✓[39m src/r1-task-worker.test.ts [2m([22m[2m2 tests[22m[2m)[22m[90m 15[2mms[22m[39m
+ [32m✓[39m src/r1-sync.test.ts [2m([22m[2m25 tests[22m[2m)[22m[90m 76[2mms[22m[39m
+ [32m✓[39m src/r1-serena.test.ts [2m([22m[2m49 tests[22m[2m)[22m[90m 176[2mms[22m[39m
+ [32m✓[39m src/r1-tool-gateway.test.ts [2m([22m[2m6 tests[22m[2m)[22m[90m 82[2mms[22m[39m
+ [32m✓[39m src/r1-a2a-adapter.test.ts [2m([22m[2m41 tests[22m[2m)[22m[90m 205[2mms[22m[39m
+ [32m✓[39m src/r1-types.test.ts [2m([22m[2m59 tests[22m[2m)[22m[90m 125[2mms[22m[39m
+ [32m✓[39m src/r1-mcp-adapter.test.ts [2m([22m[2m43 tests[22m[2m)[22m[90m 249[2mms[22m[39m
+ [32m✓[39m src/project-transfer.test.ts [2m([22m[2m12 tests[22m[2m)[22m[90m 235[2mms[22m[39m
+ [32m✓[39m src/sql-repositories.test.ts [2m([22m[2m4 tests[22m[2m)[22m[90m 24[2mms[22m[39m
+ [32m✓[39m src/in-memory-repositories.test.ts [2m([22m[2m3 tests[22m[2m)[22m[90m 45[2mms[22m[39m
+ [32m✓[39m src/r1-services.test.ts [2m([22m[2m7 tests[22m[2m)[22m[90m 39[2mms[22m[39m
+ [32m✓[39m src/capability-policy.test.ts [2m([22m[2m4 tests[22m[2m)[22m[90m 41[2mms[22m[39m
+ [32m✓[39m src/r1-task-worker.test.ts [2m([22m[2m2 tests[22m[2m)[22m[90m 25[2mms[22m[39m
+ [32m✓[39m src/capability-governance-store.test.ts [2m([22m[2m2 tests[22m[2m)[22m[90m 34[2mms[22m[39m
 
 [2m Test Files [22m [1m[32m13 passed[39m[22m[90m (13)[39m
 [2m      Tests [22m [1m[32m257 passed[39m[22m[90m (257)[39m
-[2m   Start at [22m 13:34:21
-[2m   Duration [22m 1.99s[2m (transform 1.01s, setup 0ms, collect 3.68s, tests 697ms, environment 5ms, prepare 3.40s)[22m
+[2m   Start at [22m 16:32:27
+[2m   Duration [22m 4.01s[2m (transform 2.22s, setup 0ms, collect 7.51s, tests 1.35s, environment 10ms, prepare 6.79s)[22m
 

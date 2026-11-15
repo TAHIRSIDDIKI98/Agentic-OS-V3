@@ -53,6 +53,11 @@ export type DurableApprovalDecision = z.infer<typeof DurableApprovalDecisionSche
 export interface ApprovalRepositoryEx {
   get(projectId: string, approvalId: string): Promise<DurableApprovalRequest | null>;
   listPending(projectId: string): Promise<readonly DurableApprovalRequest[]>;
+  /**
+   * All approvals for a project, including decided ones. Evidence correlation
+   * must retain approved/denied requests; `listPending` alone loses them.
+   */
+  listForProject?(projectId: string): Promise<readonly DurableApprovalRequest[]>;
   create(req: DurableApprovalRequest): Promise<DurableApprovalRequest>;
   update(req: DurableApprovalRequest): Promise<DurableApprovalRequest>;
 }

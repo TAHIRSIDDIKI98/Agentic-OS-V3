@@ -62,7 +62,15 @@ function run(id: string, command: string, cwd: string): { code: number; output: 
 function main(): void {
   mkdirSync(evidenceDirectory, { recursive: true });
 
+  // Server tests resolve @agentic-os/sdk from its built dist, so build it first;
+  // otherwise evidence could exercise stale SDK code.
+  const sdkBuild = run('sdk-build', 'pnpm --filter @agentic-os/sdk build', '.');
   const fullSuite = run('full-suite', 'pnpm -r test', '.');
+  const goldenPath = run(
+    'golden-path',
+    'npx vitest run tests/e2e/golden-path.e2e.test.ts',
+    'server'
+  );
   const sdkSuite = run('sdk-suite', 'npx vitest run', 'packages/sdk');
   const typecheck = run('typecheck', 'pnpm -r typecheck', '.');
   const lint = run('lint', 'pnpm -r lint', '.');
@@ -84,6 +92,17 @@ function main(): void {
     : null;
 
   const results: CommandResult[] = [
+    {
+      id: 'sdk-build',
+      evidenceClass: 'compile',
+      command: 'pnpm --filter @agentic-os/sdk build',
+      workingDirectory: '.',
+      expectedCode: 0,
+      expectedDescription: 'The SDK dist consumed by the server tests matches the source under test.',
+      status: sdkBuild.code === 0 ? 'pass' : 'blocked',
+      blockingReason: sdkBuild.code === 0 ? null : 'SDK build failed; see the artifact.',
+      artifact: `${EVIDENCE_PREFIX}${stamp}-sdk-build.log`,
+    },
     {
       id: 'full-suite',
       evidenceClass: 'full-release',
@@ -167,6 +186,19 @@ function main(): void {
           : 'Production advisories remain open; remediation is tracked in the security triage matrix.',
       artifact: `${EVIDENCE_PREFIX}${stamp}-production-dependency-audit.log`,
     },
+    {
+      id: 'golden-path',
+      evidenceClass: 'integration',
+      command: 'npx vitest run tests/e2e/golden-path.e2e.test.ts',
+      workingDirectory: 'server',
+      expectedCode: 0,
+      expectedDescription:
+        'The 14-step R1 golden path passes end-to-end without data repair (Windows asserts POSIX-first fail-closed for step 9).',
+      status: goldenPath.code === 0 ? 'pass' : 'blocked',
+      blockingReason:
+        goldenPath.code === 0 ? null : 'A golden-path step failed; see the artifact.',
+      artifact: `${EVIDENCE_PREFIX}${stamp}-golden-path.log`,
+    },
     ...(migrationMatrix
       ? [
           {
@@ -188,7 +220,9 @@ function main(): void {
   ];
 
   const outputs: Record<string, { code: number; output: string }> = {
+    'sdk-build': sdkBuild,
     'full-suite': fullSuite,
+    'golden-path': goldenPath,
     'sdk-suite': sdkSuite,
     typecheck,
     lint,

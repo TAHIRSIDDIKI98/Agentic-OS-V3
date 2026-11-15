@@ -206,6 +206,14 @@ export class SqlDurableApprovals implements ApprovalRepositoryEx {
       decisionActorId: row.decisionActorId ?? undefined, decisionAt: row.decisionAt ? isoFromRow(row.decisionAt) : undefined,
     } as DurableApprovalRequest));
   }
+  async listForProject(projectId: string): Promise<readonly DurableApprovalRequest[]> {
+    const rows = await this.sql.query<any>(`SELECT id, project_id AS "projectId", task_id AS "taskId", capability_id AS "capabilityId", state, action, created_at AS "createdAt", updated_at AS "updatedAt", decision_actor_id AS "decisionActorId", decision_at AS "decisionAt" FROM r1_durable_approvals WHERE project_id=$1 ORDER BY created_at`, [projectId]);
+    return rows.map((row) => ({
+      id: row.id, projectId: row.projectId, taskId: row.taskId, capabilityId: row.capabilityId, state: row.state,
+      action: jsonParse(row.action), createdAt: isoFromRow(row.createdAt), updatedAt: isoFromRow(row.updatedAt),
+      decisionActorId: row.decisionActorId ?? undefined, decisionAt: row.decisionAt ? isoFromRow(row.decisionAt) : undefined,
+    } as DurableApprovalRequest));
+  }
   async create(req: DurableApprovalRequest): Promise<DurableApprovalRequest> {
     const row = one(await this.sql.query<any>(`INSERT INTO r1_durable_approvals (id, project_id, task_id, capability_id, state, action, created_at, updated_at) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING id, project_id AS "projectId", task_id AS "taskId", capability_id AS "capabilityId", state, action, created_at AS "createdAt", updated_at AS "updatedAt"`,
       [req.id, req.projectId, req.taskId, req.capabilityId, req.state, JSON.stringify(req.action), req.createdAt, req.updatedAt]));

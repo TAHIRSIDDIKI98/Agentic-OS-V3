@@ -1,0 +1,31 @@
+$ npx vitest run tests/e2e/golden-path.e2e.test.ts
+# cwd: server
+# exit: 0
+
+
+[1m[46m RUN [49m[22m [36mv3.2.6 [39m[90mC:/Users/Tahir/Documents/GitHub/Agentic-OS-V3/server[39m
+
+[90mstdout[2m | tests/e2e/golden-path.e2e.test.ts[2m > [22m[2mR1 golden path — 14/14 executable steps[2m > [22m[2mcompletes the spec without data repair
+[22m[39mGOLDEN-PATH 14/14:
+1. project initialized and visible with local badge
+2. 6 provenance memories from 3 source hashes
+3. durable task queued with created event
+4. recall returned 6 memories within 1800 tokens
+5. write blocked in waiting_approval with hash and risk reason
+6. approval re-validated hash + policy and released the task
+7. approved write landed on disk with receipt and checkpoint
+8. two low-risk reads auto-allowed with zero new approvals
+9. constrained execution failed closed on Windows (POSIX-first per ADR-0031)
+10. lease expiry recovered from checkpoint; replay reused the single effect receipt
+11. task completed
+12. evidence timeline correlates memories, approvals and receipts
+13. export bundle validated by a clean import dry-run
+14. usefulness feedback recorded and readable
+
+ [32m✓[39m tests/e2e/golden-path.e2e.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 254[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m   Start at [22m 16:32:22
+[2m   Duration [22m 3.81s[2m (transform 727ms, setup 47ms, collect 2.57s, tests 254ms, environment 0ms, prepare 215ms)[22m
+

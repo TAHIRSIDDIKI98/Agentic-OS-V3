@@ -1,0 +1,16 @@
+$ pnpm --filter @agentic-os/sdk build
+# cwd: .
+# exit: 0
+
+
+> @agentic-os/sdk@1.0.0 build C:\Users\Tahir\Documents\GitHub\Agentic-OS-V3\packages\sdk
+> npm run build:esm && npm run build:cjs
+
+
+> @agentic-os/sdk@1.0.0 build:esm
+> tsc -p tsconfig.json
+
+
+> @agentic-os/sdk@1.0.0 build:cjs
+> tsc -p tsconfig.cjs.json
+

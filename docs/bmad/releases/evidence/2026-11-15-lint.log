@@ -5,7 +5,7 @@ $ pnpm -r lint
 Scope: 5 of 6 workspace projects
 packages/a2a-server lint$ tsc --noEmit
 packages/a2a-server lint: Done
-packages/devtools lint$ tsc --noEmit
 server lint$ eslint src --ext .ts
+packages/devtools lint$ tsc --noEmit
 packages/devtools lint: Done
 server lint: Done

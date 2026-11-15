@@ -99,14 +99,32 @@ function redactSecrets(obj: Record<string, unknown>): { redacted: Record<string,
   return { redacted: copy, redactedFields, omitted };
 }
 
+export interface TimelineApprovalRef {
+  readonly id: string;
+  readonly taskId: string;
+  readonly capabilityId?: string;
+  readonly state: string;
+  readonly createdAt: string;
+}
+
 export interface EvidenceTimelineOptions {
   readonly now?: () => string;
+  /**
+   * Supplies every approval for the project, including decided ones. When
+   * omitted, only pending approvals from the base repository are visible.
+   */
+  readonly listApprovals?: (
+    projectId: string,
+    taskId?: string
+  ) => Promise<readonly TimelineApprovalRef[]>;
 }
 
 export class EvidenceTimelineService {
   private readonly now: () => string;
+  private readonly listApprovals?: EvidenceTimelineOptions['listApprovals'];
   constructor(private readonly repos: R1Repositories, options: EvidenceTimelineOptions = {}) {
     this.now = options.now ?? (() => new Date().toISOString());
+    this.listApprovals = options.listApprovals;
   }
 
   async buildTimeline(projectId: string, taskId?: string): Promise<readonly TimelineEntry[]> {
@@ -182,16 +200,19 @@ export class EvidenceTimelineService {
       }
     }
 
-    // approvals
-    const approvals = await this.repos.approvals.listPending(projectId);
+    // approvals (durable repository when supplied, otherwise pending base records)
+    const approvals = this.listApprovals
+      ? await this.listApprovals(projectId, taskId)
+      : await this.repos.approvals.listPending(projectId);
     for (const appr of approvals) {
+      if (taskId && appr.taskId !== taskId) continue;
       entries.push({
         id: `approval:${appr.id}`,
         kind: 'approval',
         projectId,
         taskId: appr.taskId,
         timestamp: appr.createdAt,
-        summary: `Approval ${appr.id} for capability ${appr.capabilityId} (${appr.state})`,
+        summary: `Approval ${appr.id} for capability ${appr.capabilityId ?? 'unknown'} (${appr.state})`,
         refIds: { taskId: appr.taskId, approvalId: appr.id },
         redacted: false,
       });
