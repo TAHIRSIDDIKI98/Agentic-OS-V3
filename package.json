@@ -37,7 +37,7 @@
     "react-dom": "^18.3.1",
     "recharts": "^2.13.0",
     "tailwind-merge": "^3.6.0",
-    "zod": "^3.25.76",
+    "zod": "^4.6.6",
     "zustand": "^5.0.0",
     "react-router": "^8.3.0"
   },
@@ -72,9 +72,14 @@
   },
   "pnpm": {
     "overrides": {
-      "fast-uri": "^3.1.5",
-      "@hono/node-server": "^2.0.11",
-      "ip-address": "^10.3.1"
+      "fast-uri": "^3.1.7",
+      "@hono/node-server": "^2.1.6",
+      "ip-address": "^10.7.4",
+      "proxy-addr": "^2.0.8",
+      "browserslist": "^4.28.7",
+      "body-parser": "^2.4.0",
+      "hono": "^4.13.16",
+      "qs": "^6.16.1"
     }
   },
   "packageManager": "pnpm@9.15.0"

@@ -18,7 +18,7 @@ DROP TABLE IF EXISTS r1_task_steps;
 DROP INDEX IF EXISTS r1_tasks_project_state_idx;
 DROP TABLE IF EXISTS r1_tasks;
 
-DROP INDEX IF EXISTS projects_r1_idempotency_key_idx;
-ALTER TABLE projects DROP COLUMN IF EXISTS idempotency_key;
-ALTER TABLE projects DROP COLUMN IF EXISTS scope;
-ALTER TABLE projects DROP COLUMN IF EXISTS mode;
+-- `mode`, `scope` and `idempotency_key` are owned by the base application schema
+-- (schema-sqlite.ts projects); 0049 only creates them when `projects` is absent.
+-- SQLite cannot drop a UNIQUE column, and rollback must not remove application
+-- columns, so this down removes only R1-owned tables and indexes.

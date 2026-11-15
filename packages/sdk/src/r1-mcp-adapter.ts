@@ -32,7 +32,7 @@ export const MCPServerSchema = z.object({
   transport: MCPTransportSchema,
   endpoint: z.string().url().optional(), // for http/sse
   command: z.string().optional(), // for stdio
-  env: z.record(z.string()).default({}),
+  env: z.record(z.string(), z.string()).default({}),
   owner: z.string().min(1),
   scopes: z.array(z.string()).default([]),
   enabled: z.boolean().default(true),
@@ -48,8 +48,8 @@ export type MCPServer = z.infer<typeof MCPServerSchema>;
 export const MCPToolSchema = z.object({
   name: z.string().min(1),
   description: z.string().optional(),
-  inputSchema: z.record(z.unknown()),
-  annotations: z.record(z.unknown()).optional(), // untrusted
+  inputSchema: z.record(z.string(), z.unknown()),
+  annotations: z.record(z.string(), z.unknown()).optional(), // untrusted
   serverId: z.string().min(1),
 });
 export type MCPTool = z.infer<typeof MCPToolSchema>;

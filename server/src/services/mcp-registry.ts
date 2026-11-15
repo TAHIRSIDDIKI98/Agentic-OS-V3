@@ -342,7 +342,7 @@ export function jsonSchemaToZod(schema: unknown): z.ZodObject<z.ZodRawShape> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- external MCP servers supply arbitrary JSON Schema; shape is validated field-by-field below before use
   const s = schema as Record<string, any>;
   if (s.type === 'object' && s.properties && typeof s.properties === 'object') {
-    const shape: z.ZodRawShape = {};
+    const shape: Record<string, z.ZodTypeAny> = {};
     const required = Array.isArray(s.required) ? s.required : [];
     for (const [propName, propDef] of Object.entries(s.properties)) {
       const isReq = required.includes(propName);
@@ -353,7 +353,7 @@ export function jsonSchemaToZod(schema: unknown): z.ZodObject<z.ZodRawShape> {
       else if (p.type === 'number' || p.type === 'integer') fieldSchema = z.number();
       else if (p.type === 'boolean') fieldSchema = z.boolean();
       else if (p.type === 'array') fieldSchema = z.array(z.unknown());
-      else if (p.type === 'object') fieldSchema = z.record(z.unknown());
+      else if (p.type === 'object') fieldSchema = z.record(z.string(), z.unknown());
 
       if (p.description) {
         fieldSchema = fieldSchema.describe(p.description);

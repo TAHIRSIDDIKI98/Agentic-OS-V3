@@ -44,7 +44,7 @@ export const publishPluginSchema = z.object({
 
 export const publishVersionSchema = z.object({
   version: z.string().regex(/^\d+\.\d+\.\d+(-[\w.]+)?$/, 'semver required'),
-  manifest: z.record(z.unknown()).default({}),
+  manifest: z.record(z.string(), z.unknown()).default({}),
   artifactSha256: z.string().regex(/^[a-f0-9]{64}$/),
   artifactStorageKey: z.string().min(1),
   artifactSize: z.number().int().nonnegative().default(0),

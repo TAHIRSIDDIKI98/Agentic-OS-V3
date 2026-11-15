@@ -171,7 +171,7 @@ describe('auth-context', () => {
     it('should throw ApiError on validation failure', () => {
       const data = { name: 'Alice', age: 15 };
       expect(() => parse(schema, data)).toThrowError(
-        new ApiError('VALIDATION_ERROR', 'age: Number must be greater than or equal to 18')
+        new ApiError('VALIDATION_ERROR', 'age: Too small: expected number to be >=18')
       );
     });
 
@@ -183,7 +183,7 @@ describe('auth-context', () => {
       });
       const data = { user: { email: 'bad-email' } };
       expect(() => parse(complexSchema, data)).toThrowError(
-        new ApiError('VALIDATION_ERROR', 'user.email: Invalid email')
+        new ApiError('VALIDATION_ERROR', 'user.email: Invalid email address')
       );
     });
   });

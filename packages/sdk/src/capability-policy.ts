@@ -23,7 +23,7 @@ export const GovernedCapabilitySchema = z.object({
   source: z.enum(['native', 'mcp', 'a2a', 'provider', 'skill']),
   version: z.string().min(1).max(100),
   owner: z.string().min(1).max(255),
-  inputSchema: z.record(z.unknown()),
+  inputSchema: z.record(z.string(), z.unknown()),
   risk: z.enum(['low', 'medium', 'high']),
   scope: CapabilityScopeSchema,
   health: CapabilityHealthSchema,

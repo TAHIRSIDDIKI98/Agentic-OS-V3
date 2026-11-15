@@ -54,7 +54,7 @@ export const A2ATaskSchema = z.object({
     id: z.string().min(1),
     mimeType: z.string().min(1),
     content: z.unknown(),
-    metadata: z.record(z.unknown()).default({}),
+    metadata: z.record(z.string(), z.unknown()).default({}),
   })).default([]),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),

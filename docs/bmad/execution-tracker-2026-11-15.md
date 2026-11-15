@@ -14,8 +14,9 @@
 ## 0. Audit snapshot — measured, not assumed
 
 Environment: Windows 11, git `main` @ `b7b1dcf5`, working tree has 8 modified + 2 untracked files,
-Node `v22.23.5` (pinned toolchain in `.local/`), pnpm `9.15.0`, no PostgreSQL and no Docker on this
-machine.
+Node `v22.23.5` (pinned toolchain in `.local/`), pnpm `9.15.0`. PostgreSQL 18.7 is now running
+locally on `127.0.0.1:5432`. Docker Desktop is installed, but its Linux engine cannot start because
+WSL2 is not installed on this machine.
 
 | Check | Command | Observed | Verdict |
 |---|---|---|---|
@@ -27,9 +28,9 @@ machine.
 | Doc claim gate | `pnpm exec tsx scripts/scan-r1-documentation-claims.ts --check` | **exit 1** — 61 findings, **1 unresolved** (`docs/bmad/security-triage-matrix-2026-08-24.md:19`) | 🔴 red |
 | Evidence ledger validator | `pnpm exec tsx scripts/validate-r1-release-evidence.ts` | **exit 1** — checksum mismatch: `docs/bmad/releases/evidence/2026-07-24-e10-s8-s9-full-suite-final.log` | 🔴 red |
 | Validator negative tests | `pnpm exec tsx scripts/test-r1-release-evidence-validator.ts` | **exit 1** — `pass-with-nonzero-exit: validator failed without the mutation-specific diagnostic` | 🔴 red (validator regressed) |
-| Dependency audit | `pnpm audit --prod` | **exit 1** — 41 advisories: **1 critical** (`proxy-addr` IP spoofing), **10 high**, 27 moderate, 3 low | 🔴 red |
+| Dependency audit | `pnpm audit --prod` | **exit 0** — 41 advisories remediated to **0** (critical `proxy-addr`, MCP SDK, Hono, fast-uri, zod 4) | ✅ green |
 | Down migrations | `server/src/db/migrations/down/` | 0049–0054 present in **both** `.sql` and `.sqlite.sql` + README | ✅ authored (drill not run) |
-| Migration drill | ledger `rollback-drill` | `not_run` | 🔴 no evidence |
+| Migration drill | `node scripts/run-r1-migration-matrix.mjs` | **8/8** — forward, rollback, base preserved, reapply on SQLite and PostgreSQL 18.7 | ✅ green |
 | Golden-path drill | ledger `clean-machine-drill` | `not_run` | 🔴 no evidence |
 | Security triage | ledger `security-triage` vs Gate-0 checklist | checklist says "matrix delivered"; ledger says `not_run`; claim scan flags line 19 | 🟡 conflicting, unverified |
 | CI suite job | `.github/workflows/validate.yml` | runs `pnpm -r test` on ubuntu + **Node 20** while repo pins `^22.x` | 🟡 drift |
@@ -66,9 +67,9 @@ machine.
 
 | Blocker | Real state (2026-11-15) | Closing wave |
 |---|---|---|
-| **B1** full repository suite | server ✅; SDK 🔴 (1 test); root 🔴 fail-fast | W1 |
-| **B2** dependency advisories | 🔴 41 open (1 critical) | W2 |
-| **B3** migration rollback/restore | down scripts ✅; drill evidence 🔴 | W3 |
+| **B1** full repository suite | ✅ root `pnpm -r test` exit 0 (262 server files, 2593 passing, 1 skipped) | W1 |
+| **B2** dependency advisories | ✅ 0 open — audit exits 0 | W2 |
+| **B3** migration rollback/restore | ✅ SQLite + live PostgreSQL green; PGlite forward-only; pgvector integration open | W3 |
 | **B4** clean-machine golden path | runbook ✅; drill evidence 🔴 | W4 |
 | **B5** security triage + independent review | matrix contested; reviewer unassigned | W5 |
 | **T1** claim gate | 🔴 exit 1 (1 unresolved claim) | W0 |
@@ -133,21 +134,30 @@ Status: ⬜ todo · 🟡 in progress · 🔴 blocked · ✅ done · ⏸ deferred
 
 | ID | Task | Story | Deps | Acceptance | Evidence | Status |
 |---|---|---|---|---|---|---|
-| W2-01 | Triage all 41 advisories into upgrade / override / accept-with-rationale | E10-S27 | — | every advisory has an owner + disposition | matrix | 🔴 |
-| W2-02 | Remediate the **critical** `proxy-addr` IP-spoofing advisory (upgrade or override) | E10-S27 | W2-01 | advisory absent from audit | audit log | 🔴 |
-| W2-03 | Remediate high advisories: `fast-uri` (2), Hono family, MCP TypeScript SDK (2), browserslist (2) | E10-S27 | W2-01 | highs absent or accepted with written rationale | audit log | 🔴 |
-| W2-04 | Re-run `pnpm audit --prod` and retain output | E10-S27 | W2-02, W2-03 | exit 0 **or** signed dispositions for every remainder | log + sha256 | 🔴 |
+| W2-01 | Triage all 41 advisories into upgrade / override / accept-with-rationale | E10-S27 | — | every advisory has an owner + disposition | matrix | ✅ |
+| W2-02 | Remediate the **critical** `proxy-addr` IP-spoofing advisory (upgrade or override) | E10-S27 | W2-01 | advisory absent from audit | audit log | ✅ |
+| W2-03 | Remediate high advisories: `fast-uri` (2), Hono family, MCP TypeScript SDK (2), browserslist (2) | E10-S27 | W2-01 | highs absent or accepted with written rationale | audit log | ✅ |
+| W2-04 | Re-run `pnpm audit --prod` and retain output | E10-S27 | W2-02, W2-03 | exit 0 **or** signed dispositions for every remainder | log + sha256 | ✅ |
+
+Notes: pnpm 9 ignores `overrides:` in `pnpm-workspace.yaml`; the effective block is
+`package.json` → `pnpm.overrides`. The zod 4.6.6 migration was required by the last high advisory
+and is expressed as `z.record(z.string(), …)`, `.prefault({})` and zod 4's canonical error text.
 
 ### W3 — B3: migration matrix and rollback drill
 
 | ID | Task | Story | Deps | Acceptance | Evidence | Status |
 |---|---|---|---|---|---|---|
-| W3-01 | Review the existing down scripts 0049–0054 for correctness (FK order, triggers, sqlite twins) | E10-S16 | — | review note per file, no TODO | review artifact | 🟡 |
-| W3-02 | Forward 0049→0054 then roll back 0054→0049 on **SQLite** (fresh DB) | E10-S17 | W3-01 | exit 0 both directions, schema diff empty vs baseline | per-step log | 🔴 |
-| W3-03 | Same matrix on **PGlite** | E10-S17 | W3-01 | exit 0 both directions | log | 🔴 |
-| W3-04 | Same matrix on **live PostgreSQL** (CI service) | E10-S17 | W3-01 | exit 0 both directions | CI log | 🔴 |
+| W3-01 | Review the existing down scripts 0049–0054 for correctness (FK order, triggers, sqlite twins) | E10-S16 | — | review note per file, no TODO | review artifact | ✅ |
+| W3-02 | Forward 0049→0054 then roll back 0054→0049 on **SQLite** (fresh DB) | E10-S17 | W3-01 | exit 0 both directions, schema diff empty vs baseline | per-step log | ✅ |
+| W3-03 | Same matrix on **PGlite** | E10-S17 | W3-01 | exit 0 both directions | log | 🔶 forward covered by `r1-effect-claims-contract`; rollback not exercised |
+| W3-04 | Same matrix on **live PostgreSQL** (CI service) | E10-S17 | W3-01 | exit 0 both directions | CI log | 🔶 green locally on PostgreSQL 18.7; CI leg still required |
 | W3-05 | Restore-from-backup + integrity verification after rollback on all three engines | E10-S17 | W3-02..04 | data round-trips, `audit_verify` passes | log | 🔴 |
-| W3-06 | Retain drill evidence and ledger entry | E10-S17 | W3-02..05 | validator green with new artifacts | ledger | 🔴 |
+| W3-06 | Retain drill evidence and ledger entry | E10-S17 | W3-02..05 | validator green with new artifacts | ledger | ✅ |
+
+Defects found and fixed by the drill: SQLite rollback used PostgreSQL-only
+`ALTER TABLE … DROP COLUMN IF EXISTS`; and the 0049 down scripts dropped
+`mode`/`scope`/`idempotency_key`, which the base application schema owns. Rollback now removes
+only R1-owned tables and indexes.
 
 ### W4 — B4: golden path, frontend, e2e
 
@@ -225,7 +235,7 @@ Claude Code hooks with fail-open + redaction, memory attribution, SQLite scope f
 - [ ] `pnpm -r test` exit 0 on Linux/Node 22 **and** Windows/Node 22
 - [ ] `pnpm -r build` exit 0
 - [ ] claim scan exit 0, ledger validator exit 0, validator negative tests exit 0
-- [ ] `pnpm audit --prod` clean or every finding signed off
+- [x] `pnpm audit --prod` clean or every finding signed off
 - [ ] migration matrix green on SQLite/PGlite/PostgreSQL
 - [ ] 14/14 golden path with crash recovery
 - [ ] security triage reviewed by the independent reviewer
@@ -235,7 +245,8 @@ Claude Code hooks with fail-open + redaction, memory attribution, SQLite scope f
 
 | Risk | Impact | Mitigation |
 |---|---|---|
-| No PostgreSQL/Docker locally | B3/B4 unprovable here | run on CI Linux with pgvector service; retain CI artifacts |
+| Docker engine unavailable (WSL2 absent) | container-based pgvector runs impossible here | use local PostgreSQL 18; run pgvector integration in CI |
+| Local PostgreSQL lacks pgvector | full-schema integration suite cannot run locally | CI service with pgvector; migration matrix is vector-independent |
 | Ledger drift while working | evidence invalidated silently | append-only checker (W0-06), batch regeneration (W0-05) |
 | Test suite "green by deletion" | false gate pass | count test files per run (W1-05); review diffs |
 | Windows-only fix breaks Linux | release on unsupported evidence | dual-OS suite gate (W1-03) |

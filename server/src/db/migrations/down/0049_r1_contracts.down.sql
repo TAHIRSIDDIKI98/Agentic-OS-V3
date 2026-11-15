@@ -23,6 +23,6 @@ DROP INDEX IF EXISTS r1_tasks_project_state_idx;
 DROP TABLE IF EXISTS r1_tasks;
 
 DROP INDEX IF EXISTS projects_r1_idempotency_key_idx;
-ALTER TABLE projects DROP COLUMN IF EXISTS idempotency_key;
-ALTER TABLE projects DROP COLUMN IF EXISTS scope;
-ALTER TABLE projects DROP COLUMN IF EXISTS mode;
+-- `mode`, `scope` and `idempotency_key` are owned by the base application schema
+-- (schema.ts projects); 0049 only adds them defensively with IF NOT EXISTS.
+-- Rollback must not remove application columns, only R1-owned objects.

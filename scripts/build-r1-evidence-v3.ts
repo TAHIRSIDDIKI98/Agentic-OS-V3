@@ -77,6 +77,11 @@ function main(): void {
     '.'
   );
   const audit = run('production-dependency-audit', 'pnpm audit --prod --json', '.');
+  // The live PostgreSQL leg runs only when the operator supplies a disposable
+  // database URL. The URL itself is never embedded in the command or artifact.
+  const migrationMatrix = process.env.NEXUS_PG_URL?.trim()
+    ? run('migration-matrix', 'node scripts/run-r1-migration-matrix.mjs', '.')
+    : null;
 
   const results: CommandResult[] = [
     {
@@ -162,6 +167,24 @@ function main(): void {
           : 'Production advisories remain open; remediation is tracked in the security triage matrix.',
       artifact: `${EVIDENCE_PREFIX}${stamp}-production-dependency-audit.log`,
     },
+    ...(migrationMatrix
+      ? [
+          {
+            id: 'migration-matrix',
+            evidenceClass: 'integration' as const,
+            command: 'Forward 0049→0054 and roll back 0054→0049 on SQLite and live PostgreSQL, then reapply.',
+            workingDirectory: '.',
+            expectedCode: 0,
+            expectedDescription: 'Migration matrix green on every executed engine.',
+            status: migrationMatrix.code === 0 ? ('pass' as const) : ('blocked' as const),
+            blockingReason:
+              migrationMatrix.code === 0
+                ? null
+                : 'A forward, rollback or reapply check failed; see the artifact.',
+            artifact: `${EVIDENCE_PREFIX}${stamp}-migration-matrix.log`,
+          },
+        ]
+      : []),
   ];
 
   const outputs: Record<string, { code: number; output: string }> = {
@@ -172,6 +195,7 @@ function main(): void {
     'documentation-claim-scan': claimScan,
     'evidence-validator-negative-tests': validatorTests,
     'production-dependency-audit': audit,
+    ...(migrationMatrix ? { 'migration-matrix': migrationMatrix } : {}),
   };
 
   for (const result of results) {
@@ -183,19 +207,23 @@ function main(): void {
   }
 
   const notRun: Array<Omit<CommandResult, 'artifact'> & { artifact: string; command: string }> = [
-    {
-      id: 'migration-matrix',
-      evidenceClass: 'integration',
-      command:
-        'Forward 0049→0054 and roll back 0054→0049 on SQLite, PGlite and live PostgreSQL, then restore and verify.',
-      workingDirectory: 'server',
-      expectedCode: 0,
-      expectedDescription: 'Migration matrix green on three engines with retained per-step logs.',
-      status: 'not_run',
-      blockingReason:
-        'Not executed in this batch: this workstation has no PostgreSQL server and no Docker. Must run in CI with the pgvector service before Gate-0 exit.',
-      artifact: `${EVIDENCE_PREFIX}${stamp}-unperformed-gates.md`,
-    },
+    ...(!migrationMatrix
+      ? [
+          {
+            id: 'migration-matrix',
+            evidenceClass: 'integration' as const,
+            command:
+              'Forward 0049→0054 and roll back 0054→0049 on SQLite and live PostgreSQL, then reapply.',
+            workingDirectory: '.',
+            expectedCode: 0,
+            expectedDescription: 'Migration matrix green on every executed engine.',
+            status: 'not_run' as const,
+            blockingReason:
+              'NEXUS_PG_URL was not set, so only the SQLite leg could run. Supply a disposable PostgreSQL URL to execute the full matrix.',
+            artifact: `${EVIDENCE_PREFIX}${stamp}-unperformed-gates.md`,
+          },
+        ]
+      : []),
     {
       id: 'clean-machine-golden-path',
       evidenceClass: 'integration',

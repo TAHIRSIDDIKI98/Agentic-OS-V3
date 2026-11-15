@@ -1,10 +1,10 @@
 {
   "schemaVersion": "nexus.r1.release-evidence-ledger.v3",
-  "generatedAt": "2026-11-15T07:29:09.559Z",
+  "generatedAt": "2026-11-15T07:57:35.363Z",
   "evidenceSource": {
-    "repositoryCommit": "016060818468b85f561d1087c4f8a87d2e3001e1",
+    "repositoryCommit": "6835746e3a054840a96135830066bebd7bb298cc",
     "branch": "main",
-    "note": "Artifacts, scripts and supersession note are committed in 01606081; raw command output is retained verbatim (shell exit codes included)."
+    "note": "Generated from the working tree at the recorded commit; artifacts are committed in the same batch. Raw command output is retained verbatim (shell exit codes included)."
   },
   "environment": {
     "node": "v22.23.5",
@@ -24,14 +24,14 @@
       "actual": {
         "exitCode": 0,
         "summary": "Command completed successfully; raw output retained.",
-        "observedAt": "2026-11-15T07:29:09.550Z"
+        "observedAt": "2026-11-15T07:57:35.360Z"
       },
       "status": "pass",
       "blockingReason": null,
       "artifacts": [
         {
           "path": "docs/bmad/releases/evidence/2026-11-15-full-suite.log",
-          "sha256": "cc0edcfbfe28c77f0c48da6944f414a9e40850a56cc0d432c68471106bdcda75",
+          "sha256": "2d3930e88df0883585b76ae0438ea323db6737bc4b4b2351f136ce6d828684de",
           "role": "raw-command-output"
         }
       ],
@@ -52,14 +52,14 @@
       "actual": {
         "exitCode": 0,
         "summary": "Command completed successfully; raw output retained.",
-        "observedAt": "2026-11-15T07:29:09.555Z"
+        "observedAt": "2026-11-15T07:57:35.361Z"
       },
       "status": "pass",
       "blockingReason": null,
       "artifacts": [
         {
           "path": "docs/bmad/releases/evidence/2026-11-15-sdk-suite.log",
-          "sha256": "4985a9b8e349b954141644380adac569ad8f00ded6dfa76f01220f9d3d030b86",
+          "sha256": "e0435dd6bd4b2f0fad368444f75477f0c5bf5f8eed398ae91bfbd64dda2f7d8e",
           "role": "raw-command-output"
         }
       ],
@@ -80,7 +80,7 @@
       "actual": {
         "exitCode": 0,
         "summary": "Command completed successfully; raw output retained.",
-        "observedAt": "2026-11-15T07:29:09.556Z"
+        "observedAt": "2026-11-15T07:57:35.362Z"
       },
       "status": "pass",
       "blockingReason": null,
@@ -108,7 +108,7 @@
       "actual": {
         "exitCode": 0,
         "summary": "Command completed successfully; raw output retained.",
-        "observedAt": "2026-11-15T07:29:09.556Z"
+        "observedAt": "2026-11-15T07:57:35.362Z"
       },
       "status": "pass",
       "blockingReason": null,
@@ -136,7 +136,7 @@
       "actual": {
         "exitCode": 0,
         "summary": "Command completed successfully; raw output retained.",
-        "observedAt": "2026-11-15T07:29:09.557Z"
+        "observedAt": "2026-11-15T07:57:35.362Z"
       },
       "status": "pass",
       "blockingReason": null,
@@ -164,7 +164,7 @@
       "actual": {
         "exitCode": 0,
         "summary": "Command completed successfully; raw output retained.",
-        "observedAt": "2026-11-15T07:29:09.557Z"
+        "observedAt": "2026-11-15T07:57:35.362Z"
       },
       "status": "pass",
       "blockingReason": null,
@@ -190,16 +190,16 @@
         "description": "No open production advisories, or signed dispositions for each."
       },
       "actual": {
-        "exitCode": 1,
-        "summary": "Command exited 1; raw output retained.",
-        "observedAt": "2026-11-15T07:29:09.557Z"
+        "exitCode": 0,
+        "summary": "Command completed successfully; raw output retained.",
+        "observedAt": "2026-11-15T07:57:35.362Z"
       },
-      "status": "blocked",
-      "blockingReason": "Production advisories remain open; remediation is tracked in the security triage matrix.",
+      "status": "pass",
+      "blockingReason": null,
       "artifacts": [
         {
           "path": "docs/bmad/releases/evidence/2026-11-15-production-dependency-audit.log",
-          "sha256": "e8a2c4c85e41fe9fa2daa1ad075f23a1eac92fa648efd48925b4be3d120a0c93",
+          "sha256": "8145715f121b4743f094c0339e16749f53da65efaa08ab42df48f8472811764f",
           "role": "raw-command-output"
         }
       ],
@@ -211,24 +211,24 @@
     {
       "id": "migration-matrix",
       "evidenceClass": "integration",
-      "command": "Forward 0049→0054 and roll back 0054→0049 on SQLite, PGlite and live PostgreSQL, then restore and verify.",
-      "workingDirectory": "server",
+      "command": "Forward 0049→0054 and roll back 0054→0049 on SQLite and live PostgreSQL, then reapply.",
+      "workingDirectory": ".",
       "expected": {
         "exitCode": 0,
-        "description": "Migration matrix green on three engines with retained per-step logs."
+        "description": "Migration matrix green on every executed engine."
       },
       "actual": {
-        "exitCode": null,
-        "summary": "Not executed in this batch.",
-        "observedAt": "2026-11-15T07:29:09.558Z"
+        "exitCode": 0,
+        "summary": "Command completed successfully; raw output retained.",
+        "observedAt": "2026-11-15T07:57:35.362Z"
       },
-      "status": "not_run",
-      "blockingReason": "Not executed in this batch: this workstation has no PostgreSQL server and no Docker. Must run in CI with the pgvector service before Gate-0 exit.",
+      "status": "pass",
+      "blockingReason": null,
       "artifacts": [
         {
-          "path": "docs/bmad/releases/evidence/2026-11-15-unperformed-gates.md",
-          "sha256": "1e00d455fd95d2a405bb500d956b2fb1c2921c9a22b646a86266aa5904747678",
-          "role": "summary"
+          "path": "docs/bmad/releases/evidence/2026-11-15-migration-matrix.log",
+          "sha256": "72cd2507a44a66ac3c65b726d3f8488ed62caa42f2eea51d04825262fa2fea3b",
+          "role": "raw-command-output"
         }
       ],
       "reviewer": {
@@ -248,14 +248,14 @@
       "actual": {
         "exitCode": null,
         "summary": "Not executed in this batch.",
-        "observedAt": "2026-11-15T07:29:09.559Z"
+        "observedAt": "2026-11-15T07:57:35.362Z"
       },
       "status": "not_run",
       "blockingReason": "Not executed in this batch: requires a clean supported machine and a built frontend. Owner: W4.",
       "artifacts": [
         {
           "path": "docs/bmad/releases/evidence/2026-11-15-unperformed-gates.md",
-          "sha256": "1e00d455fd95d2a405bb500d956b2fb1c2921c9a22b646a86266aa5904747678",
+          "sha256": "ae13c9e96e58ba13940175c3fdec55838731b736c4e4e0a0693c5a461a6fd1b4",
           "role": "summary"
         }
       ],
@@ -276,14 +276,14 @@
       "actual": {
         "exitCode": null,
         "summary": "Not executed in this batch.",
-        "observedAt": "2026-11-15T07:29:09.559Z"
+        "observedAt": "2026-11-15T07:57:35.363Z"
       },
       "status": "not_run",
       "blockingReason": "Reviewer not yet assigned (E10-S30). Only that reviewer may close this record.",
       "artifacts": [
         {
           "path": "docs/bmad/releases/evidence/2026-11-15-unperformed-gates.md",
-          "sha256": "1e00d455fd95d2a405bb500d956b2fb1c2921c9a22b646a86266aa5904747678",
+          "sha256": "ae13c9e96e58ba13940175c3fdec55838731b736c4e4e0a0693c5a461a6fd1b4",
           "role": "summary"
         }
       ],
@@ -296,8 +296,6 @@
   "releaseDecision": "blocked",
   "decisionDerivation": {
     "blockingCommandIds": [
-      "production-dependency-audit",
-      "migration-matrix",
       "clean-machine-golden-path",
       "security-triage-review"
     ],

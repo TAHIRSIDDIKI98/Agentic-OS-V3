@@ -91,7 +91,7 @@ export const cronJobInput = z.object({
 export const ambientIngestInput = z.object({
   transcript: z.string().trim().min(1),
   source: z.string().default("ambient"),
-  metadata: z.record(z.string()).default({}),
+  metadata: z.record(z.string(), z.string()).default({}),
 });
 
 export const browserNavigateInput = z.object({

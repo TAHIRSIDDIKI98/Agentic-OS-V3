@@ -25,7 +25,7 @@ export const SyncChangeSchema = z.object({
   recordType: z.enum(['memory', 'evidence', 'task', 'taskEvent', 'receipt', 'approval']),
   recordId: z.string().min(1),
   operation: z.enum(['create', 'update', 'delete', 'tombstone']),
-  payload: z.record(z.unknown()),
+  payload: z.record(z.string(), z.unknown()),
   revision: z.number().int().nonnegative(),
   origin: z.enum(['local', 'remote']),
   projectId: z.string().uuid(),

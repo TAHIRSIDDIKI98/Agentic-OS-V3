@@ -45,7 +45,7 @@ export const ProjectSchema = z.object({
   name: z.string().min(1).max(200),
   mode: ProjectModeSchema,
   /** Root/scope metadata (e.g. local root path, tenant id). */
-  scope: z.record(z.string()),
+  scope: z.record(z.string(), z.string()),
   /** Idempotency key used to make initialization repeatable (E1-S1 AC2). */
   idempotencyKey: z.string().min(1).max(255).optional(),
   createdAt: z.string().datetime(),
@@ -204,7 +204,7 @@ export const CapabilitySchema = z.object({
   source: z.enum(['native', 'mcp', 'a2a', 'provider', 'skill']),
   version: z.string().min(1).max(100),
   owner: z.string().min(1).max(255),
-  scope: z.record(z.string()),
+  scope: z.record(z.string(), z.string()),
   risk: RiskLevelSchema,
   enabled: z.boolean(),
 });
@@ -275,7 +275,7 @@ export const ActionReceiptSchema = z.object({
   projectId: z.string().uuid(),
   actor: z.string().min(1),
   decision: PolicyDecisionSchema,
-  payload: z.record(z.unknown()),
+  payload: z.record(z.string(), z.unknown()),
   createdAt: z.string().datetime(),
 });
 export type ActionReceipt = z.infer<typeof ActionReceiptSchema>;
@@ -288,7 +288,7 @@ export const EvidenceSchema = z.object({
   kind: z.enum(['provenance', 'trace', 'receipt', 'approval', 'source']),
   source: z.string().min(1).max(255),
   contentHash: z.string().regex(/^[a-f0-9]{64}$/i),
-  metadata: z.record(z.unknown()),
+  metadata: z.record(z.string(), z.unknown()),
   createdAt: z.string().datetime(),
 });
 export type Evidence = z.infer<typeof EvidenceSchema>;

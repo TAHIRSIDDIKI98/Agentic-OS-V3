@@ -12,9 +12,10 @@ DROP INDEX IF EXISTS r1_durable_approvals_project_state_idx;
 DROP INDEX IF EXISTS r1_telemetry_spans_trace_idx;
 DROP INDEX IF EXISTS r1_telemetry_spans_task_idx;
 
-ALTER TABLE r1_tasks DROP COLUMN IF EXISTS lease_owner;
-ALTER TABLE r1_tasks DROP COLUMN IF EXISTS lease_expires_at;
-ALTER TABLE r1_tasks DROP COLUMN IF EXISTS retry_attempts;
+-- SQLite does not accept `DROP COLUMN IF EXISTS`; forward always adds these.
+ALTER TABLE r1_tasks DROP COLUMN lease_owner;
+ALTER TABLE r1_tasks DROP COLUMN lease_expires_at;
+ALTER TABLE r1_tasks DROP COLUMN retry_attempts;
 
 DROP TABLE IF EXISTS r1_telemetry_spans;
 DROP TABLE IF EXISTS r1_durable_approvals;

@@ -26,7 +26,7 @@ export const TelemetrySpanSchema = z.object({
   startAt: z.string().datetime(),
   endAt: z.string().datetime().optional(),
   status: SpanStatusSchema.default('unset'),
-  attributes: z.record(z.union([z.string(), z.number(), z.boolean()])).default({}),
+  attributes: z.record(z.string(), z.union([z.string(), z.number(), z.boolean()])).default({}),
   taskId: z.string().uuid().optional(),
   projectId: z.string().uuid().optional(),
   approvalId: z.string().uuid().optional(),
@@ -49,7 +49,7 @@ export const MetricEventSchema = z.object({
   name: MetricNameSchema,
   value: z.number(),
   timestamp: z.string().datetime(),
-  labels: z.record(z.string()).default({}),
+  labels: z.record(z.string(), z.string()).default({}),
 });
 export type MetricEvent = z.infer<typeof MetricEventSchema>;
 

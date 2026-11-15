@@ -121,7 +121,7 @@ marketplace.post('/integrations', async (c) => {
       name: z.string().min(1).max(120),
       description: z.string().max(2000).default(''),
       providerKind: z.string().min(1),
-      configSchema: z.record(z.unknown()).optional(),
+      configSchema: z.record(z.string(), z.unknown()).optional(),
     }),
     await safeJson(c)
   );

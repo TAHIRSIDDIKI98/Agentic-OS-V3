@@ -46,11 +46,11 @@ export const EvidenceExportSchema = z.object({
     includeSteps: z.boolean().default(true),
   }),
   timeline: z.array(TimelineEntrySchema),
-  tasks: z.array(z.record(z.unknown())),
-  steps: z.array(z.record(z.unknown())),
-  approvals: z.array(z.record(z.unknown())),
-  receipts: z.array(z.record(z.unknown())),
-  evidence: z.array(z.record(z.unknown())),
+  tasks: z.array(z.record(z.string(), z.unknown())),
+  steps: z.array(z.record(z.string(), z.unknown())),
+  approvals: z.array(z.record(z.string(), z.unknown())),
+  receipts: z.array(z.record(z.string(), z.unknown())),
+  evidence: z.array(z.record(z.string(), z.unknown())),
   redactionSummary: z.object({
     redactedFields: z.array(z.string()),
     omittedSecrets: z.number(),
@@ -58,7 +58,7 @@ export const EvidenceExportSchema = z.object({
   }),
   integrity: z.object({
     contentHash: z.string().regex(/^[a-f0-9]{64}$/),
-    recordCounts: z.record(z.number()),
+    recordCounts: z.record(z.string(), z.number()),
   }),
 });
 export type EvidenceExport = z.infer<typeof EvidenceExportSchema>;

@@ -15,8 +15,8 @@ import type { ApprovalRequest } from './repositories.js';
 
 export const ApprovalActionSchema = z.object({
   tool: z.string().min(1).max(255),
-  args: z.record(z.unknown()),
-  redactedArgs: z.record(z.unknown()).optional(),
+  args: z.record(z.string(), z.unknown()),
+  redactedArgs: z.record(z.string(), z.unknown()).optional(),
   actionHash: z.string().min(1),
   riskReason: z.string().min(1).max(1000),
   policyVersion: z.string().min(1).max(100),

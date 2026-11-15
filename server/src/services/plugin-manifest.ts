@@ -79,7 +79,7 @@ export const PluginManifestSchema = z.object({
   /** Capabilities granted to the plugin. */
   capabilities: z.array(CapabilitySpecSchema).min(1).max(50),
   /** Sandbox config. */
-  sandbox: SandboxConfigSchema.default({}),
+  sandbox: SandboxConfigSchema.prefault({}),
   /** Free-form tags for discovery. */
   tags: z.array(z.string().min(1).max(64)).max(20).default([]),
   /** Plugin homepage / docs URL (optional). */

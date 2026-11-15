@@ -160,7 +160,7 @@ agents.post("/api/v1/ambient/ingest", async (c) => {
   const p = await requireScope(c, "memory:write");
   const body = parse(z.object({
     transcript: z.string().min(1), source: z.string().default("ambient"),
-    metadata: z.record(z.string()).default({}),
+    metadata: z.record(z.string(), z.string()).default({}),
   }), await safeJson(c));
   const result = await ingestAmbientTranscript(body.transcript, body.source || "ambient", body.metadata as Record<string, string>, p.id);
   return c.json(ok(result, c.get("requestId") ?? ""), 201);

@@ -15,7 +15,7 @@ export const CheckpointSchema = z.object({
   taskId: z.string().uuid(),
   stepId: z.string().uuid().optional(),
   sequence: z.number().int().nonnegative(),
-  stateSnapshot: z.record(z.unknown()),
+  stateSnapshot: z.record(z.string(), z.unknown()),
   createdAt: z.string().datetime(),
 });
 export type Checkpoint = z.infer<typeof CheckpointSchema>;

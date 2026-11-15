@@ -200,7 +200,7 @@ v3upgrade.post("/api/v1/improvement/metrics", async (c) => {
     metric: z.string().min(1),
     value: z.number(),
     windowMs: z.number().int().positive().default(60_000),
-    tags: z.record(z.unknown()).default({}),
+    tags: z.record(z.string(), z.unknown()).default({}),
   }), await safeJson(c));
   await recordMetric(body.metric, body.value, body.windowMs, body.tags as Record<string, unknown>);
   return c.json(ok({ recorded: true }, c.get("requestId") ?? ""), 201);
@@ -217,7 +217,7 @@ v3upgrade.post("/api/v1/improvement/tick", async (c) => {
   await requireScope(c, "brain:admin");
   const body = parse(z.object({
     metrics: z.array(z.string()).min(1),
-    thresholds: z.record(z.number()).optional(),
+    thresholds: z.record(z.string(), z.number()).optional(),
   }), await safeJson(c));
   const result = await harnessTick({
     metrics: body.metrics,
@@ -254,7 +254,7 @@ v3upgrade.post("/api/v1/plugins", async (c) => {
     authorPubkey: z.string().min(1),
     signature: z.string().min(1),
     wasmBase64: z.string().min(1),
-    manifest: z.record(z.unknown()),
+    manifest: z.record(z.string(), z.unknown()),
     homepage: z.string().url().optional(),
     license: z.string().max(64).optional(),
     source: z.string().optional(),
@@ -293,7 +293,7 @@ v3upgrade.post("/api/v1/plugins/:id/install", async (c) => {
   await requireScope(c, "plugin:admin");
   const body = parse(z.object({
     ringOverride: z.number().int().min(0).max(3).optional(),
-    config: z.record(z.unknown()).optional(),
+    config: z.record(z.string(), z.unknown()).optional(),
   }), await safeJson(c));
   await installPlugin(c.req.param("id"), {
     ringOverride: body.ringOverride,
@@ -441,7 +441,7 @@ const nodeSchema = z.object({
   id: z.string(),
   type: z.string(),
   position: z.object({ x: z.number(), y: z.number() }),
-  config: z.record(z.unknown()),
+  config: z.record(z.string(), z.unknown()),
 });
 
 /**
@@ -473,7 +473,7 @@ v3upgrade.post("/api/v1/pipelines", async (c) => {
     description: z.string().max(2000).optional(),
     nodes: z.array(nodeSchema).min(1),
     edges: z.array(edgeSchema).default([]),
-    trigger: z.record(z.unknown()).optional(),
+    trigger: z.record(z.string(), z.unknown()).optional(),
   }), await safeJson(c));
   const dagNodes = body.nodes.map((n) => ({ ...n, type: asNodeType(n.type) } as PipelineNode));
   const dagEdges = (body.edges ?? []).map((e) => ({ from: e.from, to: e.to, fromPort: e.fromPort, toPort: e.toPort } as PipelineEdge));
@@ -507,7 +507,7 @@ v3upgrade.get("/api/v1/pipelines/:name", async (c) => {
 v3upgrade.post("/api/v1/pipelines/:id/run", async (c) => {
   const p = await requireScope(c, "pipeline:execute");
   const body = parse(z.object({
-    inputs: z.record(z.unknown()).optional(),
+    inputs: z.record(z.string(), z.unknown()).optional(),
   }), await safeJson(c));
   const result = await runPipeline({
     pipelineId: c.req.param("id"),

@@ -70,8 +70,8 @@ const simulateSchema = z.object({
   candidate: z.object({
     id: z.string(),
     name: z.string(),
-    before: z.record(z.union([z.number(), z.string(), z.boolean()])),
-    after: z.record(z.union([z.number(), z.string(), z.boolean()])),
+    before: z.record(z.string(), z.union([z.number(), z.string(), z.boolean()])),
+    after: z.record(z.string(), z.union([z.number(), z.string(), z.boolean()])),
     expectedEffect: z.string(),
     ownerAgent: z.string(),
     targetInterface: z.string(),
@@ -124,7 +124,7 @@ selfOptRouter.post('/experiment', async (c) => {
 const knowledgeSchema = z.object({
   action: z.enum(['publish', 'best']),
   tunerId: z.string(),
-  payload: z.record(z.union([z.number(), z.string(), z.boolean()])).optional(),
+  payload: z.record(z.string(), z.union([z.number(), z.string(), z.boolean()])).optional(),
   score: z.number().optional(),
 });
 selfOptRouter.post('/knowledge', async (c) => {

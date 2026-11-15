@@ -5,6 +5,6 @@ packages:
 allowBuilds:
   better-sqlite3: true
   esbuild: true
-overrides:
-  fast-uri: ^3.1.4
-  '@hono/node-server': ^2.0.11
+# Dependency overrides live in root package.json (`pnpm.overrides`).
+# pnpm 9 ignores an `overrides:` block in this file, which is why earlier
+# security overrides silently did nothing.
