@@ -61,6 +61,53 @@ jobs:
       - name: Build (server tsc + dashboard vite build)
         run: pnpm -r build
 
+  r1-postgres:
+    name: R1 — POSIX golden path + migration matrix (PostgreSQL 18 + pgvector)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install PostgreSQL client tools
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Rebuild native modules (better-sqlite3 ABI)
+        run: pnpm rebuild better-sqlite3
+
+      - name: Build SDK dist consumed by server tests
+        run: pnpm --filter @agentic-os/sdk build
+
+      - name: Migration matrix (SQLite, PGlite, PostgreSQL, backup/restore)
+        env:
+          NEXUS_PG_URL: postgresql://postgres:postgres@127.0.0.1:5432/nexus_r1_matrix
+        run: node scripts/run-r1-migration-matrix.mjs
+
+      - name: R1 golden path (POSIX constrained execution)
+        run: cd server && npx vitest run tests/e2e/golden-path.e2e.test.ts
+
   rust:
     name: Rust — clippy (deny warnings) + test
     runs-on: ubuntu-latest
