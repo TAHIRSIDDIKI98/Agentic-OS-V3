@@ -24,6 +24,30 @@ export function createExtendedR1Router(runtime: ExtendedR1Runtime): Hono<NexusEn
     return c.json(result, 200);
   });
 
+  // --- Bounded context pack (long-horizon agent handoff) ---
+  router.get('/projects/:projectId/context', async (c) => {
+    await requireScope(c, 'memory:read');
+    const projectId = c.req.param('projectId');
+    if (!(await runtime.repositories.projects.get(projectId))) {
+      return c.json({ error: { code: 'PROJECT_NOT_FOUND', message: 'Project not found.' } }, 404);
+    }
+    const tokenBudget = Number(c.req.query('tokenBudget') ?? '4000');
+    if (!Number.isInteger(tokenBudget) || tokenBudget < 100 || tokenBudget > 100_000) {
+      return c.json(
+        {
+          error: {
+            code: 'INVALID',
+            message: 'tokenBudget must be an integer between 100 and 100000',
+          },
+        },
+        400
+      );
+    }
+    const focus = c.req.query('focus');
+    const taskId = c.req.query('taskId');
+    return c.json(await runtime.contextPack.build(projectId, { tokenBudget, focus, taskId }), 200);
+  });
+
   // --- E2-S3 Feedback ---
   router.post('/projects/:projectId/recall/feedback', async (c) => {
     const principal = await requireScope(c, 'memory:write');

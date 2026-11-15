@@ -24,6 +24,7 @@ export * from './r1-effect-claims.js';
 export * from './r1-kill-switch.js';
 export * from './r1-telemetry.js';
 export * from './r1-evidence-timeline.js';
+export * from './r1-context-pack.js';
 export * from './r1-serena.js';
 export * from './sql-extended-repositories.js';
 export * from './r1-mcp-adapter.js';

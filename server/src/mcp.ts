@@ -12,7 +12,8 @@ import { recordFeedback } from './services/feedback.service.js';
 import { isKillSwitchOn } from './services/safety.service.js';
 import { recall } from './services/recall.js';
 import { verifyAuditChain } from './lib/audit.js';
-import { db } from './db/client.js';
+import { db, createApplicationSqlExecutor } from './db/client.js';
+import { createExtendedSqlR1Runtime } from './services/r1-extended-runtime.js';
 import { memories, skills, tokenLedger, auditLog, notes } from './db/client.js';
 import { dbReachable } from './setup.js';
 import type { Scope } from './lib/security.js';
@@ -34,6 +35,7 @@ import { statsCache } from './lib/lru-cache.js';
  */
 export const TOOL_SCOPES = {
   nexus_recall: 'memory:read',
+  nexus_context_pack: 'memory:read',
   nexus_remember: 'memory:write',
   nexus_capture: 'memory:write',
   nexus_feedback: 'memory:write',
@@ -48,6 +50,15 @@ export const TOOL_SCOPES = {
   nexus_acl_check: 'memory:read',
 } as const satisfies Record<string, Scope>;
 
+let extendedR1Runtime: ReturnType<typeof getExtendedR1RuntimeImpl> | undefined;
+function getExtendedR1RuntimeImpl() {
+  return createExtendedSqlR1Runtime(createApplicationSqlExecutor());
+}
+function getExtendedR1Runtime() {
+  extendedR1Runtime ??= getExtendedR1RuntimeImpl();
+  return extendedR1Runtime;
+}
+
 export function createNexusMcpServer(actor: string, scopes: Scope[]): McpServer {
   const server = new McpServer({ name: 'nexus-2', version: '2.0.0' });
 
@@ -61,6 +72,23 @@ export function createNexusMcpServer(actor: string, scopes: Scope[]): McpServer 
     ],
     isError: true,
   });
+
+  server.tool(
+    'nexus_context_pack',
+    'Bounded, provenance-backed project context for long-horizon agent handoff.',
+    {
+      projectId: z.string().uuid(),
+      tokenBudget: z.number().int().min(100).max(100_000).default(4000),
+      focus: z.string().max(500).optional(),
+      taskId: z.string().uuid().optional(),
+    },
+    async ({ projectId, tokenBudget, focus, taskId }) => {
+      if (!can('memory:read')) return deny('nexus_context_pack', 'memory:read');
+      const runtime = getExtendedR1Runtime();
+      const pack = await runtime.contextPack.build(projectId, { tokenBudget, focus, taskId });
+      return { content: [{ type: 'text', text: JSON.stringify(pack) }] };
+    }
+  );
 
   server.tool(
     'nexus_recall',
@@ -230,7 +258,10 @@ export function createNexusMcpServer(actor: string, scopes: Scope[]): McpServer 
         orderBy: desc(memories.importance),
         limit: 6,
       });
-      const lines = ['# NEXUS ambient context', ...top.map((memory: { title: string }) => `- ${memory.title}`)];
+      const lines = [
+        '# NEXUS ambient context',
+        ...top.map((memory: { title: string }) => `- ${memory.title}`),
+      ];
       const text = lines.join('\n');
       return { contents: [{ uri: 'nexus://brain/ambient', mimeType: 'text/markdown', text }] };
     }

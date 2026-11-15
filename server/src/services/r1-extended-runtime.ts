@@ -17,6 +17,7 @@ import {
   KillSwitchService,
   TelemetryService,
   EvidenceTimelineService,
+  ContextPackService,
   SerenaCodeIntelligence,
   SqlCheckpoints,
   SqlLeases,
@@ -58,6 +59,7 @@ export interface ExtendedR1Runtime {
   readonly killSwitch: KillSwitchService;
   readonly telemetry: TelemetryService;
   readonly evidenceTimeline: EvidenceTimelineService;
+  readonly contextPack: ContextPackService;
   readonly serena: SerenaCodeIntelligence;
   readonly mcp: MCPAdapter;
   readonly a2a: A2AAdapter;
@@ -69,7 +71,7 @@ export interface ExtendedR1Runtime {
 export function createExtendedSqlR1Runtime(
   executor: SqlExecutor,
   options: { now?: () => string; projectRoots?: Map<string, string> } = {},
-  runInTransaction?: <T>(fn: () => Promise<T>) => Promise<T>,
+  runInTransaction?: <T>(fn: () => Promise<T>) => Promise<T>
 ): ExtendedR1Runtime {
   const repos = createSqlR1Repositories(executor);
   const governanceStore = new SqlCapabilityGovernanceStore(executor);
@@ -88,10 +90,15 @@ export function createExtendedSqlR1Runtime(
   const effectClaims = new SqlEffectClaimStore(executor);
 
   const recall = new R1RecallService(repos, { embeddingAvailable: false });
-  const feedback = new RecallFeedbackService(repos, feedbackRepo, contradictionRepo, { now: options.now });
+  const feedback = new RecallFeedbackService(repos, feedbackRepo, contradictionRepo, {
+    now: options.now,
+  });
   const worker = new TaskWorker(repos, checkpoints, leases, compensations, { now: options.now });
   const eventStream = new TaskEventStreamService(repos);
-  const approvals = new DurableApprovalService(repos, durableApprovalsRepo, { now: options.now, killSwitchEnabled: async () => (await killSwitchStore.get())?.enabled ?? false });
+  const approvals = new DurableApprovalService(repos, durableApprovalsRepo, {
+    now: options.now,
+    killSwitchEnabled: async () => (await killSwitchStore.get())?.enabled ?? false,
+  });
   const toolGateway = new BoundedToolGateway(repos, {
     now: options.now,
     projectRoots: options.projectRoots,
@@ -121,23 +128,39 @@ export function createExtendedSqlR1Runtime(
     },
   });
   const killSwitch = new KillSwitchService(repos, killSwitchStore, { now: options.now });
-  const telemetry = new TelemetryService({ now: options.now, spanExporter: { export: async (spans) => { for (const s of spans) await telemetrySql.saveSpan(s); } } });
+  const telemetry = new TelemetryService({
+    now: options.now,
+    spanExporter: {
+      export: async (spans) => {
+        for (const s of spans) await telemetrySql.saveSpan(s);
+      },
+    },
+  });
+  const listDurableApprovals = async (projectId: string) =>
+    durableApprovalsRepo.listForProject
+      ? await durableApprovalsRepo.listForProject(projectId)
+      : await durableApprovalsRepo.listPending(projectId);
   const evidenceTimeline = new EvidenceTimelineService(repos, {
     now: options.now,
     // Durable approvals live outside R1Repositories; include decided ones so the
     // timeline and evidence export retain the full approval history.
     listApprovals: async (projectId, taskId) => {
-      const all = durableApprovalsRepo.listForProject
-        ? await durableApprovalsRepo.listForProject(projectId)
-        : await durableApprovalsRepo.listPending(projectId);
+      const all = await listDurableApprovals(projectId);
       return taskId ? all.filter((approval) => approval.taskId === taskId) : all;
     },
+  });
+  const contextPack = new ContextPackService(repos, {
+    now: options.now,
+    listApprovals: listDurableApprovals,
   });
   const serena = new SerenaCodeIntelligence({ now: options.now });
   const mcp = new MCPAdapter(new SqlMCPRepo(executor), { now: options.now });
   // A2A's adapter contract does not yet carry project scope with an approval ID.
   // Fail closed rather than performing an unscoped approval lookup.
-  const a2a = new A2AAdapter(new SqlA2ACardRepo(executor), new SqlA2ATaskRepo(executor), { now: options.now, isApprovalApproved: async () => false });
+  const a2a = new A2AAdapter(new SqlA2ACardRepo(executor), new SqlA2ATaskRepo(executor), {
+    now: options.now,
+    isApprovalApproved: async () => false,
+  });
   const sync = new ProjectSyncService(new SqlSyncStore(executor), { now: options.now });
 
   const applyProjectImport = async (candidate: unknown) => {
@@ -160,6 +183,7 @@ export function createExtendedSqlR1Runtime(
     killSwitch,
     telemetry,
     evidenceTimeline,
+    contextPack,
     serena,
     mcp,
     a2a,
@@ -170,7 +194,10 @@ export function createExtendedSqlR1Runtime(
 }
 
 // In-memory runtime for tests/offline
-export function createInMemoryExtendedRuntime(repos: R1Repositories, options: { now?: () => string; projectRoots?: Map<string, string> } = {}): ExtendedR1Runtime {
+export function createInMemoryExtendedRuntime(
+  repos: R1Repositories,
+  options: { now?: () => string; projectRoots?: Map<string, string> } = {}
+): ExtendedR1Runtime {
   const governanceStore = new InMemoryCapabilityGovernanceStore();
   const governance = new CapabilityGovernanceService(governanceStore);
   const transfer = new ProjectTransferService(repos);
@@ -179,10 +206,14 @@ export function createInMemoryExtendedRuntime(repos: R1Repositories, options: { 
   const worker = new TaskWorker(repos);
   const eventStream = new TaskEventStreamService(repos);
   const approvals = new DurableApprovalService(repos);
-  const toolGateway = new BoundedToolGateway(repos, { now: options.now, projectRoots: options.projectRoots });
+  const toolGateway = new BoundedToolGateway(repos, {
+    now: options.now,
+    projectRoots: options.projectRoots,
+  });
   const killSwitch = new KillSwitchService(repos);
   const telemetry = new TelemetryService({ now: options.now });
   const evidenceTimeline = new EvidenceTimelineService(repos);
+  const contextPack = new ContextPackService(repos, { now: options.now });
   const serena = new SerenaCodeIntelligence({ now: options.now });
   const mcp = new MCPAdapter();
   const a2a = new A2AAdapter();
@@ -203,6 +234,7 @@ export function createInMemoryExtendedRuntime(repos: R1Repositories, options: { 
     killSwitch,
     telemetry,
     evidenceTimeline,
+    contextPack,
     serena,
     mcp,
     a2a,
